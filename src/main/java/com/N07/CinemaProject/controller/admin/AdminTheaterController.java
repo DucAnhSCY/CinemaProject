@@ -4,6 +4,7 @@ import com.N07.CinemaProject.entity.Theater;
 import com.N07.CinemaProject.entity.Auditorium;
 import com.N07.CinemaProject.repository.TheaterRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +15,7 @@ import java.util.Optional;
 
 @Controller
 @RequestMapping("/admin/theaters")
+@PreAuthorize("hasRole('ADMIN') or hasRole('THEATER_MANAGER')")
 public class AdminTheaterController {
 
     @Autowired

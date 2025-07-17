@@ -5,6 +5,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.N07.CinemaProject.repository.UserRepository;
 import com.N07.CinemaProject.repository.TheaterRepository;
@@ -15,6 +16,7 @@ import java.util.Map;
 
 @Controller
 @RequestMapping("/admin")
+@PreAuthorize("hasRole('ADMIN') or hasRole('THEATER_MANAGER')")
 public class AdminController {
     
     @Autowired
@@ -34,6 +36,7 @@ public class AdminController {
     }
 
     @GetMapping("/system")
+    @PreAuthorize("hasRole('ADMIN')")
     public String systemAdmin(Model model) {
         // Add any necessary model attributes for system admin dashboard
         model.addAttribute("pageTitle", "Quản Trị Hệ Thống");
@@ -79,6 +82,7 @@ public class AdminController {
     
     @GetMapping("/api/users")
     @ResponseBody
+    @PreAuthorize("hasRole('ADMIN')")
     public Object getUsers() {
         return userRepository.findAll();
     }

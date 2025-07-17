@@ -4,7 +4,6 @@ import com.N07.CinemaProject.entity.Movie;
 import com.N07.CinemaProject.entity.Screening;
 import com.N07.CinemaProject.entity.Theater;
 import com.N07.CinemaProject.entity.Auditorium;
-import com.N07.CinemaProject.security.AdminOnly;
 import com.N07.CinemaProject.service.MovieService;
 import com.N07.CinemaProject.service.ScreeningService;
 import com.N07.CinemaProject.service.TmdbService;
@@ -23,8 +22,7 @@ import java.util.Optional;
 
 @Controller
 @RequestMapping("/admin/movies")
-@PreAuthorize("hasRole('ADMIN')")
-@AdminOnly
+@PreAuthorize("hasRole('ADMIN') or hasRole('THEATER_MANAGER')")
 public class AdminMovieController {
 
     @Autowired

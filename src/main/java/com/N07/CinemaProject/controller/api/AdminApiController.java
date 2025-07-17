@@ -5,6 +5,7 @@ import com.N07.CinemaProject.service.*;
 import com.N07.CinemaProject.repository.TheaterRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,6 +15,7 @@ import java.util.HashMap;
 @RestController
 @RequestMapping("/api/admin")
 @CrossOrigin(origins = "*")
+@PreAuthorize("hasRole('ADMIN') or hasRole('THEATER_MANAGER')")
 public class AdminApiController {
 
     @Autowired

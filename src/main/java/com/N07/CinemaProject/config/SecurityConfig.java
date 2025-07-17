@@ -29,8 +29,12 @@ public class SecurityConfig {
                                 "/api/tmdb/**", "/css/**", "/js/**", "/images/**", 
                                 "/auth/**", "/login", "/register", "/error", "/auth/debug").permitAll()
                 
-                // Admin-only endpoints
-                .requestMatchers("/admin/**", "/api/admin/**").hasRole("ADMIN")
+                // Admin-only endpoints (user management, system settings)
+                .requestMatchers("/admin/users/**", "/admin/system/**", "/api/admin/users/**", 
+                                "/api/admin/system/**").hasRole("ADMIN")
+                
+                // Admin and Theater Manager shared endpoints (movies, theaters, screenings, bookings)
+                .requestMatchers("/admin/**", "/api/admin/**").hasAnyRole("THEATER_MANAGER", "ADMIN")
                 
                 // Theater Manager and Admin endpoints
                 .requestMatchers("/manager/**", "/api/manager/**").hasAnyRole("THEATER_MANAGER", "ADMIN")

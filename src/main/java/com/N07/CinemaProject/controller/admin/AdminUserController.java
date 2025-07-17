@@ -1,7 +1,6 @@
 package com.N07.CinemaProject.controller.admin;
 
 import com.N07.CinemaProject.entity.User;
-import com.N07.CinemaProject.security.AdminOnly;
 import com.N07.CinemaProject.service.UserService;
 import com.N07.CinemaProject.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +16,6 @@ import java.util.Optional;
 @Controller
 @RequestMapping("/admin/users")
 @PreAuthorize("hasRole('ADMIN')")
-@AdminOnly
 public class AdminUserController {
 
     @Autowired

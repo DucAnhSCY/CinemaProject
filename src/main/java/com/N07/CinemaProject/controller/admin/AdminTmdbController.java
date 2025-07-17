@@ -4,6 +4,7 @@ import com.N07.CinemaProject.entity.Movie;
 import com.N07.CinemaProject.service.TmdbService;
 import com.N07.CinemaProject.service.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +15,7 @@ import java.util.HashMap;
 
 @Controller
 @RequestMapping("/admin/tmdb")
+@PreAuthorize("hasRole('ADMIN') or hasRole('THEATER_MANAGER')")
 public class AdminTmdbController {
 
     @Autowired
