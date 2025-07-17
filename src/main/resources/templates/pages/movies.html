@@ -86,9 +86,9 @@
                             <div class="movie-genre mb-2">
                                 <span class="badge bg-secondary" th:text="${movie.genre ?: 'Chưa phân loại'}">Thể loại</span>
                             </div>
-                            <div class="movie-duration mb-2" th:if="${movie.duration}">
+                            <div class="movie-duration mb-2" th:if="${movie.durationMin}">
                                 <i class="fas fa-clock text-muted me-1"></i>
-                                <span th:text="${movie.duration + ' phút'}">Thời lượng</span>
+                                <span th:text="${movie.durationMin + ' phút'}">Thời lượng</span>
                             </div>
                             <div class="movie-rating mb-3" th:if="${movie.rating}">
                                 <i class="fas fa-star text-warning me-1"></i>

@@ -35,19 +35,29 @@ public class CustomOAuth2User implements OAuth2User {
 
     @Override
     public String getName() {
-        // Trả về tên đầy đủ thay vì ID
-        if (user.getFullName() != null && !user.getFullName().isEmpty()) {
-            return user.getFullName();
+        // Ưu tiên hiển thị tên đầy đủ từ Google
+        if (user.getFullName() != null && !user.getFullName().trim().isEmpty()) {
+            return user.getFullName().trim();
         }
-        // Fallback to username if fullName is null
-        if (user.getUsername() != null && !user.getUsername().isEmpty()) {
-            return user.getUsername();
+        
+        // Nếu không có fullName trong database, lấy từ OAuth attributes
+        Object nameFromOAuth = attributes.get("name");
+        if (nameFromOAuth != null && !nameFromOAuth.toString().trim().isEmpty()) {
+            return nameFromOAuth.toString().trim();
         }
-        // Fallback to email if username is null
-        if (user.getEmail() != null && !user.getEmail().isEmpty()) {
-            return user.getEmail();
+        
+        // Fallback to username if available
+        if (user.getUsername() != null && !user.getUsername().trim().isEmpty()) {
+            return user.getUsername().trim();
         }
-        // Last resort: use the OAuth2 name attribute
+        
+        // Fallback to email local part
+        if (user.getEmail() != null && !user.getEmail().trim().isEmpty()) {
+            String email = user.getEmail().trim();
+            return email.split("@")[0];
+        }
+        
+        // Last resort: use the OAuth2 ID attribute
         return attributes.get(nameAttributeKey).toString();
     }
 
@@ -98,5 +108,31 @@ public class CustomOAuth2User implements OAuth2User {
      */
     public String getUsername() {
         return user.getUsername();
+    }
+    
+    /**
+     * Get display name for UI - prioritizes fullName over username
+     */
+    public String getDisplayName() {
+        if (user.getFullName() != null && !user.getFullName().trim().isEmpty()) {
+            return user.getFullName().trim();
+        }
+        
+        // Fallback to name from OAuth attributes
+        Object nameFromOAuth = attributes.get("name");
+        if (nameFromOAuth != null && !nameFromOAuth.toString().trim().isEmpty()) {
+            return nameFromOAuth.toString().trim();
+        }
+        
+        if (user.getUsername() != null && !user.getUsername().trim().isEmpty()) {
+            return user.getUsername().trim();
+        }
+        
+        if (user.getEmail() != null && !user.getEmail().trim().isEmpty()) {
+            String email = user.getEmail().trim();
+            return email.split("@")[0];
+        }
+        
+        return "Người dùng";
     }
 }

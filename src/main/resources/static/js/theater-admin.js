@@ -791,7 +791,7 @@ function updateMoviesTable(movies) {
             </td>
             <td><strong>${movie.title}</strong></td>
             <td>${movie.genre}</td>
-            <td>${movie.duration} phút</td>
+            <td>${movie.durationMin} phút</td>
             <td>
                 <span class="status-badge ${movie.status}">
                     ${movie.status === 'showing' ? 'Đang chiếu' : 'Sắp chiếu'}

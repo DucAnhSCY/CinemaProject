@@ -239,7 +239,7 @@ class CinemaApp {
                                         </div>
                                         <div class="col-sm-6">
                                             <strong>Thời lượng:</strong><br>
-                                            ${movie.duration || 'Đang cập nhật'} phút
+                                            ${movie.durationMin || 'Đang cập nhật'} phút
                                         </div>
                                     </div>
                                 </div>

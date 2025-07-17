@@ -320,7 +320,7 @@ function updateMovieModal() {
 
   const detailsHTML = `
         <p><strong>Thể loại:</strong> ${currentMovie.genre}</p>
-        <p><strong>Thời lượng:</strong> ${currentMovie.duration}</p>
+        <p><strong>Thời lượng:</strong> ${currentMovie.durationMin}</p>
         <p><strong>Đánh giá:</strong> ${currentMovie.rating}/5</p>
         <p><strong>Mô tả:</strong> ${currentMovie.description}</p>
     `;
@@ -768,17 +768,21 @@ document.addEventListener("DOMContentLoaded", function () {
       e.preventDefault();
 
       const targetId = this.getAttribute("href");
-      const targetElement = document.querySelector(targetId);
+      
+      // Kiểm tra nếu targetId hợp lệ
+      if (targetId && targetId.length > 1 && targetId.startsWith('#')) {
+        const targetElement = document.querySelector(targetId);
 
-      if (targetElement) {
-        targetElement.scrollIntoView({
-          behavior: "smooth",
-          block: "start",
-        });
+        if (targetElement) {
+          targetElement.scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+          });
 
-        // Update active nav link
-        navLinks.forEach((nl) => nl.classList.remove("active"));
-        this.classList.add("active");
+          // Update active nav link
+          navLinks.forEach((nl) => nl.classList.remove("active"));
+          this.classList.add("active");
+        }
       }
     });
   });

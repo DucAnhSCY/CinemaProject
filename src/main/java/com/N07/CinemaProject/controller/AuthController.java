@@ -5,8 +5,6 @@ import com.N07.CinemaProject.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -98,22 +96,52 @@ public class AuthController {
         }
     }
     
+    /**
+     * API endpoint để lấy thông tin user hiện tại (cho JavaScript)
+     */
     @GetMapping("/current-user")
     @ResponseBody
     public Object getCurrentUser() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth != null && auth.isAuthenticated() && !"anonymousUser".equals(auth.getPrincipal())) {
-            Object principal = auth.getPrincipal();
-            
-            if (principal instanceof UserDetails) {
-                UserDetails userDetails = (UserDetails) principal;
-                return userService.findByUsername(userDetails.getUsername()).orElse(null);
-            } else if (principal instanceof OAuth2User) {
-                OAuth2User oauth2User = (OAuth2User) principal;
-                String email = oauth2User.getAttribute("email");
-                return userService.findByEmail(email).orElse(null);
-            }
+        
+        if (auth == null || !auth.isAuthenticated() || "anonymousUser".equals(auth.getName())) {
+            return null;
         }
+        
+        // If it's an OAuth2 user
+        if (auth.getPrincipal() instanceof com.N07.CinemaProject.security.CustomOAuth2User) {
+            com.N07.CinemaProject.security.CustomOAuth2User customUser = 
+                (com.N07.CinemaProject.security.CustomOAuth2User) auth.getPrincipal();
+            
+            return java.util.Map.of(
+                "id", customUser.getId(),
+                "username", customUser.getUsername() != null ? customUser.getUsername() : "",
+                "email", customUser.getEmail() != null ? customUser.getEmail() : "",
+                "fullName", customUser.getFullName() != null ? customUser.getFullName() : "",
+                "displayName", customUser.getDisplayName(),
+                "avatarUrl", customUser.getAvatarUrl() != null ? customUser.getAvatarUrl() : "",
+                "role", customUser.getRole().name(),
+                "authProvider", customUser.getUser().getAuthProvider().name()
+            );
+        }
+        
+        // If it's a regular user, get from database
+        java.util.Optional<User> userOpt = userService.getCurrentUser();
+        if (userOpt.isPresent()) {
+            User user = userOpt.get();
+            return java.util.Map.of(
+                "id", user.getId(),
+                "username", user.getUsername() != null ? user.getUsername() : "",
+                "email", user.getEmail() != null ? user.getEmail() : "",
+                "fullName", user.getFullName() != null ? user.getFullName() : "",
+                "displayName", user.getFullName() != null && !user.getFullName().trim().isEmpty() 
+                    ? user.getFullName() : user.getUsername(),
+                "avatarUrl", user.getAvatarUrl() != null ? user.getAvatarUrl() : "",
+                "role", user.getRole().name(),
+                "authProvider", user.getAuthProvider().name()
+            );
+        }
+        
         return null;
     }
 
@@ -128,5 +156,38 @@ public class AuthController {
     public String logout() {
         // Show logout confirmation page
         return "auth/logout-confirm";
+    }
+    
+    /**
+     * Debug page để kiểm tra thông tin người dùng OAuth2
+     */
+    @GetMapping("/debug")
+    public String debugPage() {
+        return "auth/debug";
+    }
+    
+    /**
+     * Test endpoint để trả về thông tin user đơn giản
+     */
+    @GetMapping("/user-info")
+    @ResponseBody
+    public String getUserInfo() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        
+        if (auth == null || !auth.isAuthenticated() || "anonymousUser".equals(auth.getName())) {
+            return "Not authenticated";
+        }
+        
+        if (auth.getPrincipal() instanceof com.N07.CinemaProject.security.CustomOAuth2User) {
+            com.N07.CinemaProject.security.CustomOAuth2User customUser = 
+                (com.N07.CinemaProject.security.CustomOAuth2User) auth.getPrincipal();
+            
+            return "CustomOAuth2User - Name: " + customUser.getName() + 
+                   ", FullName: " + customUser.getFullName() + 
+                   ", Username: " + customUser.getUsername() +
+                   ", Email: " + customUser.getEmail();
+        }
+        
+        return "Regular user: " + auth.getName();
     }
 }

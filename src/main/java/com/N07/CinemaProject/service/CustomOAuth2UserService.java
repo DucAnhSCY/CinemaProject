@@ -48,12 +48,18 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             name = (String) attributes.get("name");
             avatarUrl = (String) attributes.get("picture");
             providerId = (String) attributes.get("sub");
+            
+            // Log thông tin để debug
+            System.out.println("Google OAuth - Email: " + email + ", Name: " + name + ", Avatar: " + avatarUrl);
         } else if ("github".equals(registrationId)) {
             provider = User.AuthProvider.GITHUB;
             email = (String) attributes.get("email");
             name = (String) attributes.get("name");
             avatarUrl = (String) attributes.get("avatar_url");
             providerId = String.valueOf(attributes.get("id"));
+            
+            // Log thông tin để debug
+            System.out.println("GitHub OAuth - Email: " + email + ", Name: " + name + ", Avatar: " + avatarUrl);
         } else {
             throw new OAuth2AuthenticationException("Unsupported provider: " + registrationId);
         }

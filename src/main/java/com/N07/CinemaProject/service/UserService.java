@@ -78,7 +78,8 @@ public class UserService implements UserDetailsService {
         
         user.setUsername(username);
         user.setEmail(email);
-        user.setFullName(fullName != null ? fullName : baseUsername);
+        // Đảm bảo fullName được lưu đúng cách
+        user.setFullName(fullName != null && !fullName.trim().isEmpty() ? fullName.trim() : baseUsername);
         user.setAvatarUrl(avatarUrl);
         user.setRole(User.Role.CUSTOMER);
         user.setAuthProvider(provider);
@@ -89,7 +90,7 @@ public class UserService implements UserDetailsService {
         // OAuth users don't need password
         
         User savedUser = userRepository.save(user);
-        System.out.println("Created OAuth user: " + savedUser.getUsername() + " - " + savedUser.getFullName());
+        System.out.println("Created OAuth user: " + savedUser.getUsername() + " - " + savedUser.getFullName() + " (" + savedUser.getEmail() + ")");
         return savedUser;
     }
     
@@ -113,16 +114,16 @@ public class UserService implements UserDetailsService {
     
     @Transactional
     public User updateOAuthUser(User existingUser, String fullName, String avatarUrl) {
-        if (fullName != null && !fullName.isEmpty()) {
-            existingUser.setFullName(fullName);
+        if (fullName != null && !fullName.trim().isEmpty()) {
+            existingUser.setFullName(fullName.trim());
         }
-        if (avatarUrl != null && !avatarUrl.isEmpty()) {
-            existingUser.setAvatarUrl(avatarUrl);
+        if (avatarUrl != null && !avatarUrl.trim().isEmpty()) {
+            existingUser.setAvatarUrl(avatarUrl.trim());
         }
         existingUser.setLastLogin(LocalDateTime.now());
         
         User updatedUser = userRepository.save(existingUser);
-        System.out.println("Updated OAuth user: " + updatedUser.getUsername() + " - " + updatedUser.getFullName());
+        System.out.println("Updated OAuth user: " + updatedUser.getUsername() + " - " + updatedUser.getFullName() + " (" + updatedUser.getEmail() + ")");
         return updatedUser;
     }
     

@@ -69,7 +69,7 @@
                             </div>
                             <!-- Display Name -->
                             <span th:if="${#authentication.principal.class.name == 'com.N07.CinemaProject.security.CustomOAuth2User'}"
-                                  th:text="${#authentication.principal.fullName ?: #authentication.principal.username ?: #authentication.name}">User</span>
+                                  th:text="${#authentication.principal.name}">User</span>
                             <span th:unless="${#authentication.principal.class.name == 'com.N07.CinemaProject.security.CustomOAuth2User'}"
                                   sec:authentication="name">User</span>
                         </a>
