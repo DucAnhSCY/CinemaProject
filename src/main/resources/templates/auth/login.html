@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng Nhập - CinemaBooking</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Auth CSS -->
+    <link th:href="@{/css/auth.css}" href="/css/auth.css" rel="stylesheet">
+</head>
+<body>
+    <div class="auth-page">
+        <div class="auth-container">
+            <div class="auth-row">
+                <!-- Form Section -->
+                <div class="auth-form-section">
+                    <div class="auth-brand">
+                        <div class="brand-logo">
+                            <i class="fas fa-film"></i>
+                        </div>
+                        <h2>CinemaBooking</h2>
+                        <p>Đăng nhập để tiếp tục</p>
+                    </div>
+
+                    <!-- Error/Success Messages -->
+                    <div th:if="${error}" class="auth-message error" th:text="${error}"></div>
+                    <div th:if="${logout}" class="auth-message success">Bạn đã đăng xuất thành công!</div>
+
+                    <!-- Login Form -->
+                    <form class="auth-form" th:action="@{/auth/login}" method="post">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" id="username" name="username" placeholder="Tên đăng nhập" required>
+                            <label for="username">Tên đăng nhập</label>
+                        </div>
+
+                        <div class="form-floating">
+                            <input type="password" class="form-control" id="password" name="password" placeholder="Mật khẩu" required>
+                            <label for="password">Mật khẩu</label>
+                        </div>
+
+                        <button type="submit" class="auth-submit-btn">
+                            <i class="fas fa-sign-in-alt me-2"></i>Đăng Nhập
+                        </button>
+                    </form>
+
+                    <!-- OAuth Section -->
+                    <div class="oauth-section">
+                        <div class="oauth-divider">
+                            <span>Hoặc đăng nhập với</span>
+                        </div>
+                        
+                        <a href="/oauth2/authorization/google" class="oauth-btn oauth-google">
+                            <i class="fab fa-google"></i>
+                            <span>Google</span>
+                        </a>
+                        
+                        <a href="/oauth2/authorization/github" class="oauth-btn oauth-github">
+                            <i class="fab fa-github"></i>
+                            <span>GitHub</span>
+                        </a>
+                    </div>
+
+                    <!-- Auth Links -->
+                    <div class="auth-links">
+                        <p class="text-muted">Chưa có tài khoản? <a th:href="@{/auth/register}">Đăng ký ngay</a></p>
+                        <div class="forgot-password">
+                            <a href="#">Quên mật khẩu?</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Visual Section -->
+                <div class="auth-visual-section">
+                    <div class="auth-visual-content">
+                        <h3>Chào mừng trở lại!</h3>
+                        <p>Đăng nhập để khám phá những bộ phim hay nhất và đặt vé xem phim một cách dễ dàng.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,169 @@
+package com.N07.CinemaProject.service;
+
+import com.N07.CinemaProject.entity.Movie;
+import com.N07.CinemaProject.repository.MovieRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+@Service
+public class MovieService {
+    
+    @Autowired
+    private MovieRepository movieRepository;
+    
+    @Autowired
+    private TmdbService tmdbService;
+    
+    public List<Movie> getAllMovies() {
+        return movieRepository.findAll();
+    }
+    
+    public Optional<Movie> getMovieById(Long id) {
+        return movieRepository.findById(id);
+    }
+    
+    @Transactional
+    public List<Movie> getCurrentlyShowingMovies() {
+        // First, try to get movies from database
+        List<Movie> dbMovies = movieRepository.findCurrentlyShowingMovies(LocalDate.now());
+        
+        // If no movies in database or less than 10, fetch from TMDB
+        if (dbMovies.size() < 10) {
+            List<Movie> tmdbMovies = tmdbService.fetchNowPlayingMovies();
+            
+            // Save new movies to database if they don't exist
+            for (Movie tmdbMovie : tmdbMovies) {
+                Optional<Movie> existingMovie = movieRepository.findByTmdbId(tmdbMovie.getTmdbId());
+                if (existingMovie.isEmpty()) {
+                    movieRepository.save(tmdbMovie);
+                    dbMovies.add(tmdbMovie);
+                }
+            }
+        }
+        
+        return dbMovies;
+    }
+    
+    @Transactional
+    public List<Movie> getPopularMovies() {
+        List<Movie> tmdbMovies = tmdbService.fetchPopularMovies();
+        
+        // Save or update movies in database
+        for (Movie tmdbMovie : tmdbMovies) {
+            Optional<Movie> existingMovie = movieRepository.findByTmdbId(tmdbMovie.getTmdbId());
+            if (existingMovie.isPresent()) {
+                // Update existing movie with latest TMDB data
+                Movie existing = existingMovie.get();
+                updateMovieFromTmdb(existing, tmdbMovie);
+                movieRepository.save(existing);
+            } else {
+                // Save new movie
+                movieRepository.save(tmdbMovie);
+            }
+        }
+        
+        return movieRepository.findAll().stream()
+                .limit(20)
+                .collect(Collectors.toList());
+    }
+    
+    public List<Movie> searchMoviesByTitle(String title) {
+        // First search in database
+        List<Movie> dbResults = movieRepository.findByTitleContainingIgnoreCase(title);
+        
+        // If limited results, also search TMDB
+        if (dbResults.size() < 5) {
+            List<Movie> tmdbResults = tmdbService.searchMovies(title);
+            
+            // Add new movies from TMDB to database and results
+            for (Movie tmdbMovie : tmdbResults) {
+                Optional<Movie> existingMovie = movieRepository.findByTmdbId(tmdbMovie.getTmdbId());
+                if (existingMovie.isEmpty()) {
+                    Movie savedMovie = movieRepository.save(tmdbMovie);
+                    dbResults.add(savedMovie);
+                }
+            }
+        }
+        
+        return dbResults;
+    }
+    
+    public List<Movie> getMoviesByGenre(String genre) {
+        return movieRepository.findByGenreContainingIgnoreCase(genre);
+    }
+    
+    public Movie saveMovie(Movie movie) {
+        return movieRepository.save(movie);
+    }
+    
+    public void deleteMovie(Long id) {
+        movieRepository.deleteById(id);
+    }
+    
+    public void deleteAllMovies() {
+        movieRepository.deleteAll();
+    }
+    
+    public List<Movie> searchMovies(String title, String genre) {
+        if (title != null && genre != null) {
+            // Search by both title and genre
+            return movieRepository.findByTitleContainingIgnoreCaseAndGenreContainingIgnoreCase(title, genre);
+        } else if (title != null) {
+            return searchMoviesByTitle(title);
+        } else if (genre != null) {
+            return getMoviesByGenre(genre);
+        } else {
+            return getCurrentlyShowingMovies();
+        }
+    }
+    
+    @Transactional
+    public Movie getOrCreateMovieByTmdbId(Long tmdbId) {
+        try {
+            // First check if movie already exists
+            Optional<Movie> existingMovie = movieRepository.findByTmdbId(tmdbId);
+            if (existingMovie.isPresent()) {
+                return existingMovie.get();
+            }
+            
+            // Fetch from TMDB and save
+            Movie tmdbMovie = tmdbService.fetchMovieDetails(tmdbId);
+            if (tmdbMovie != null) {
+                // Make sure the tmdbId is set
+                tmdbMovie.setTmdbId(tmdbId);
+                return movieRepository.save(tmdbMovie);
+            }
+            
+            return null;
+        } catch (Exception e) {
+            // Handle duplicate key constraint violations
+            if (e.getMessage() != null && e.getMessage().contains("duplicate key")) {
+                // If there's a constraint violation, try to fetch the existing movie again
+                Optional<Movie> existingMovie = movieRepository.findByTmdbId(tmdbId);
+                return existingMovie.orElse(null);
+            }
+            throw e;
+        }
+    }
+    
+    private void updateMovieFromTmdb(Movie existing, Movie tmdbMovie) {
+        existing.setTitle(tmdbMovie.getTitle());
+        existing.setDescription(tmdbMovie.getDescription());
+        existing.setPosterUrl(tmdbMovie.getPosterUrl());
+        existing.setBackdropUrl(tmdbMovie.getBackdropUrl());
+        existing.setVoteAverage(tmdbMovie.getVoteAverage());
+        existing.setVoteCount(tmdbMovie.getVoteCount());
+        existing.setPopularity(tmdbMovie.getPopularity());
+        existing.setGenre(tmdbMovie.getGenre());
+        existing.setDurationMin(tmdbMovie.getDurationMin());
+        existing.setOriginalTitle(tmdbMovie.getOriginalTitle());
+        existing.setOriginalLanguage(tmdbMovie.getOriginalLanguage());
+        existing.setAdult(tmdbMovie.getAdult());
+    }
+}

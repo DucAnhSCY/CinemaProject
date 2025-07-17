@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản Lý Đặt Vé - Cinema Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link th:href="@{/css/admin.css}" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid">
+            <a class="navbar-brand" th:href="@{/admin}">
+                <i class="fas fa-film me-2"></i>Cinema Admin
+            </a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" th:href="@{/admin}">
+                    <i class="fas fa-arrow-left me-1"></i>Quay Về Dashboard
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid mt-4">
+        <!-- Alert Messages -->
+        <div th:if="${success}" class="alert alert-success alert-dismissible fade show">
+            <i class="fas fa-check-circle me-2"></i>
+            <span th:text="${success}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Đóng"></button>
+        </div>
+        
+        <div th:if="${error}" class="alert alert-danger alert-dismissible fade show">
+            <i class="fas fa-exclamation-circle me-2"></i>
+            <span th:text="${error}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Đóng"></button>
+        </div>
+
+        <!-- Page Header -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h2><i class="fas fa-ticket-alt me-3"></i>Quản Lý Đặt Vé</h2>
+                    <div class="d-flex gap-2">
+                        <span class="badge bg-primary fs-6">Tổng: <span th:text="${totalBookings ?: 0}">0</span> đặt vé</span>
+                        <button class="btn btn-outline-primary" onclick="refreshBookings()">
+                            <i class="fas fa-sync-alt me-2"></i>Làm mới
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Booking Statistics -->
+        <div class="row mb-4">
+            <div class="col-md-3">
+                <div class="card bg-info text-white">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <h4 th:text="${#lists.size(bookings.?[bookingStatus == T(com.N07.CinemaProject.entity.Booking.BookingStatus).RESERVED])}">0</h4>
+                                <small>Chờ xác nhận</small>
+                            </div>
+                            <i class="fas fa-clock fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card bg-success text-white">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <h4 th:text="${#lists.size(bookings.?[bookingStatus == T(com.N07.CinemaProject.entity.Booking.BookingStatus).CONFIRMED])}">0</h4>
+                                <small>Đã xác nhận</small>
+                            </div>
+                            <i class="fas fa-check-circle fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card bg-danger text-white">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <h4 th:text="${#lists.size(bookings.?[bookingStatus == T(com.N07.CinemaProject.entity.Booking.BookingStatus).CANCELLED])}">0</h4>
+                                <small>Đã hủy</small>
+                            </div>
+                            <i class="fas fa-times-circle fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card bg-warning text-white">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <h4 th:text="${#lists.size(bookings.?[bookingStatus == T(com.N07.CinemaProject.entity.Booking.BookingStatus).EXPIRED])}">0</h4>
+                                <small>Hết hạn</small>
+                            </div>
+                            <i class="fas fa-flag-checkered fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bookings Table -->
+        <div class="row">
+            <div class="col-12">
+                <div class="card shadow">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0"><i class="fas fa-list me-2"></i>Danh Sách Đặt Vé</h5>
+                    </div>
+                    <div class="card-body">
+                        <div th:if="${#lists.isEmpty(bookings)}" class="text-center py-5">
+                            <i class="fas fa-ticket-alt fa-3x text-muted mb-3"></i>
+                            <h5 class="text-muted">Chưa có đặt vé nào</h5>
+                            <p class="text-muted">Các đặt vé từ khách hàng sẽ hiển thị ở đây</p>
+                        </div>
+
+                        <div th:if="${!#lists.isEmpty(bookings)}" class="table-responsive">
+                            <table class="table table-hover">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Khách hàng</th>
+                                        <th>Phim</th>
+                                        <th>Rạp</th>
+                                        <th>Suất chiếu</th>
+                                        <th>Ghế</th>
+                                        <th>Tổng tiền</th>
+                                        <th>Trạng thái</th>
+                                        <th>Ngày đặt</th>
+                                        <th>Thao tác</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="booking, iterStat : ${bookings}">
+                                        <td th:text="${iterStat.count}">1</td>
+                                        <td>
+                                            <div th:if="${booking.user}">
+                                                <strong th:text="${booking.user.username}">Username</strong>
+                                                <br><small th:text="${booking.user.email}" class="text-muted">email@example.com</small>
+                                            </div>
+                                            <span th:if="${booking.user == null}" class="text-muted">Khách vãng lai</span>
+                                        </td>
+                                        <td>
+                                            <div th:if="${booking.screening?.movie}">
+                                                <strong th:text="${booking.screening.movie.title}">Movie Title</strong>
+                                                <br><small th:text="${booking.screening.movie.genre}" class="text-muted">Genre</small>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div th:if="${booking.screening?.auditorium?.theater}">
+                                                <strong th:text="${booking.screening.auditorium.theater.name}">Theater Name</strong>
+                                                <br><small th:text="${booking.screening.auditorium.name}" class="text-muted">Auditorium</small>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div th:if="${booking.screening}">
+                                                <strong th:text="${#temporals.format(booking.screening.startTime, 'HH:mm')}">19:30</strong>
+                                                <br><small th:text="${#temporals.format(booking.screening.startTime, 'dd/MM/yyyy')}" class="text-muted">25/07/2024</small>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div th:if="${booking.bookedSeats}" th:text="${#strings.listJoin(booking.bookedSeats.![seat.name], ', ')}" class="badge bg-secondary">A1, A2</div>
+                                            <div th:if="${booking.bookedSeats == null}" class="text-muted">-</div>
+                                        </td>
+                                        <td>
+                                            <strong th:text="${#numbers.formatDecimal(booking.totalAmount, 0, 'COMMA', 0, 'POINT') + ' VNĐ'}">150,000 VNĐ</strong>
+                                        </td>
+                                        <td>
+                                            <span th:switch="${booking.bookingStatus?.name()}">
+                                                <span th:case="'RESERVED'" class="badge bg-warning">Chờ xác nhận</span>
+                                                <span th:case="'CONFIRMED'" class="badge bg-success">Đã xác nhận</span>
+                                                <span th:case="'CANCELLED'" class="badge bg-danger">Đã hủy</span>
+                                                <span th:case="'EXPIRED'" class="badge bg-info">Hết hạn</span>
+                                                <span th:case="*" class="badge bg-secondary">Không xác định</span>
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span th:text="${#temporals.format(booking.bookingTime, 'dd/MM/yyyy HH:mm')}">25/07/2024 14:30</span>
+                                        </td>
+                                        <td>
+                                            <div class="btn-group" role="group">
+                                                <a th:href="@{/admin/bookings/{id}(id=${booking.id})}" 
+                                                   class="btn btn-outline-primary btn-sm" title="Xem chi tiết">
+                                                    <i class="fas fa-eye"></i>
+                                                </a>
+                                                
+                                                <button th:if="${booking.bookingStatus?.name() == 'RESERVED'}" 
+                                                        type="button" class="btn btn-outline-success btn-sm" 
+                                                        th:onclick="'confirmBooking(' + ${booking.id} + ')'" title="Xác nhận">
+                                                    <i class="fas fa-check"></i>
+                                                </button>
+                                                
+                                                <button th:if="${booking.bookingStatus?.name() == 'CONFIRMED'}" 
+                                                        type="button" class="btn btn-outline-danger btn-sm" 
+                                                        th:onclick="'cancelBooking(' + ${booking.id} + ')'" title="Hủy vé">
+                                                    <i class="fas fa-times"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Refresh bookings
+        function refreshBookings() {
+            window.location.reload();
+        }
+
+        // Confirm booking
+        async function confirmBooking(bookingId) {
+            if (!confirm('Bạn có chắc chắn muốn xác nhận đặt vé này?')) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`/admin/bookings/${bookingId}/confirm`, {
+                    method: 'POST'
+                });
+
+                const result = await response.text();
+                
+                if (result === 'success') {
+                    alert('Đã xác nhận đặt vé thành công!');
+                    refreshBookings();
+                } else {
+                    alert('Lỗi: ' + result.replace('error: ', ''));
+                }
+            } catch (error) {
+                alert('Lỗi khi xác nhận đặt vé: ' + error.message);
+            }
+        }
+
+        // Cancel booking
+        async function cancelBooking(bookingId) {
+            if (!confirm('Bạn có chắc chắn muốn hủy đặt vé này?')) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`/admin/bookings/${bookingId}/cancel`, {
+                    method: 'POST'
+                });
+
+                const result = await response.text();
+                
+                if (result === 'success') {
+                    alert('Đã hủy đặt vé thành công!');
+                    refreshBookings();
+                } else {
+                    alert('Lỗi: ' + result.replace('error: ', ''));
+                }
+            } catch (error) {
+                alert('Lỗi khi hủy đặt vé: ' + error.message);
+            }
+        }
+    </script>
+</body>
+</html>

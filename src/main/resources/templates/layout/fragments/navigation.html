@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org" 
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CinemaBooking - Navigation</title>
+    <!-- This file is a fragment, head content is managed by main layout -->
+</head>
+<body>
+    <!-- Navigation Fragment -->
+    <nav th:fragment="nav" class="navbar navbar-expand-lg navbar-dark navbar-custom">
+        <div class="container">
+            <!-- Brand -->
+            <a class="navbar-brand fw-bold" th:href="@{/}">
+                <i class="fas fa-film me-2"></i>CinemaBooking
+            </a>
+            
+            <!-- Mobile Toggle -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" 
+                    data-bs-target="#navbarNav" aria-controls="navbarNav" 
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <!-- Navigation Links -->
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/}" 
+                           th:classappend="${currentPath != null and currentPath == '/' ? 'active' : ''}">
+                            <i class="fas fa-home me-1"></i>Trang Chủ
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/movies}"
+                           th:classappend="${currentPath != null and #strings.startsWith(currentPath, '/movies') ? 'active' : ''}">
+                            <i class="fas fa-film me-1"></i>Phim
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/theaters}"
+                           th:classappend="${currentPath != null and #strings.startsWith(currentPath, '/theaters') ? 'active' : ''}">
+                            <i class="fas fa-building me-1"></i>Rạp Chiếu
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/promotions}"
+                           th:classappend="${currentPath != null and #strings.startsWith(currentPath, '/promotions') ? 'active' : ''}">
+                            <i class="fas fa-gift me-1"></i>Khuyến Mãi
+                        </a>
+                    </li>
+                </ul>
+                
+                <!-- User Menu -->
+                <ul class="navbar-nav ms-auto">
+                    <!-- Authenticated User Menu -->
+                    <li class="nav-item dropdown" sec:authorize="isAuthenticated()">
+                        <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" 
+                           id="userDropdown" role="button" data-bs-toggle="dropdown" 
+                           aria-expanded="false">
+                            <!-- Avatar or Icon -->
+                            <div class="user-avatar me-2">
+                                <img th:if="${#authentication.principal.class.name == 'com.N07.CinemaProject.security.CustomOAuth2User' and #authentication.principal.avatarUrl != null}"
+                                     th:src="${#authentication.principal.avatarUrl}" 
+                                     alt="Avatar" class="rounded-circle" width="24" height="24">
+                                <i th:unless="${#authentication.principal.class.name == 'com.N07.CinemaProject.security.CustomOAuth2User' and #authentication.principal.avatarUrl != null}" 
+                                   class="fas fa-user-circle"></i>
+                            </div>
+                            <!-- Display Name -->
+                            <span th:if="${#authentication.principal.class.name == 'com.N07.CinemaProject.security.CustomOAuth2User'}"
+                                  th:text="${#authentication.principal.fullName ?: #authentication.principal.username ?: #authentication.name}">User</span>
+                            <span th:unless="${#authentication.principal.class.name == 'com.N07.CinemaProject.security.CustomOAuth2User'}"
+                                  sec:authentication="name">User</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                            <li>
+                                <a class="dropdown-item" th:href="@{/profile}">
+                                    <i class="fas fa-user-circle me-2"></i>Hồ Sơ Cá Nhân
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" th:href="@{/my-bookings}">
+                                    <i class="fas fa-ticket-alt me-2"></i>Vé Đã Đặt
+                                </a>
+                            </li>
+                            <li sec:authorize="hasRole('ADMIN')">
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li sec:authorize="hasRole('ADMIN')">
+                                <a class="dropdown-item" th:href="@{/admin/dashboard}">
+                                    <i class="fas fa-tachometer-alt me-2"></i>Quản Trị
+                                </a>
+                            </li>
+                            <li sec:authorize="hasRole('ADMIN')">
+                                <a class="dropdown-item" th:href="@{/admin/cinema-halls}">
+                                    <i class="fas fa-building me-2"></i>Quản Lý Phòng Chiếu
+                                </a>
+                            </li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li>
+                                <form th:action="@{/auth/logout}" method="post" class="d-inline">
+                                    <button type="submit" class="dropdown-item text-danger">
+                                        <i class="fas fa-sign-out-alt me-2"></i>Đăng Xuất
+                                    </button>
+                                </form>
+                            </li>
+                        </ul>
+                    </li>
+                    
+                    <!-- Guest User Menu -->
+                    <li class="nav-item" sec:authorize="!isAuthenticated()">
+                        <a class="nav-link" th:href="@{/auth/login}">
+                            <i class="fas fa-sign-in-alt me-1"></i>Đăng Nhập
+                        </a>
+                    </li>
+                    <li class="nav-item" sec:authorize="!isAuthenticated()">
+                        <a class="nav-link btn btn-primary text-white ms-2" th:href="@{/auth/register}">
+                            <i class="fas fa-user-plus me-1"></i>Đăng Ký
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</body>
+</html>

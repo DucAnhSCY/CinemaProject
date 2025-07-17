@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Footer Fragment - CinemaBooking</title>
+    <!-- This file is a fragment, head content is managed by main layout -->
+</head>
+<body>
+    <!-- Footer Fragment -->
+    <footer th:fragment="footer" class="footer bg-dark text-white py-5 mt-auto">
+        <div class="container">
+            <div class="row g-4">
+                <!-- Brand & Description -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="footer-brand">
+                        <h5 class="fw-bold mb-3">
+                            <i class="fas fa-film me-2 text-primary"></i>CinemaBooking
+                        </h5>
+                        <p class="text-muted">
+                            Hệ thống đặt vé phim trực tuyến hiện đại, mang đến trải nghiệm 
+                            giải trí tuyệt vời với những bộ phim hay nhất.
+                        </p>
+                        <div class="social-links">
+                            <a href="#" class="social-link" title="Facebook" aria-label="Visit our Facebook page">
+                                <i class="fab fa-facebook-f"></i>
+                            </a>
+                            <a href="#" class="social-link" title="Twitter" aria-label="Visit our Twitter page">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                            <a href="#" class="social-link" title="Instagram" aria-label="Visit our Instagram page">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                            <a href="#" class="social-link" title="YouTube" aria-label="Visit our YouTube channel">
+                                <i class="fab fa-youtube"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Quick Links -->
+                <div class="col-lg-2 col-md-6 col-6">
+                    <h6 class="fw-semibold mb-3">Liên Kết</h6>
+                    <ul class="footer-links">
+                        <li><a th:href="@{/}" class="footer-link">Trang Chủ</a></li>
+                        <li><a th:href="@{/movies}" class="footer-link">Phim</a></li>
+                        <li><a th:href="@{/theaters}" class="footer-link">Rạp Chiếu</a></li>
+                        <li><a th:href="@{/promotions}" class="footer-link">Khuyến Mãi</a></li>
+                        <li><a th:href="@{/about}" class="footer-link">Về Chúng Tôi</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Support -->
+                <div class="col-lg-2 col-md-6 col-6">
+                    <h6 class="fw-semibold mb-3">Hỗ Trợ</h6>
+                    <ul class="footer-links">
+                        <li><a th:href="@{/help}" class="footer-link">Trợ Giúp</a></li>
+                        <li><a th:href="@{/contact}" class="footer-link">Liên Hệ</a></li>
+                        <li><a th:href="@{/faq}" class="footer-link">FAQ</a></li>
+                        <li><a th:href="@{/feedback}" class="footer-link">Góp Ý</a></li>
+                        <li><a th:href="@{/support}" class="footer-link">Hỗ Trợ Kỹ Thuật</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Legal -->
+                <div class="col-lg-2 col-md-6 col-6">
+                    <h6 class="fw-semibold mb-3">Pháp Lý</h6>
+                    <ul class="footer-links">
+                        <li><a th:href="@{/terms}" class="footer-link">Điều Khoản</a></li>
+                        <li><a th:href="@{/privacy}" class="footer-link">Bảo Mật</a></li>
+                        <li><a th:href="@{/refund}" class="footer-link">Hoàn Tiền</a></li>
+                        <li><a th:href="@{/cookie-policy}" class="footer-link">Cookie</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Contact Info -->
+                <div class="col-lg-2 col-md-6">
+                    <h6 class="fw-semibold mb-3">Liên Hệ</h6>
+                    <div class="contact-info">
+                        <div class="contact-item mb-2">
+                            <i class="fas fa-phone text-primary me-2"></i>
+                            <span class="text-muted">1900 1234</span>
+                        </div>
+                        <div class="contact-item mb-2">
+                            <i class="fas fa-envelope text-primary me-2"></i>
+                            <span class="text-muted">info@cinemabooking.vn</span>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-map-marker-alt text-primary me-2"></i>
+                            <span class="text-muted">123 Cinema Street, HCM City</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Footer Bottom -->
+            <hr class="border-secondary my-4">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <p class="text-muted mb-0">
+                        &copy; <span th:text="${#dates.year(#dates.createNow())}">2024</span> CinemaBooking. 
+                        Tất cả quyền được bảo lưu.
+                    </p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <div class="footer-meta">
+                        <span class="text-muted me-3">
+                            <i class="fas fa-code me-1"></i>Made with 
+                            <i class="fas fa-heart text-danger mx-1"></i> by Team
+                        </span>
+                        <a href="#" class="scroll-top" title="Scroll to top" aria-label="Scroll to top">
+                            <i class="fas fa-arrow-up"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Scroll to Top Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const scrollTop = document.querySelector('.scroll-top');
+            if (scrollTop) {
+                scrollTop.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                });
+                
+                // Show/hide scroll to top button
+                window.addEventListener('scroll', function() {
+                    if (window.pageYOffset > 300) {
+                        scrollTop.style.opacity = '1';
+                        scrollTop.style.visibility = 'visible';
+                    } else {
+                        scrollTop.style.opacity = '0';
+                        scrollTop.style.visibility = 'hidden';
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

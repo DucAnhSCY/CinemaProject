@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <meta name="user-role" th:content="${@securityUtils.getCurrentUserRole()}"/>
+    <meta name="required-role" content="ADMIN"/>
+    <meta name="user" th:content="${@securityUtils.getCurrentUsername()}"/>
+    <title>Quản Lý Phim - Cinema Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link th:href="@{/css/admin.css}" rel="stylesheet">
+    <style>
+        .movie-poster {
+            width: 50px;
+            height: 75px;
+            object-fit: cover;
+        }
+        
+        /* Security styles for disabled elements */
+        .security-disabled {
+            opacity: 0.5;
+            pointer-events: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+        
+        .security-redirect {
+            display: none;
+        }
+        
+        .unauthorized-overlay {
+            position: relative;
+        }
+        
+        .unauthorized-overlay::after {
+            content: "🔒 Không có quyền";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(220, 53, 69, 0.9);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            display: none;
+        }
+        
+        .unauthorized-overlay:hover::after {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <!-- Security Check: Redirect if not admin -->
+    <div th:if="${!@securityUtils.isAdmin()}" class="security-redirect">
+        <script>
+            window.location.href = '/access-denied';
+        </script>
+    </div>
+    <!-- Header -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid">
+            <a class="navbar-brand" th:href="@{/admin}">
+                <i class="fas fa-film me-2"></i>Cinema Admin
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Điều hướng">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/admin}">
+                            <i class="fas fa-tachometer-alt me-1"></i>Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" th:href="@{/admin/movies}">
+                            <i class="fas fa-film me-1"></i>Quản Lý Phim
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/admin/movies/tmdb-search}">
+                            <i class="fas fa-search me-1"></i>Tìm Kiếm TMDB
+                        </a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link allow-customer" th:href="@{/}">
+                            <i class="fas fa-home me-1"></i>Về Trang Chủ
+                        </a>
+                    </li>
+                    <li class="nav-item logout-section">
+                        <a class="nav-link allow-customer" th:href="@{/auth/logout}">
+                            <i class="fas fa-sign-out-alt me-1"></i>Đăng Xuất
+                        </a>
+                    </li>
+                    <li class="nav-item" th:if="${@securityUtils.isAuthenticated()}">
+                        <span class="navbar-text">
+                            <i class="fas fa-user me-1"></i>
+                            <span th:text="${@securityUtils.getCurrentUsername()}">User</span>
+                            <span class="badge ms-1" 
+                                  th:classappend="${@securityUtils.isAdmin()} ? 'bg-danger' : 'bg-secondary'"
+                                  th:text="${@securityUtils.getCurrentUserRole()}">Role</span>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid mt-4">
+        <!-- Alert Messages -->
+        <div th:if="${success}" class="alert alert-success alert-dismissible fade show">
+            <i class="fas fa-check-circle me-2"></i>
+            <span th:text="${success}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Đóng thông báo"></button>
+        </div>
+        
+        <div th:if="${error}" class="alert alert-danger alert-dismissible fade show">
+            <i class="fas fa-exclamation-circle me-2"></i>
+            <span th:text="${error}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Đóng thông báo"></button>
+        </div>
+
+        <!-- Page Header -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h2><i class="fas fa-film me-3"></i>Quản Lý Phim</h2>
+                    <div>
+                        <a th:href="@{/admin/movies/new}" 
+                           class="btn btn-primary me-2"
+                           th:classappend="${!@securityUtils.isAdmin()} ? 'security-disabled'"
+                           th:onclick="${!@securityUtils.isAdmin()} ? 'return false;'">
+                            <i class="fas fa-plus me-2"></i>Thêm Phim Mới
+                        </a>
+                        <a th:href="@{/admin/movies/tmdb-search}" 
+                           class="btn btn-success"
+                           th:classappend="${!@securityUtils.isAdmin()} ? 'security-disabled'"
+                           th:onclick="${!@securityUtils.isAdmin()} ? 'return false;'">
+                            <i class="fas fa-database me-2"></i>Thêm Từ TMDB
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Movies List -->
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-list me-2"></i>Danh Sách Phim
+                    <span class="badge bg-primary ms-2" th:text="${#lists.size(movies)}">0</span>
+                </h5>
+            </div>
+            <div class="card-body">
+                <div th:if="${#lists.isEmpty(movies)}" class="text-center py-5">
+                    <i class="fas fa-film fa-3x text-muted mb-3"></i>
+                    <h5 class="text-muted">Chưa có phim nào</h5>
+                    <p class="text-muted">Bấm "Thêm Phim Từ TMDB" để thêm phim mới</p>
+                </div>
+
+                <div th:if="${!#lists.isEmpty(movies)}" class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Poster</th>
+                                <th>Tên Phim</th>
+                                <th>Thể Loại</th>
+                                <th>Thời Lượng</th>
+                                <th>Điểm Đánh Giá</th>
+                                <th>Ngày Phát Hành</th>
+                                <th>Hành Động</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="movie : ${movies}">
+                                <td>
+                                    <img th:src="${movie.posterUrl != null ? movie.posterUrl : '/images/no-poster.jpg'}" 
+                                         th:alt="${movie.title}" 
+                                         th:title="${movie.title}"
+                                         alt="Movie Poster"
+                                         title="Movie Poster"
+                                         class="img-thumbnail movie-poster">
+                                </td>
+                                <td>
+                                    <strong th:text="${movie.title}">Movie Title</strong>
+                                    <br>
+                                    <small class="text-muted" th:if="${movie.originalTitle != null and movie.originalTitle != movie.title}">
+                                        (<span th:text="${movie.originalTitle}">Original Title</span>)
+                                    </small>
+                                    <span th:if="${movie.tmdbId != null}" class="badge bg-info ms-1">TMDB</span>
+                                </td>
+                                <td th:text="${movie.genre != null ? movie.genre : 'Chưa xác định'}">Genre</td>
+                                <td>
+                                    <span th:if="${movie.durationMin != null}" th:text="${movie.durationMin} + ' phút'">Duration</span>
+                                    <span th:if="${movie.durationMin == null}" class="text-muted">Chưa có</span>
+                                </td>
+                                <td>
+                                    <span th:if="${movie.voteAverage != null}" class="d-flex align-items-center">
+                                        <i class="fas fa-star text-warning me-1"></i>
+                                        <span th:text="${#numbers.formatDecimal(movie.voteAverage, 1, 1)} + '/10'">Rating</span>
+                                    </span>
+                                    <span th:if="${movie.voteAverage == null}" class="text-muted">Chưa có</span>
+                                </td>
+                                <td>
+                                    <span th:if="${movie.releaseDate != null}" th:text="${#temporals.format(movie.releaseDate, 'dd/MM/yyyy')}">Release Date</span>
+                                    <span th:if="${movie.releaseDate == null}" class="text-muted">Chưa có</span>
+                                </td>
+                                <td>
+                                    <div class="btn-group" role="group">
+                                        <a th:href="@{'/admin/movies/' + ${movie.id} + '/screenings'}" 
+                                           class="btn btn-primary btn-sm" 
+                                           th:classappend="${!@securityUtils.isAdmin()} ? 'security-disabled unauthorized-overlay'"
+                                           title="Quản lý lịch chiếu" aria-label="Quản lý lịch chiếu">
+                                            <i class="fas fa-calendar"></i>
+                                        </a>
+                                        <a th:href="@{'/admin/movies/' + ${movie.id} + '/edit'}" 
+                                           class="btn btn-warning btn-sm"
+                                           th:classappend="${!@securityUtils.isAdmin()} ? 'security-disabled unauthorized-overlay'"
+                                           title="Chỉnh sửa phim" aria-label="Chỉnh sửa phim">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <button type="button" class="btn btn-danger btn-sm" 
+                                                th:onclick="${@securityUtils.isAdmin()} ? 'deleteMovie(' + ${movie.id} + ')' : 'securityManager.showSecurityWarning(\'Bạn không có quyền xóa phim\')'"
+                                                th:classappend="${!@securityUtils.isAdmin()} ? 'security-disabled unauthorized-overlay'"
+                                                title="Xóa phim" aria-label="Xóa phim">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script th:src="@{/js/security.js}"></script>
+    <script>
+        // Get CSRF token
+        const token = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+        const header = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
+
+        function deleteMovie(movieId) {
+            if (confirm('Bạn có chắc chắn muốn xóa phim này? Thao tác này không thể hoàn tác.')) {
+                fetch(`/admin/movies/${movieId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest',
+                        [header]: token
+                    }
+                })
+                .then(response => response.text())
+                .then(result => {
+                    if (result === 'success') {
+                        location.reload();
+                    } else {
+                        alert('Có lỗi xảy ra khi xóa phim');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Có lỗi xảy ra khi xóa phim');
+                });
+            }
+        }
+    </script>
+</body>
+</html>

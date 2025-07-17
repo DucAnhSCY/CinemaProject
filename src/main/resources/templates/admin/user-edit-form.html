@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chỉnh Sửa Người Dùng - Cinema Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link th:href="@{/css/admin.css}" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid">
+            <a class="navbar-brand" th:href="@{/admin}">
+                <i class="fas fa-film me-2"></i>Cinema Admin
+            </a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" th:href="@{/admin/users}">
+                    <i class="fas fa-arrow-left me-1"></i>Quay Về Danh Sách
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid mt-4">
+        <!-- Alert Messages -->
+        <div th:if="${success}" class="alert alert-success alert-dismissible fade show">
+            <i class="fas fa-check-circle me-2"></i>
+            <span th:text="${success}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Đóng"></button>
+        </div>
+        
+        <div th:if="${error}" class="alert alert-danger alert-dismissible fade show">
+            <i class="fas fa-exclamation-circle me-2"></i>
+            <span th:text="${error}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Đóng"></button>
+        </div>
+
+        <!-- Page Header -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <h2><i class="fas fa-user-edit me-3"></i>Chỉnh Sửa Người Dùng</h2>
+            </div>
+        </div>
+
+        <!-- User Edit Form -->
+        <div class="row justify-content-center">
+            <div class="col-lg-8 col-md-10">
+                <div class="card shadow">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0"><i class="fas fa-user-edit me-2"></i>Thông Tin Người Dùng</h5>
+                    </div>
+                    <div class="card-body">
+                        <form th:action="@{/admin/users/{id}/edit(id=${user.id})}" method="post" id="userEditForm">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="username" class="form-label">
+                                        <i class="fas fa-user me-1"></i>Tên Đăng Nhập <span class="text-danger">*</span>
+                                    </label>
+                                    <input type="text" class="form-control" id="username" name="username" 
+                                           th:value="${user.username}" required minlength="3" maxlength="50"
+                                           placeholder="Nhập tên đăng nhập">
+                                    <div class="invalid-feedback">
+                                        Tên đăng nhập phải từ 3-50 ký tự.
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label for="email" class="form-label">
+                                        <i class="fas fa-envelope me-1"></i>Email <span class="text-danger">*</span>
+                                    </label>
+                                    <input type="email" class="form-control" id="email" name="email" 
+                                           th:value="${user.email}" required placeholder="Nhập địa chỉ email">
+                                    <div class="invalid-feedback">
+                                        Vui lòng nhập email hợp lệ.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="role" class="form-label">
+                                        <i class="fas fa-user-tag me-1"></i>Vai Trò <span class="text-danger">*</span>
+                                    </label>
+                                    <select class="form-select" id="role" name="role" required>
+                                        <option value="">-- Chọn vai trò --</option>
+                                        <option value="CUSTOMER" th:selected="${user.role != null and user.role.name() == 'CUSTOMER'}">Khách Hàng</option>
+                                        <option value="THEATER_MANAGER" th:selected="${user.role != null and user.role.name() == 'THEATER_MANAGER'}">Quản Lý Rạp</option>
+                                        <option value="ADMIN" th:selected="${user.role != null and user.role.name() == 'ADMIN'}">Quản Trị Viên</option>
+                                    </select>
+                                    <div class="invalid-feedback">
+                                        Vui lòng chọn vai trò.
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">
+                                        <i class="fas fa-info-circle me-1"></i>Thông Tin Tài Khoản
+                                    </label>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="isEnabled" name="isEnabled" 
+                                               th:checked="${user.isEnabled}">
+                                        <label class="form-check-label" for="isEnabled">
+                                            <i class="fas fa-check-circle me-1"></i>Tài khoản hoạt động
+                                        </label>
+                                    </div>
+                                    <small class="form-text text-muted mt-2">
+                                        <i class="fas fa-calendar me-1"></i>Ngày tạo: <span th:text="${#temporals.format(user.createdAt, 'dd/MM/yyyy HH:mm')}"></span>
+                                    </small>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="alert alert-info">
+                                        <i class="fas fa-info-circle me-2"></i>
+                                        <strong>Lưu ý:</strong> Để thay đổi mật khẩu, vui lòng sử dụng chức năng đặt lại mật khẩu riêng biệt.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <hr>
+
+                            <div class="d-flex justify-content-between">
+                                <a th:href="@{/admin/users}" class="btn btn-secondary">
+                                    <i class="fas fa-times me-2"></i>Hủy
+                                </a>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-save me-2"></i>Cập Nhật
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Form validation
+        (function() {
+            'use strict';
+            window.addEventListener('load', function() {
+                const form = document.getElementById('userEditForm');
+                form.addEventListener('submit', function(event) {
+                    if (form.checkValidity() === false) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            }, false);
+        })();
+
+        // Username validation
+        document.getElementById('username').addEventListener('input', function() {
+            const username = this.value;
+            const pattern = /^[a-zA-Z0-9_]{3,50}$/;
+            
+            if (username && !pattern.test(username)) {
+                this.setCustomValidity('Tên đăng nhập chỉ được chứa chữ cái, số và dấu gạch dưới');
+            } else {
+                this.setCustomValidity('');
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản Lý Người Dùng - Cinema Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link th:href="@{/css/admin.css}" rel="stylesheet">
+    <style>
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            object-fit: cover;
+        }
+    </style>
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+</head>
+<body>
+    <!-- Header -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid">
+            <a class="navbar-brand" th:href="@{/admin}">
+                <i class="fas fa-film me-2"></i>Cinema Admin
+            </a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" th:href="@{/admin}">
+                    <i class="fas fa-arrow-left me-1"></i>Quay Về Dashboard
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid mt-4">
+        <!-- Alert Messages -->
+        <div th:if="${success}" class="alert alert-success alert-dismissible fade show">
+            <i class="fas fa-check-circle me-2"></i>
+            <span th:text="${success}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Đóng"></button>
+        </div>
+        
+        <div th:if="${error}" class="alert alert-danger alert-dismissible fade show">
+            <i class="fas fa-exclamation-circle me-2"></i>
+            <span th:text="${error}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Đóng"></button>
+        </div>
+
+        <!-- Page Header -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h2><i class="fas fa-users me-3"></i>Quản Lý Người Dùng</h2>
+                    <a th:href="@{/admin/users/add}" class="btn btn-success">
+                        <i class="fas fa-plus me-2"></i>Thêm Người Dùng
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Users List -->
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-list me-2"></i>Danh Sách Người Dùng
+                    <span class="badge bg-primary ms-2" th:text="${#lists.size(users)}">0</span>
+                </h5>
+            </div>
+            <div class="card-body">
+                <div th:if="${#lists.isEmpty(users)}" class="text-center py-5">
+                    <i class="fas fa-users fa-3x text-muted mb-3"></i>
+                    <h5 class="text-muted">Chưa có người dùng nào</h5>
+                </div>
+
+                <div th:if="${!#lists.isEmpty(users)}" class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Avatar</th>
+                                <th>Thông Tin</th>
+                                <th>Email</th>
+                                <th>Role</th>
+                                <th>Trạng Thái</th>
+                                <th>Ngày Tạo</th>
+                                <th>Hành Động</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="user : ${users}">
+                                <td>
+                                    <img th:src="${user.avatarUrl != null ? user.avatarUrl : '/images/default-avatar.png'}" 
+                                         th:alt="${user.fullName}" 
+                                         th:title="${user.fullName}"
+                                         alt="User Avatar"
+                                         title="User Avatar"
+                                         class="rounded-circle user-avatar">
+                                </td>
+                                <td>
+                                    <div>
+                                        <strong th:text="${user.fullName != null ? user.fullName : user.username}">Full Name</strong>
+                                        <br>
+                                        <small class="text-muted">@<span th:text="${user.username}">username</span></small>
+                                    </div>
+                                </td>
+                                <td th:text="${user.email}">Email</td>
+                                <td>
+                                    <span class="badge" 
+                                          th:classappend="${user.role.name() == 'ADMIN'} ? 'bg-danger' : (${user.role.name() == 'THEATER_MANAGER'} ? 'bg-warning' : 'bg-secondary')"
+                                          th:text="${user.role.name()}">Role</span>
+                                </td>
+                                <td>
+                                    <span th:if="${user.isEnabled}" class="badge bg-success">Hoạt động</span>
+                                    <span th:if="${!user.isEnabled}" class="badge bg-secondary">Vô hiệu hóa</span>
+                                </td>
+                                <td>
+                                    <span th:if="${user.createdAt != null}" th:text="${#temporals.format(user.createdAt, 'dd/MM/yyyy')}">Created Date</span>
+                                    <span th:if="${user.createdAt == null}" class="text-muted">Chưa có</span>
+                                </td>
+                                <td>
+                                    <div class="btn-group" role="group">
+                                        <a th:href="@{/admin/users/{id}/edit(id=${user.id})}" 
+                                           class="btn btn-outline-primary btn-sm" title="Chỉnh sửa">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <button type="button" class="btn btn-outline-warning btn-sm" 
+                                                th:onclick="'toggleUserStatus(' + ${user.id} + ')'"
+                                                th:title="${user.isEnabled} ? 'Vô hiệu hóa' : 'Kích hoạt'"
+                                                title="Toggle Status"
+                                                th:disabled="${user.role.name() == 'ADMIN'}">
+                                            <i th:class="${user.isEnabled} ? 'fas fa-ban' : 'fas fa-check'"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-outline-danger btn-sm" 
+                                                th:onclick="'deleteUser(' + ${user.id} + ')'" 
+                                                title="Xóa người dùng" aria-label="Xóa người dùng"
+                                                th:disabled="${user.role.name() == 'ADMIN'}">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Get CSRF token
+        const token = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+        const header = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
+
+        function toggleUserStatus(userId) {
+            fetch(`/admin/users/${userId}/toggle-status`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest',
+                    [header]: token
+                }
+            })
+            .then(response => response.text())
+            .then(result => {
+                if (result === 'success') {
+                    location.reload();
+                } else {
+                    alert('Có lỗi xảy ra khi thay đổi trạng thái người dùng');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Có lỗi xảy ra khi thay đổi trạng thái người dùng');
+            });
+        }
+
+        function deleteUser(userId) {
+            if (confirm('Bạn có chắc chắn muốn xóa người dùng này? Thao tác này không thể hoàn tác.')) {
+                fetch(`/admin/users/${userId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest',
+                        [header]: token
+                    }
+                })
+                .then(response => response.text())
+                .then(result => {
+                    if (result === 'success') {
+                        location.reload();
+                    } else {
+                        alert('Có lỗi xảy ra khi xóa người dùng');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Có lỗi xảy ra khi xóa người dùng');
+                });
+            }
+        }
+    </script>
+</body>
+</html>

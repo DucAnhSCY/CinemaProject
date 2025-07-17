@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản Lý Phòng Chiếu - CinemaBooking Admin</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- Cinema Theme CSS -->
+    <link th:href="@{/css/cinema-theme.css}" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav th:replace="~{layout/fragments/navigation :: nav}"></nav>
+
+    <div class="container-fluid py-4">
+        <!-- Header -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h2 class="text-primary mb-0">
+                            <i class="fas fa-couch me-2"></i>Quản Lý Phòng Chiếu
+                        </h2>
+                        <p class="text-muted mb-0">Quản lý phòng chiếu của các rạp phim</p>
+                    </div>
+                    <div>
+                        <a th:href="@{/admin/cinema-halls/new}" class="btn btn-primary">
+                            <i class="fas fa-plus me-2"></i>Thêm Phòng Chiếu
+                        </a>
+                        <a th:href="@{/admin}" class="btn btn-outline-secondary">
+                            <i class="fas fa-arrow-left me-2"></i>Quay Lại Dashboard
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Alerts -->
+        <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="fas fa-check-circle me-2"></i>
+            <span th:text="${successMessage}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Đóng thông báo"></button>
+        </div>
+
+        <div th:if="${errorMessage}" class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="fas fa-exclamation-circle me-2"></i>
+            <span th:text="${errorMessage}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Đóng thông báo"></button>
+        </div>
+
+        <!-- Filters -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card bg-card border-0 shadow-sm">
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <label class="form-label text-light">Chọn Rạp Phim</label>
+                                <select class="form-select" id="theaterFilter" aria-label="Chọn rạp phim">
+                                    <option value="">Tất cả rạp phim</option>
+                                    <option th:each="theater : ${theaters}" 
+                                            th:value="${theater.id}" 
+                                            th:text="${theater.name}">Tên rạp</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label text-light">Trạng Thái</label>
+                                <select class="form-select" id="statusFilter" aria-label="Chọn trạng thái">
+                                    <option value="">Tất cả trạng thái</option>
+                                    <option value="active">Đang hoạt động</option>
+                                    <option value="maintenance">Bảo trì</option>
+                                    <option value="disabled">Tạm ngưng</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label text-light">Tìm Kiếm</label>
+                                <input type="text" class="form-control" id="searchInput" placeholder="Tên phòng chiếu...">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Theater and Cinema Halls List -->
+        <div class="row">
+            <div class="col-12">
+                <div th:if="${theaterAuditoriumMap != null and !theaterAuditoriumMap.isEmpty()}">
+                    <!-- Loop through theaters -->
+                    <div th:each="entry : ${theaterAuditoriumMap}" class="theater-card" th:data-theater-id="${entry.key.id}">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <div>
+                                <h4 class="mb-1 text-light">
+                                    <i class="fas fa-building text-primary me-2"></i>
+                                    <span th:text="${entry.key.name}">Tên rạp</span>
+                                </h4>
+                                <p class="text-muted mb-0">
+                                    <i class="fas fa-map-marker-alt me-1"></i>
+                                    <span th:text="${entry.key.address}">Địa chỉ</span>
+                                </p>
+                            </div>
+                            <div class="text-end">
+                                <span class="badge bg-success stats-badge" th:text="${#lists.size(entry.value)} + ' phòng'">0 phòng</span>
+                                <span class="badge bg-info stats-badge" 
+                                      th:text="${#aggregates.sum(entry.value.![totalSeats])} + ' ghế'">0 ghế</span>
+                            </div>
+                        </div>
+                        
+                        <div class="row g-3">
+                            <!-- Loop through auditoriums of this theater -->
+                            <div th:each="auditorium : ${entry.value}" class="col-md-6 col-lg-4" th:data-auditorium-name="${auditorium.name}">
+                                <div class="cinema-hall-item">
+                                    <div class="d-flex justify-content-between align-items-start mb-2">
+                                        <h6 class="mb-0 text-light" th:text="${auditorium.name}">Tên phòng</h6>
+                                        <div class="dropdown">
+                                            <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" 
+                                                    data-bs-toggle="dropdown" th:aria-label="'Tùy chọn ' + ${auditorium.name}" th:title="'Tùy chọn ' + ${auditorium.name}">
+                                                <i class="fas fa-ellipsis-v"></i>
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                                <li>
+                                                    <a class="dropdown-item" th:href="@{/admin/cinema-halls/edit/{id}(id=${auditorium.id})}">
+                                                        <i class="fas fa-edit me-2"></i>Chỉnh sửa
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a class="dropdown-item" href="#" th:onclick="'showSeats(' + ${auditorium.id} + ')'">
+                                                        <i class="fas fa-eye me-2"></i>Xem ghế
+                                                    </a>
+                                                </li>
+                                                <li><hr class="dropdown-divider"></li>
+                                                <li>
+                                                    <form th:action="@{/admin/cinema-halls/delete/{id}(id=${auditorium.id})}" method="post" 
+                                                          onsubmit="return confirm('Bạn có chắc chắn muốn xóa phòng chiếu này?')">
+                                                        <button type="submit" class="dropdown-item text-danger">
+                                                            <i class="fas fa-trash me-2"></i>Xóa
+                                                        </button>
+                                                    </form>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="row g-2 mb-2">
+                                        <div class="col-6">
+                                            <small class="text-muted">Tổng ghế:</small>
+                                            <div class="fw-bold text-light" th:text="${auditorium.totalSeats} + ' ghế'">0 ghế</div>
+                                        </div>
+                                        <div class="col-6">
+                                            <small class="text-muted">ID:</small>
+                                            <div class="fw-bold text-light" th:text="'#' + ${auditorium.id}">#0</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Seat Preview Placeholder -->
+                                    <div class="seat-layout-preview grid-10" th:data-auditorium-id="${auditorium.id}">
+                                        <!-- Seats will be loaded via AJAX -->
+                                        <div class="text-center text-muted py-2">
+                                            <i class="fas fa-spinner fa-spin"></i>
+                                            <small>Đang tải...</small>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="d-flex justify-content-between align-items-center mt-2">
+                                        <span class="badge bg-success">Hoạt động</span>
+                                        <small class="text-muted">
+                                            <i class="fas fa-users me-1"></i>
+                                            <span th:text="${entry.key.name}">Rạp</span>
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Add new cinema hall button for this theater -->
+                            <div class="col-md-6 col-lg-4">
+                                <div class="cinema-hall-item border-dashed border-2 text-center py-4">
+                                    <a th:href="@{/admin/cinema-halls/new(theaterId=${entry.key.id})}" class="text-decoration-none">
+                                        <i class="fas fa-plus fa-2x text-muted mb-2"></i>
+                                        <div class="text-muted">Thêm phòng chiếu mới</div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Empty state -->
+                <div th:if="${theaterAuditoriumMap == null or theaterAuditoriumMap.isEmpty()}" class="text-center py-5">
+                    <i class="fas fa-building fa-3x text-muted mb-3"></i>
+                    <h4 class="text-muted">Chưa có rạp phim nào</h4>
+                    <p class="text-muted">Hãy thêm rạp phim trước khi tạo phòng chiếu</p>
+                    <a href="/admin/theaters/new" class="btn btn-primary">
+                        <i class="fas fa-plus me-2"></i>Thêm Rạp Phim
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Filter functionality
+        document.getElementById('theaterFilter').addEventListener('change', filterCinemaHalls);
+        document.getElementById('statusFilter').addEventListener('change', filterCinemaHalls);
+        document.getElementById('searchInput').addEventListener('input', filterCinemaHalls);
+        
+        function filterCinemaHalls() {
+            const theaterFilter = document.getElementById('theaterFilter').value;
+            const statusFilter = document.getElementById('statusFilter').value;
+            const searchInput = document.getElementById('searchInput').value.toLowerCase();
+            
+            // Filter theater cards
+            const theaterCards = document.querySelectorAll('.theater-card');
+            
+            theaterCards.forEach(card => {
+                const theaterId = card.getAttribute('data-theater-id');
+                const theaterMatch = !theaterFilter || theaterId === theaterFilter;
+                
+                // Filter auditoriums within this theater
+                const auditoriumItems = card.querySelectorAll('[data-auditorium-name]');
+                let hasVisibleAuditoriums = false;
+                
+                auditoriumItems.forEach(item => {
+                    const auditoriumName = item.getAttribute('data-auditorium-name').toLowerCase();
+                    const nameMatch = !searchInput || auditoriumName.includes(searchInput);
+                    
+                    if (theaterMatch && nameMatch) {
+                        item.style.display = '';
+                        hasVisibleAuditoriums = true;
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+                
+                // Show/hide theater card based on filters
+                if (theaterMatch && (hasVisibleAuditoriums || !searchInput)) {
+                    card.style.display = '';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+        
+        // Load seat previews for all auditoriums
+        document.addEventListener('DOMContentLoaded', function() {
+            loadAllSeatPreviews();
+        });
+        
+        function loadAllSeatPreviews() {
+            const previewContainers = document.querySelectorAll('.seat-layout-preview[data-auditorium-id]');
+            
+            previewContainers.forEach(container => {
+                const auditoriumId = container.getAttribute('data-auditorium-id');
+                loadSeatPreview(auditoriumId, container);
+            });
+        }
+        
+        function loadSeatPreview(auditoriumId, container) {
+            fetch(`/admin/cinema-halls/api/${auditoriumId}/seats`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success && data.seats && data.seats.length > 0) {
+                        renderSeatPreview(data.seats, container);
+                    } else {
+                        container.innerHTML = '<div class="text-center text-muted py-2"><small>Chưa có ghế</small></div>';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading seats:', error);
+                    container.innerHTML = '<div class="text-center text-danger py-2"><small>Lỗi tải dữ liệu</small></div>';
+                });
+        }
+        
+        function renderSeatPreview(seats, container) {
+            // Group seats by row
+            const seatsByRow = {};
+            let maxSeatsPerRow = 0;
+            
+            seats.forEach(seat => {
+                const row = seat.row;
+                if (!seatsByRow[row]) {
+                    seatsByRow[row] = [];
+                }
+                seatsByRow[row][seat.position - 1] = seat;
+                maxSeatsPerRow = Math.max(maxSeatsPerRow, seat.position);
+            });
+            
+            // Set grid columns
+            container.style.gridTemplateColumns = `repeat(${Math.min(maxSeatsPerRow, 10)}, 1fr)`;
+            container.classList.remove('grid-8', 'grid-10');
+            
+            // Clear container
+            container.innerHTML = '';
+            
+            // Create seat elements (show only first 30 seats for preview)
+            let seatCount = 0;
+            const maxPreviewSeats = 30;
+            
+            Object.keys(seatsByRow).sort().forEach(row => {
+                const rowSeats = seatsByRow[row];
+                for (let i = 0; i < Math.min(rowSeats.length, 10); i++) {
+                    if (seatCount >= maxPreviewSeats) break;
+                    
+                    const seat = rowSeats[i];
+                    if (seat) {
+                        const seatElement = document.createElement('div');
+                        seatElement.className = 'seat-mini';
+                        
+                        // Set seat type class
+                        if (seat.type === 'VIP') {
+                            seatElement.classList.add('vip');
+                        } else if (seat.type === 'COUPLE') {
+                            seatElement.classList.add('unavailable');
+                        }
+                        
+                        container.appendChild(seatElement);
+                        seatCount++;
+                    }
+                }
+                if (seatCount >= maxPreviewSeats) return;
+            });
+            
+            // Add "..." indicator if there are more seats
+            if (seats.length > maxPreviewSeats) {
+                const moreElement = document.createElement('div');
+                moreElement.className = 'seat-mini';
+                moreElement.style.background = 'transparent';
+                moreElement.style.border = '1px dashed #666';
+                moreElement.innerHTML = '...';
+                moreElement.style.fontSize = '8px';
+                moreElement.style.display = 'flex';
+                moreElement.style.alignItems = 'center';
+                moreElement.style.justifyContent = 'center';
+                container.appendChild(moreElement);
+            }
+        }
+        
+        // Show seat details modal
+        function showSeats(auditoriumId) {
+            // TODO: Implement seat detail modal
+            alert('Chức năng xem chi tiết ghế sẽ được thêm sau. Auditorium ID: ' + auditoriumId);
+        }
+        
+        // Delete confirmation
+        document.addEventListener('click', function(e) {
+            if (e.target.closest('.text-danger')) {
+                if (!confirm('Bạn có chắc chắn muốn xóa phòng chiếu này?')) {
+                    e.preventDefault();
+                }
+            }
+        });
+    </script>
+</body>
+</html>

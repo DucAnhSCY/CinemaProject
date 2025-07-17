@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${movie.title + ' - CinemaBooking'}">Chi Tiết Phim - CinemaBooking</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Cinema Theme CSS -->
+    <link th:href="@{/css/cinema-theme.css}" href="/css/cinema-theme.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav th:replace="~{layout/fragments/navigation :: nav}"></nav>
+
+    <!-- Movie Detail Section -->
+    <section class="py-5">
+        <div class="container">
+            <div class="row">
+                <!-- Movie Poster -->
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <img th:src="${movie.posterUrl}" th:alt="${movie.title}" th:title="${movie.title}" alt="Movie Poster" title="Movie Poster" class="card-img-top movie-poster">
+                    </div>
+                </div>
+                
+                <!-- Movie Info -->
+                <div class="col-md-8">
+                    <h1 class="mb-3" th:text="${movie.title}">Tên Phim</h1>
+                    
+                    <div class="mb-3">
+                        <span class="badge bg-primary me-2" th:text="${movie.genre}">Thể loại</span>
+                        <span class="text-muted" th:text="${movie.durationMin + ' phút'}">Thời lượng</span>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <div class="movie-rating">
+                            <div class="rating-stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="far fa-star"></i>
+                            </div>
+                            <span class="ms-2" th:text="${movie.voteAverage + '/10'}">8.5/10</span>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <h5>Mô tả</h5>
+                        <p th:text="${movie.description}">Mô tả phim sẽ được hiển thị ở đây...</p>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <h5>Thông tin chi tiết</h5>
+                        <ul class="list-unstyled">
+                            <li><strong>Ngày phát hành:</strong> <span th:text="${#temporals.format(movie.releaseDate, 'dd/MM/yyyy')}">01/01/2024</span></li>
+                            <li><strong>Ngôn ngữ gốc:</strong> <span th:text="${movie.originalLanguage}">Tiếng Anh</span></li>
+                            <li><strong>Đánh giá:</strong> <span th:text="${movie.voteCount + ' lượt đánh giá'}">1000 lượt đánh giá</span></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="d-grid gap-2 d-md-block">
+                        <button class="btn btn-primary btn-lg" onclick="showBookingModal()">
+                            <i class="fas fa-ticket-alt me-2"></i>Đặt Vé
+                        </button>
+                        <a th:href="@{/movies}" class="btn btn-outline-secondary btn-lg">
+                            <i class="fas fa-arrow-left me-2"></i>Quay Lại
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Screenings Section -->
+    <section class="py-5 bg-dark-secondary" th:if="${not #lists.isEmpty(screenings)}">
+        <div class="container">
+            <h2 class="text-center mb-5">Lịch Chiếu</h2>
+            <div class="row">
+                <div class="col-12">
+                    <div class="table-responsive">
+                        <table class="table table-dark">
+                            <thead>
+                                <tr>
+                                    <th>Rạp</th>
+                                    <th>Phòng chiếu</th>
+                                    <th>Thời gian</th>
+                                    <th>Giá vé</th>
+                                    <th>Hành động</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="screening : ${screenings}">
+                                    <td th:text="${screening.auditorium.theater.name}">Tên rạp</td>
+                                    <td th:text="${screening.auditorium.name}">Phòng chiếu</td>
+                                    <td th:text="${#temporals.format(screening.startTime, 'HH:mm dd/MM/yyyy')}">Thời gian</td>
+                                    <td th:text="${#numbers.formatDecimal(screening.ticketPrice, 0, 0) + ' VNĐ'}">Giá vé</td>
+                                    <td>
+                                        <a th:href="@{/booking/screening/{id}(id=${screening.id})}" class="btn btn-primary btn-sm">
+                                            <i class="fas fa-ticket-alt me-1"></i>Đặt vé
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer th:replace="~{layout/fragments/footer :: footer}"></footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Cinema App JS -->
+    <script th:src="@{/js/cinema-app-api.js}"></script>
+    
+    <script>
+        function showBookingModal() {
+            // This will be handled by the cinema app JavaScript
+            if (typeof window.cinemaApp !== 'undefined') {
+                window.cinemaApp.showMovieModal(
+                    /* movie data */
+                    /* theaters data */
+                    /* screenings data */
+                );
+            }
+        }
+    </script>
+</body>
+</html> 

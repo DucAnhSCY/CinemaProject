@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CinemaBooking - Hệ Thống Đặt Vé Phim</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Cinema Theme CSS -->
+    <link th:href="@{/css/cinema-theme.css}" rel="stylesheet">
+</head>
+<body class="bg-dark">
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-custom fixed-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold" th:href="@{/}">
+                <i class="fas fa-film me-2"></i>CinemaBooking
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" th:href="@{/}">
+                            <i class="fas fa-home me-1"></i>Trang Chủ
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/movies}">
+                            <i class="fas fa-video me-1"></i>Phim
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/theaters}">
+                            <i class="fas fa-building me-1"></i>Rạp
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/promotions}">
+                            <i class="fas fa-gift me-1"></i>Khuyến Mãi
+                        </a>
+                    </li>
+                </ul>
+                
+                <ul class="navbar-nav">
+                    <!-- Authenticated User Menu -->
+                    <li class="nav-item dropdown" sec:authorize="isAuthenticated()">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-user me-1"></i>
+                            <span sec:authentication="name">User</span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" th:href="@{/booking/my-bookings}">
+                                <i class="fas fa-ticket-alt me-2"></i>Vé Của Tôi
+                            </a></li>
+                            <li sec:authorize="hasRole('ADMIN')"><a class="dropdown-item" th:href="@{/admin}">
+                                <i class="fas fa-cogs me-2"></i>Quản Trị
+                            </a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <form th:action="@{/auth/logout}" method="post" class="d-inline">
+                                    <button type="submit" class="dropdown-item text-danger">
+                                        <i class="fas fa-sign-out-alt me-2"></i>Đăng Xuất
+                                    </button>
+                                </form>
+                            </li>
+                        </ul>
+                    </li>
+                    
+                    <!-- Guest Menu -->
+                    <li class="nav-item" sec:authorize="!isAuthenticated()">
+                        <a class="nav-link" th:href="@{/auth/login}">
+                            <i class="fas fa-sign-in-alt me-1"></i>Đăng Nhập
+                        </a>
+                    </li>
+                    <li class="nav-item" sec:authorize="!isAuthenticated()">
+                        <a class="nav-link" th:href="@{/auth/register}">
+                            <i class="fas fa-user-plus me-1"></i>Đăng Ký
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="container">
+                <div class="hero-content fade-in">
+                    <h1>Trải Nghiệm Điện Ảnh Tuyệt Vời</h1>
+                    <p class="lead">Đặt vé phim nhanh chóng, tiện lợi với hệ thống hiện đại nhất</p>
+                    <div class="hero-actions">
+                        <a href="#movies" class="btn btn-primary btn-lg me-3">
+                            <i class="fas fa-play me-2"></i>Xem Phim Ngay
+                        </a>
+                        <a href="#search" class="btn btn-outline-primary btn-lg">
+                            <i class="fas fa-search me-2"></i>Tìm Kiếm Phim
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Search Section -->
+        <section id="search" class="py-5 bg-dark-secondary">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-8">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title text-center mb-4">
+                                    <i class="fas fa-search me-2"></i>Tìm Kiếm Phim
+                                </h4>
+                                <form id="movieSearchForm" th:action="@{/search}" method="get" class="row g-3">
+                                    <div class="col-md-6">
+                                        <label for="searchTitle" class="form-label">Tên phim</label>
+                                        <input type="text" class="form-control" id="searchTitle" name="title" placeholder="Nhập tên phim...">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="searchGenre" class="form-label">Thể loại</label>
+                                        <select class="form-select" id="searchGenre" name="genre" title="Chọn thể loại phim">
+                                            <option value="">Tất cả thể loại</option>
+                                            <option value="Action">Hành động</option>
+                                            <option value="Comedy">Hài kịch</option>
+                                            <option value="Drama">Chính kịch</option>
+                                            <option value="Horror">Kinh dị</option>
+                                            <option value="Romance">Lãng mạn</option>
+                                            <option value="Sci-Fi">Khoa học viễn tưởng</option>
+                                            <option value="Thriller">Giật gân</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label class="form-label">&nbsp;</label>
+                                        <button type="submit" class="btn btn-primary w-100" title="Tìm kiếm phim">
+                                            <i class="fas fa-search"></i>
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Movies Section -->
+        <section id="movies" class="py-5">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <h2 class="text-center mb-5">
+                            <i class="fas fa-film me-3"></i>Phim Đang Chiếu
+                        </h2>
+                    </div>
+                </div>
+
+                <!-- Movies Grid -->
+                <div class="row g-4" th:if="${!#lists.isEmpty(featuredMovies)}">
+                    <div th:each="movie : ${featuredMovies}" class="col-lg-3 col-md-4 col-sm-6">
+                        <div class="movie-card">
+                            <div class="movie-image">
+                                <img th:src="${movie.posterUrl}" th:alt="${movie.title != null ? movie.title : 'Movie poster'}" th:title="${movie.title != null ? movie.title : 'Movie poster'}" class="card-img-top" loading="lazy">
+                                <div class="movie-overlay">
+                                    <div class="movie-actions">
+                                        <a th:href="@{/movies/{id}(id=${movie.id})}" class="btn btn-primary btn-sm">
+                                            <i class="fas fa-eye me-1"></i>Chi Tiết
+                                        </a>
+                                        <a th:href="@{/booking/screening/{id}(id=${movie.id})}" class="btn btn-warning btn-sm">
+                                            <i class="fas fa-ticket-alt me-1"></i>Đặt Vé
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="movie-info">
+                                <h5 class="movie-title" th:text="${movie.title}">Movie Title</h5>
+                                <div class="movie-meta">
+                                    <span class="movie-duration" th:if="${movie.durationMin}">
+                                        <i class="fas fa-clock me-1"></i>
+                                        <span th:text="${movie.durationMin}">120</span> phút
+                                    </span>
+                                    <span class="movie-rating" th:if="${movie.rating}">
+                                        <i class="fas fa-star me-1"></i>
+                                        <span th:text="${movie.rating}">8.5</span>/10
+                                    </span>
+                                </div>
+                                <div class="movie-genres" th:if="${movie.genre}">
+                                    <span class="badge bg-secondary me-1" th:text="${movie.genre}">Action</span>
+                                    <span th:if="${movie.tmdbId != null}" class="badge bg-info ms-2">TMDB</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Dynamic Movies Container for JavaScript -->
+                <div id="moviesContainer" class="row g-4 d-none">
+                    <!-- Movies will be loaded here by JavaScript -->
+                </div>
+
+                <!-- No Movies Message -->
+                <div class="text-center py-5" th:if="${#lists.isEmpty(featuredMovies)}">
+                    <i class="fas fa-film text-muted mb-3 display-1"></i>
+                    <h4 class="text-muted">Chưa có phim nào</h4>
+                    <p class="text-muted">Hiện tại chưa có phim nào trong hệ thống.</p>
+                    <a th:href="@{/admin/tmdb}" sec:authorize="hasRole('ADMIN')" class="btn btn-primary">
+                        <i class="fas fa-plus me-2"></i>Thêm Phim Từ TMDB
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="py-5 bg-dark-secondary">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <h2 class="text-center mb-5">Tại Sao Chọn CinemaBooking?</h2>
+                    </div>
+                </div>
+                <div class="row g-4">
+                    <div class="col-lg-4 col-md-6">
+                        <div class="feature-card text-center">
+                            <div class="feature-icon">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <h4>Đặt Vé Nhanh Chóng</h4>
+                            <p>Chỉ trong vài phút, bạn có thể hoàn thành việc đặt vé xem phim yêu thích.</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                        <div class="feature-card text-center">
+                            <div class="feature-icon">
+                                <i class="fas fa-mobile-alt"></i>
+                            </div>
+                            <h4>Tương Thích Mọi Thiết Bị</h4>
+                            <p>Sử dụng trên máy tính, điện thoại, tablet một cách dễ dàng và tiện lợi.</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                        <div class="feature-card text-center">
+                            <div class="feature-icon">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <h4>Bảo Mật Cao</h4>
+                            <p>Thông tin cá nhân và thanh toán được bảo vệ với công nghệ bảo mật hiện đại.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer bg-dark py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <h5 class="text-primary mb-3">
+                        <i class="fas fa-film me-2"></i>CinemaBooking
+                    </h5>
+                    <p class="text-muted">Hệ thống đặt vé phim trực tuyến hàng đầu Việt Nam. Mang đến trải nghiệm điện ảnh tuyệt vời cho mọi người.</p>
+                    <div class="social-links">
+                        <a href="#" class="text-primary me-3" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-primary me-3" title="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-primary me-3" title="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-primary" title="YouTube"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <h6 class="text-white mb-3">Dịch Vụ</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-muted text-decoration-none">Đặt Vé Online</a></li>
+                        <li><a href="#" class="text-muted text-decoration-none">Khuyến Mãi</a></li>
+                        <li><a href="#" class="text-muted text-decoration-none">Thành Viên</a></li>
+                        <li><a href="#" class="text-muted text-decoration-none">Gift Card</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <h6 class="text-white mb-3">Hỗ Trợ</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-muted text-decoration-none">Liên Hệ</a></li>
+                        <li><a href="#" class="text-muted text-decoration-none">FAQ</a></li>
+                        <li><a href="#" class="text-muted text-decoration-none">Chính Sách</a></li>
+                        <li><a href="#" class="text-muted text-decoration-none">Điều Khoản</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <h6 class="text-white mb-3">Liên Hệ</h6>
+                    <ul class="list-unstyled text-muted">
+                        <li><i class="fas fa-map-marker-alt me-2"></i>123 Đường ABC, Quận 1, TP.HCM</li>
+                        <li><i class="fas fa-phone me-2"></i>+84 123 456 789</li>
+                        <li><i class="fas fa-envelope me-2"></i>info@cinemabooking.vn</li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="my-4">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <p class="text-muted mb-0">&copy; 2025 CinemaBooking. Tất cả quyền được bảo lưu.</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <p class="text-muted mb-0">Phát triển bởi <a href="#" class="text-primary text-decoration-none">Team N07</a></p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Cinema App JavaScript -->
+    <script th:src="@{/js/cinema-app.js}"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize smooth scrolling for hero buttons
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+
+            // Add fade-in animation
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver(function(entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('fade-in');
+                    }
+                });
+            }, observerOptions);
+
+            // Observe all movie cards
+            document.querySelectorAll('.movie-card').forEach(card => {
+                observer.observe(card);
+            });
+
+            // Observe feature cards
+            document.querySelectorAll('.feature-card').forEach(card => {
+                observer.observe(card);
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thêm Người Dùng - Cinema Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link th:href="@{/css/admin.css}" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid">
+            <a class="navbar-brand" th:href="@{/admin}">
+                <i class="fas fa-film me-2"></i>Cinema Admin
+            </a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" th:href="@{/admin/users}">
+                    <i class="fas fa-arrow-left me-1"></i>Quay Về Danh Sách
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid mt-4">
+        <!-- Alert Messages -->
+        <div th:if="${success}" class="alert alert-success alert-dismissible fade show">
+            <i class="fas fa-check-circle me-2"></i>
+            <span th:text="${success}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Đóng"></button>
+        </div>
+        
+        <div th:if="${error}" class="alert alert-danger alert-dismissible fade show">
+            <i class="fas fa-exclamation-circle me-2"></i>
+            <span th:text="${error}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Đóng"></button>
+        </div>
+
+        <!-- Page Header -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <h2><i class="fas fa-user-plus me-3"></i>Thêm Người Dùng Mới</h2>
+            </div>
+        </div>
+
+        <!-- User Form -->
+        <div class="row justify-content-center">
+            <div class="col-lg-8 col-md-10">
+                <div class="card shadow">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0"><i class="fas fa-user-edit me-2"></i>Thông Tin Người Dùng</h5>
+                    </div>
+                    <div class="card-body">
+                        <form th:action="@{/admin/users/add}" method="post" id="userForm">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="username" class="form-label">
+                                        <i class="fas fa-user me-1"></i>Tên Đăng Nhập <span class="text-danger">*</span>
+                                    </label>
+                                    <input type="text" class="form-control" id="username" name="username" 
+                                           required minlength="3" maxlength="50"
+                                           placeholder="Nhập tên đăng nhập">
+                                    <div class="invalid-feedback">
+                                        Tên đăng nhập phải từ 3-50 ký tự.
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label for="email" class="form-label">
+                                        <i class="fas fa-envelope me-1"></i>Email <span class="text-danger">*</span>
+                                    </label>
+                                    <input type="email" class="form-control" id="email" name="email" 
+                                           required placeholder="Nhập địa chỉ email">
+                                    <div class="invalid-feedback">
+                                        Vui lòng nhập email hợp lệ.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="password" class="form-label">
+                                        <i class="fas fa-lock me-1"></i>Mật Khẩu <span class="text-danger">*</span>
+                                    </label>
+                                    <div class="input-group">
+                                        <input type="password" class="form-control" id="password" name="password" 
+                                               required minlength="6" placeholder="Nhập mật khẩu">
+                                        <button class="btn btn-outline-secondary" type="button" id="togglePassword" 
+                                                title="Hiện/ẩn mật khẩu" aria-label="Hiện/ẩn mật khẩu">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                    </div>
+                                    <div class="invalid-feedback">
+                                        Mật khẩu phải ít nhất 6 ký tự.
+                                    </div>
+                                    <small class="form-text text-muted">Mật khẩu phải có ít nhất 6 ký tự.</small>
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label for="role" class="form-label">
+                                        <i class="fas fa-user-tag me-1"></i>Vai Trò <span class="text-danger">*</span>
+                                    </label>
+                                    <select class="form-select" id="role" name="role" required>
+                                        <option value="">-- Chọn vai trò --</option>
+                                        <option value="CUSTOMER">Khách Hàng</option>
+                                        <option value="THEATER_MANAGER">Quản Lý Rạp</option>
+                                        <option value="ADMIN">Quản Trị Viên</option>
+                                    </select>
+                                    <div class="invalid-feedback">
+                                        Vui lòng chọn vai trò.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="form-check mb-3">
+                                        <input class="form-check-input" type="checkbox" id="isEnabled" name="isEnabled" checked>
+                                        <label class="form-check-label" for="isEnabled">
+                                            <i class="fas fa-check-circle me-1"></i>Tài khoản hoạt động
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <hr>
+
+                            <div class="d-flex justify-content-between">
+                                <a th:href="@{/admin/users}" class="btn btn-secondary">
+                                    <i class="fas fa-times me-2"></i>Hủy
+                                </a>
+                                <button type="submit" class="btn btn-success">
+                                    <i class="fas fa-save me-2"></i>Thêm Người Dùng
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Toggle password visibility
+        document.getElementById('togglePassword').addEventListener('click', function() {
+            const passwordInput = document.getElementById('password');
+            const icon = this.querySelector('i');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        });
+
+        // Form validation
+        (function() {
+            'use strict';
+            window.addEventListener('load', function() {
+                const form = document.getElementById('userForm');
+                form.addEventListener('submit', function(event) {
+                    if (form.checkValidity() === false) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            }, false);
+        })();
+
+        // Username validation
+        document.getElementById('username').addEventListener('input', function() {
+            const username = this.value;
+            const pattern = /^[a-zA-Z0-9_]{3,50}$/;
+            
+            if (username && !pattern.test(username)) {
+                this.setCustomValidity('Tên đăng nhập chỉ được chứa chữ cái, số và dấu gạch dưới');
+            } else {
+                this.setCustomValidity('');
+            }
+        });
+    </script>
+</body>
+</html>

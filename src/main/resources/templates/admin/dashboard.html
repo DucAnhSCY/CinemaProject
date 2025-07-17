@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - CinemaBooking</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Cinema Theme CSS -->
+    <link th:href="@{/css/cinema-theme.css}" rel="stylesheet">
+    <style>
+        .progress-oauth { width: 60%; }
+        .progress-bookings { width: 45%; }
+    </style>
+</head>
+<body class="bg-dark">
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-custom fixed-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold" th:href="@{/}">
+                <i class="fas fa-film me-2"></i>CinemaBooking Admin
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" th:href="@{/admin}">
+                            <i class="fas fa-tachometer-alt me-1"></i>Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/admin/movies}">
+                            <i class="fas fa-film me-1"></i>Quản Lý Phim
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/admin/theaters}">
+                            <i class="fas fa-building me-1"></i>Quản Lý Rạp
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/admin/screenings}">
+                            <i class="fas fa-calendar-alt me-1"></i>Lịch Chiếu
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/admin/users}">
+                            <i class="fas fa-users me-1"></i>Quản Lý User
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/admin/tmdb}">
+                            <i class="fas fa-video me-1"></i>TMDB Movies
+                        </a>
+                    </li>
+                </ul>
+                
+                <ul class="navbar-nav">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-user me-1"></i>
+                            <span sec:authentication="name">Admin</span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" th:href="@{/}">
+                                <i class="fas fa-home me-2"></i>Về trang chủ
+                            </a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" th:href="@{/auth/logout}">
+                                <i class="fas fa-sign-out-alt me-2"></i>Đăng xuất
+                            </a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <!-- Page Header -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <div>
+                            <h1 class="h3 text-muted mb-0">
+                                <i class="fas fa-tachometer-alt me-3 text-primary"></i>Admin Dashboard
+                            </h1>
+                            <p class="text-muted mt-2">Tổng quan hệ thống CinemaBooking</p>
+                        </div>
+                        <div>
+                            <span class="badge bg-success">
+                                <i class="fas fa-circle me-1"></i>Hệ thống hoạt động
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Statistics Cards -->
+            <div class="row g-4 mb-5">
+                <div class="col-lg-3 col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <h6 class="card-title text-muted mb-2">Tổng số phim</h6>
+                                    <h3 class="text-muted mb-0" id="totalMovies">-</h3>
+                                    <small class="text-success">
+                                        <i class="fas fa-arrow-up me-1"></i>+5% so với tháng trước
+                                    </small>
+                                </div>
+                                <div class="text-primary">
+                                    <i class="fas fa-film fa-2x"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <h6 class="card-title text-muted mb-2">Tổng số người dùng</h6>
+                                    <h3 class="text-muted mb-0" id="totalUsers">-</h3>
+                                    <small class="text-success">
+                                        <i class="fas fa-arrow-up me-1"></i>+12% so với tháng trước
+                                    </small>
+                                </div>
+                                <div class="text-success">
+                                    <i class="fas fa-users fa-2x"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <h6 class="card-title text-muted mb-2">Đặt vé hôm nay</h6>
+                                    <h3 class="text-muted mb-0" id="todayBookings">-</h3>
+                                    <small class="text-warning">
+                                        <i class="fas fa-minus me-1"></i>Không đổi
+                                    </small>
+                                </div>
+                                <div class="text-warning">
+                                    <i class="fas fa-ticket-alt fa-2x"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <h6 class="card-title text-muted mb-2">Doanh thu tháng này</h6>
+                                    <h3 class="text-muted mb-0" id="monthlyRevenue">-</h3>
+                                    <small class="text-success">
+                                        <i class="fas fa-arrow-up me-1"></i>+8% so với tháng trước
+                                    </small>
+                                </div>
+                                <div class="text-info">
+                                    <i class="fas fa-dollar-sign fa-2x"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="row mb-5">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title text-muted mb-0">
+                                <i class="fas fa-bolt me-2"></i>Thao Tác Nhanh
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row g-3">
+                                <div class="col-lg-2 col-md-4 col-sm-6">
+                                    <a th:href="@{/admin/tmdb}" class="btn btn-outline-primary w-100 h-100 d-flex flex-column align-items-center justify-content-center">
+                                        <i class="fas fa-download fa-2x mb-2"></i>
+                                        <span>Nhập Phim TMDB</span>
+                                    </a>
+                                </div>
+                                <div class="col-lg-2 col-md-4 col-sm-6">
+                                    <a th:href="@{/admin/movies/new}" class="btn btn-outline-success w-100 h-100 d-flex flex-column align-items-center justify-content-center">
+                                        <i class="fas fa-plus fa-2x mb-2"></i>
+                                        <span>Thêm Phim Mới</span>
+                                    </a>
+                                </div>
+                                <div class="col-lg-2 col-md-4 col-sm-6">
+                                    <a th:href="@{/admin/theaters}" class="btn btn-outline-info w-100 h-100 d-flex flex-column align-items-center justify-content-center">
+                                        <i class="fas fa-building fa-2x mb-2"></i>
+                                        <span>Quản Lý Rạp</span>
+                                    </a>
+                                </div>
+                                <div class="col-lg-2 col-md-4 col-sm-6">
+                                    <a th:href="@{/admin/cinema-halls}" class="btn btn-outline-success w-100 h-100 d-flex flex-column align-items-center justify-content-center">
+                                        <i class="fas fa-couch fa-2x mb-2"></i>
+                                        <span>Quản Lý Phòng Chiếu</span>
+                                    </a>
+                                </div>
+                                <div class="col-lg-2 col-md-4 col-sm-6">
+                                    <a th:href="@{/admin/screenings}" class="btn btn-outline-info w-100 h-100 d-flex flex-column align-items-center justify-content-center">
+                                        <i class="fas fa-calendar-alt fa-2x mb-2"></i>
+                                        <span>Lịch Chiếu</span>
+                                    </a>
+                                </div>
+                                <div class="col-lg-2 col-md-4 col-sm-6">
+                                    <a th:href="@{/admin/users}" class="btn btn-outline-warning w-100 h-100 d-flex flex-column align-items-center justify-content-center">
+                                        <i class="fas fa-user-cog fa-2x mb-2"></i>
+                                        <span>Quản Lý User</span>
+                                    </a>
+                                </div>
+                                <div class="col-lg-2 col-md-4 col-sm-6">
+                                    <a th:href="@{/admin/bookings}" class="btn btn-outline-secondary w-100 h-100 d-flex flex-column align-items-center justify-content-center">
+                                        <i class="fas fa-list fa-2x mb-2"></i>
+                                        <span>Xem Đặt Vé</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Activities -->
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h5 class="card-title text-muted mb-0">
+                                <i class="fas fa-clock me-2"></i>Hoạt Động Gần Đây
+                            </h5>
+                            <button class="btn btn-outline-secondary btn-sm" onclick="loadRecentActivities()">
+                                <i class="fas fa-refresh me-1"></i>Làm mới
+                            </button>
+                        </div>
+                        <div class="card-body">
+                            <div id="recentActivities">
+                                <!-- Activities will be loaded here -->
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="bg-primary rounded-circle p-2 me-3">
+                                        <i class="fas fa-user text-white"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="mb-1">Người dùng mới đăng ký</h6>
+                                        <small class="text-muted">john.doe@example.com - 5 phút trước</small>
+                                    </div>
+                                </div>
+
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="bg-success rounded-circle p-2 me-3">
+                                        <i class="fas fa-ticket-alt text-white"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="mb-1">Đặt vé thành công</h6>
+                                        <small class="text-muted">Vé phim "Avengers: Endgame" - 10 phút trước</small>
+                                    </div>
+                                </div>
+
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="bg-info rounded-circle p-2 me-3">
+                                        <i class="fas fa-film text-white"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="mb-1">Phim mới được thêm</h6>
+                                        <small class="text-muted">"Spider-Man: No Way Home" - 1 giờ trước</small>
+                                    </div>
+                                </div>
+
+                                <div class="d-flex align-items-center">
+                                    <div class="bg-warning rounded-circle p-2 me-3">
+                                        <i class="fas fa-cog text-white"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="mb-1">Cập nhật hệ thống</h6>
+                                        <small class="text-muted">OAuth2 authentication được kích hoạt - 2 giờ trước</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title text-muted mb-0">
+                                <i class="fas fa-chart-pie me-2"></i>Thống Kê Nhanh
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-4">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <span>Phim TMDB</span>
+                                    <span class="badge bg-primary" id="tmdbMoviesCount">-</span>
+                                </div>
+                                <div class="progress">
+                                    <div class="progress-bar bg-primary w-75"></div>
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <span>Người dùng OAuth2</span>
+                                    <span class="badge bg-success" id="oauthUsersCount">-</span>
+                                </div>
+                                <div class="progress">
+                                    <div class="progress-bar bg-success progress-oauth"></div>
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <span>Đặt vé hôm nay</span>
+                                    <span class="badge bg-warning" id="todayBookingsCount">-</span>
+                                </div>
+                                <div class="progress">
+                                    <div class="progress-bar bg-warning progress-bookings"></div>
+                                </div>
+                            </div>
+
+                            <div class="text-center">
+                                <a th:href="@{/admin/reports}" class="btn btn-outline-primary btn-sm">
+                                    Xem báo cáo chi tiết <i class="fas fa-arrow-right ms-1"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Initialize dashboard
+        document.addEventListener('DOMContentLoaded', function() {
+            loadDashboardData();
+        });
+
+        // Load dashboard statistics
+        async function loadDashboardData() {
+            try {
+                // Load movies count
+                const moviesResponse = await fetch('/api/movies');
+                if (moviesResponse.ok) {
+                    const movies = await moviesResponse.json();
+                    document.getElementById('totalMovies').textContent = movies.length;
+                    
+                    // Count TMDB movies
+                    const tmdbMovies = movies.filter(m => m.tmdbId);
+                    document.getElementById('tmdbMoviesCount').textContent = tmdbMovies.length;
+                }
+
+                // Mock data for other statistics (replace with real API calls)
+                document.getElementById('totalUsers').textContent = '1,234';
+                document.getElementById('todayBookings').textContent = '45';
+                document.getElementById('monthlyRevenue').textContent = '$12,345';
+                document.getElementById('oauthUsersCount').textContent = '789';
+                document.getElementById('todayBookingsCount').textContent = '45';
+
+            } catch (error) {
+                console.error('Error loading dashboard data:', error);
+            }
+        }
+
+        // Load recent activities
+        function loadRecentActivities() {
+            // Mock implementation - replace with real API call
+            console.log('Loading recent activities...');
+        }
+
+        // Auto-refresh dashboard every 5 minutes
+        setInterval(loadDashboardData, 5 * 60 * 1000);
+    </script>
+</body>
+</html>

@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Báo Cáo Thống Kê - Cinema Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link th:href="@{/css/admin.css}" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- Header -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid">
+            <a class="navbar-brand" th:href="@{/admin}">
+                <i class="fas fa-film me-2"></i>Cinema Admin
+            </a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" th:href="@{/admin}">
+                    <i class="fas fa-arrow-left me-1"></i>Quay Về Dashboard
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid mt-4">
+        <!-- Alert Messages -->
+        <div th:if="${error}" class="alert alert-danger alert-dismissible fade show">
+            <i class="fas fa-exclamation-circle me-2"></i>
+            <span th:text="${error}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Đóng"></button>
+        </div>
+
+        <!-- Page Header -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h2><i class="fas fa-chart-bar me-3"></i>Báo Cáo Thống Kê</h2>
+                    <div class="d-flex gap-2">
+                        <button class="btn btn-outline-primary" onclick="exportReport()">
+                            <i class="fas fa-download me-2"></i>Xuất Báo Cáo
+                        </button>
+                        <button class="btn btn-outline-success" onclick="refreshData()">
+                            <i class="fas fa-sync-alt me-2"></i>Làm Mới
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Summary Statistics -->
+        <div class="row mb-4">
+            <div class="col-lg-3 col-md-6 mb-3">
+                <div class="card bg-primary text-white">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <h3 th:text="${totalUsers ?: 0}">0</h3>
+                                <small>Tổng Người Dùng</small>
+                            </div>
+                            <i class="fas fa-users fa-2x opacity-75"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-3">
+                <div class="card bg-success text-white">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <h3 th:text="${totalTheaters ?: 0}">0</h3>
+                                <small>Tổng Rạp Chiếu</small>
+                            </div>
+                            <i class="fas fa-building fa-2x opacity-75"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-3">
+                <div class="card bg-warning text-white">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <h3 th:text="${totalBookings ?: 0}">0</h3>
+                                <small>Tổng Đặt Vé</small>
+                            </div>
+                            <i class="fas fa-ticket-alt fa-2x opacity-75"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-3">
+                <div class="card bg-info text-white">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <h3 id="totalRevenue">0 VNĐ</h3>
+                                <small>Tổng Doanh Thu</small>
+                            </div>
+                            <i class="fas fa-money-bill-wave fa-2x opacity-75"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts Row -->
+        <div class="row mb-4">
+            <!-- User Registration Chart -->
+            <div class="col-lg-6 mb-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">
+                            <i class="fas fa-user-plus me-2"></i>Đăng Ký Người Dùng Theo Tháng
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="userRegistrationChart" width="400" height="200"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Booking Status Chart -->
+            <div class="col-lg-6 mb-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">
+                            <i class="fas fa-chart-pie me-2"></i>Trạng Thái Đặt Vé
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="bookingStatusChart" width="400" height="200"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Revenue Chart -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">
+                            <i class="fas fa-chart-line me-2"></i>Doanh Thu Theo Tháng
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="revenueChart" width="400" height="150"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Top Movies Table -->
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">
+                            <i class="fas fa-star me-2"></i>Phim Được Đặt Vé Nhiều Nhất
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Tên Phim</th>
+                                        <th>Thể Loại</th>
+                                        <th>Số Lượt Đặt</th>
+                                        <th>Doanh Thu</th>
+                                        <th>Đánh Giá</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="topMoviesTable">
+                                    <tr>
+                                        <td colspan="6" class="text-center">Đang tải dữ liệu...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Initialize charts when page loads
+        window.addEventListener('load', function() {
+            initializeCharts();
+            loadTopMovies();
+        });
+
+        // Sample data - in real application, this would come from the server
+        const sampleUserData = {
+            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+            datasets: [{
+                label: 'Người dùng mới',
+                data: [12, 19, 15, 25, 22, 30],
+                borderColor: 'rgb(75, 192, 192)',
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                tension: 0.1
+            }]
+        };
+
+        const sampleBookingData = {
+            labels: ['Đã xác nhận', 'Chờ xác nhận', 'Đã hủy', 'Hoàn thành'],
+            datasets: [{
+                data: [45, 25, 15, 15],
+                backgroundColor: [
+                    'rgba(40, 167, 69, 0.8)',
+                    'rgba(255, 193, 7, 0.8)',
+                    'rgba(220, 53, 69, 0.8)',
+                    'rgba(13, 202, 240, 0.8)'
+                ]
+            }]
+        };
+
+        const sampleRevenueData = {
+            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+            datasets: [{
+                label: 'Doanh thu (triệu VNĐ)',
+                data: [125, 189, 156, 245, 222, 330],
+                borderColor: 'rgb(255, 99, 132)',
+                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                tension: 0.1
+            }]
+        };
+
+        function initializeCharts() {
+            // User Registration Chart
+            const userCtx = document.getElementById('userRegistrationChart').getContext('2d');
+            new Chart(userCtx, {
+                type: 'line',
+                data: sampleUserData,
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+            // Booking Status Chart
+            const bookingCtx = document.getElementById('bookingStatusChart').getContext('2d');
+            new Chart(bookingCtx, {
+                type: 'doughnut',
+                data: sampleBookingData,
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+
+            // Revenue Chart
+            const revenueCtx = document.getElementById('revenueChart').getContext('2d');
+            new Chart(revenueCtx, {
+                type: 'bar',
+                data: sampleRevenueData,
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+            // Update total revenue
+            document.getElementById('totalRevenue').textContent = '1.267.000.000 VNĐ';
+        }
+
+        function loadTopMovies() {
+            // Sample data for top movies
+            const topMovies = [
+                { rank: 1, title: 'Avengers: Endgame', genre: 'Hành động', bookings: 1250, revenue: '450.000.000', rating: 8.9 },
+                { rank: 2, title: 'Spider-Man: No Way Home', genre: 'Hành động', bookings: 980, revenue: '380.000.000', rating: 8.7 },
+                { rank: 3, title: 'Top Gun: Maverick', genre: 'Hành động', bookings: 875, revenue: '320.000.000', rating: 8.5 },
+                { rank: 4, title: 'Black Panther', genre: 'Khoa học viễn tưởng', bookings: 720, revenue: '280.000.000', rating: 8.3 },
+                { rank: 5, title: 'Dune', genre: 'Khoa học viễn tưởng', bookings: 650, revenue: '250.000.000', rating: 8.1 }
+            ];
+
+            const tableBody = document.getElementById('topMoviesTable');
+            tableBody.innerHTML = topMovies.map(movie => `
+                <tr>
+                    <td><span class="badge bg-primary">${movie.rank}</span></td>
+                    <td><strong>${movie.title}</strong></td>
+                    <td><span class="badge bg-secondary">${movie.genre}</span></td>
+                    <td>${movie.bookings.toLocaleString()}</td>
+                    <td><strong>${movie.revenue} VNĐ</strong></td>
+                    <td><span class="text-warning">${movie.rating} <i class="fas fa-star"></i></span></td>
+                </tr>
+            `).join('');
+        }
+
+        function refreshData() {
+            // In a real application, this would fetch fresh data from the server
+            window.location.reload();
+        }
+
+        function exportReport() {
+            // In a real application, this would generate and download a report
+            alert('Chức năng xuất báo cáo sẽ được triển khai trong tương lai.');
+        }
+    </script>
+</body>
+</html>
