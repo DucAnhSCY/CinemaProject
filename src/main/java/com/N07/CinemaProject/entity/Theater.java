@@ -24,6 +24,17 @@ public class Theater {
     
     private String address;
     
+    // Thêm các trường mới cho thông tin chi tiết rạp
+    private String phone;
+    
+    private String email;
+    
+    @Column(columnDefinition = "TEXT")
+    private String description;
+    
+    @Column(name = "opening_hours")
+    private String openingHours;
+    
     @OneToMany(mappedBy = "theater", cascade = CascadeType.ALL)
     private List<Auditorium> auditoriums;
 }

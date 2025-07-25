@@ -1,6 +1,8 @@
 package com.N07.CinemaProject.repository;
 
 import com.N07.CinemaProject.entity.Screening;
+import com.N07.CinemaProject.entity.Auditorium;
+import com.N07.CinemaProject.entity.Movie;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -30,4 +32,12 @@ public interface ScreeningRepository extends JpaRepository<Screening, Long> {
     List<Screening> findScreeningsInTimeRange(
         @Param("fromTime") LocalDateTime fromTime, 
         @Param("toTime") LocalDateTime toTime);
+        
+    // Thêm các method cho SingleCinemaService
+    List<Screening> findByAuditoriumInOrderByStartTimeAsc(List<Auditorium> auditoriums);
+    
+    List<Screening> findByAuditoriumInAndStartTimeBetweenOrderByStartTimeAsc(
+        List<Auditorium> auditoriums, LocalDateTime startTime, LocalDateTime endTime);
+    
+    List<Screening> findByMovieAndAuditoriumInOrderByStartTimeAsc(Movie movie, List<Auditorium> auditoriums);
 }

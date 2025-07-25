@@ -27,6 +27,13 @@ public class Auditorium {
     @Column(name = "total_seats")
     private Integer totalSeats;
     
+    // Thêm các trường mới để mô tả loại phòng chiếu
+    @Column(name = "screen_type")
+    private String screenType; // 2D, 3D, IMAX, 4DX
+    
+    @Column(name = "sound_system")
+    private String soundSystem; // Dolby Atmos, DTS, THX
+    
     @OneToMany(mappedBy = "auditorium", cascade = CascadeType.ALL)
     private List<Seat> seats;
     

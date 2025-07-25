@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Entity
@@ -30,6 +31,10 @@ public class Seat {
     @Enumerated(EnumType.STRING)
     @Column(name = "seat_type")
     private SeatType seatType;
+    
+    // Thêm hệ số nhân giá cho từng loại ghế
+    @Column(name = "price_modifier", precision = 5, scale = 2)
+    private BigDecimal priceModifier = BigDecimal.ONE; // Default = 1.0
     
     @OneToMany(mappedBy = "seat", cascade = CascadeType.ALL)
     private List<BookedSeat> bookedSeats;
