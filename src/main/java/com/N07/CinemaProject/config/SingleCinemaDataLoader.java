@@ -6,16 +6,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
 /**
- * Khởi tạo dữ liệu mẫu cho hệ thống 1 rạp duy nhất
+ * Khởi tạo dữ liệu mẫu cho hệ thống 1 rạp duy nhất với 4 phòng chiếu, mỗi phòng 50 ghế
  */
 @Component
 @Order(2) // Chạy sau các CommandLineRunner khác
+@Transactional
 public class SingleCinemaDataLoader implements CommandLineRunner {
     
     @Autowired
@@ -38,57 +40,33 @@ public class SingleCinemaDataLoader implements CommandLineRunner {
     
     @Override
     public void run(String... args) throws Exception {
-        // Kiểm tra xem đã có dữ liệu chưa
-        if (theaterRepository.count() > 0) {
-            System.out.println("Database already contains theater data. Skipping initialization.");
-            
-            // Nếu có nhiều hơn 1 rạp, chuyển về 1 rạp duy nhất
-            if (theaterRepository.count() > 1) {
-                convertToSingleCinema();
-            }
-            return;
-        }
+        System.out.println("🎬 Initializing single cinema system with 4 auditoriums...");
         
-        System.out.println("Initializing single cinema system...");
+        // Kiểm tra và làm sạch dữ liệu cũ nếu cần
+        cleanupExistingData();
         
+        // Tạo hệ thống mới
         createSingleCinema();
         createSampleMovies();
         createSampleScreenings();
         createAdminUser();
         
-        System.out.println("Single cinema system initialized successfully!");
+        System.out.println("✅ Single cinema system initialized successfully!");
+        System.out.println("📋 System summary:");
+        System.out.println("   - 1 Theater: Cinema Paradise");
+        System.out.println("   - 4 Auditoriums: 50 seats each");
+        System.out.println("   - Seat types: VIP (20), Standard (21), Couple (9)");
+        System.out.println("   - Admin login: admin/password");
     }
     
-    private void convertToSingleCinema() {
-        System.out.println("Converting multi-theater system to single cinema...");
+    private void cleanupExistingData() {
+        // Xóa tất cả dữ liệu cũ để tạo lại hệ thống mới
+        screeningRepository.deleteAll();
+        seatRepository.deleteAll();
+        auditoriumRepository.deleteAll();
+        theaterRepository.deleteAll();
         
-        // Lấy rạp đầu tiên làm rạp chính
-        List<Theater> theaters = theaterRepository.findAll();
-        Theater mainTheater = theaters.get(0);
-        
-        // Cập nhật thông tin rạp chính
-        mainTheater.setName("Cinema Paradise");
-        mainTheater.setCity("Đà Nẵng");
-        mainTheater.setAddress("123 Lê Duẩn, Quận Hải Châu, Đà Nẵng");
-        mainTheater.setPhone("0236.3888.999");
-        mainTheater.setEmail("info@cinemaparadise.vn");
-        mainTheater.setDescription("Rạp chiếu phim hiện đại với công nghệ âm thanh và hình ảnh tối tân");
-        mainTheater.setOpeningHours("8:00 - 23:00 hàng ngày");
-        theaterRepository.save(mainTheater);
-        
-        // Chuyển tất cả auditorium về rạp chính
-        List<Auditorium> allAuditoriums = auditoriumRepository.findAll();
-        for (Auditorium auditorium : allAuditoriums) {
-            auditorium.setTheater(mainTheater);
-            auditoriumRepository.save(auditorium);
-        }
-        
-        // Xóa các rạp khác
-        for (int i = 1; i < theaters.size(); i++) {
-            theaterRepository.delete(theaters.get(i));
-        }
-        
-        System.out.println("Converted to single cinema: " + mainTheater.getName());
+        System.out.println("🧹 Cleaned up existing data");
     }
     
     private void createSingleCinema() {
@@ -99,125 +77,128 @@ public class SingleCinemaDataLoader implements CommandLineRunner {
         cinema.setAddress("123 Lê Duẩn, Quận Hải Châu, Đà Nẵng");
         cinema.setPhone("0236.3888.999");
         cinema.setEmail("info@cinemaparadise.vn");
-        cinema.setDescription("Rạp chiếu phim hiện đại với công nghệ âm thanh và hình ảnh tối tân");
+        cinema.setDescription("Rạp chiếu phim hiện đại với 4 phòng chiếu, mỗi phòng có 50 ghế được chia thành 3 loại: VIP, Thường và Couple");
         cinema.setOpeningHours("8:00 - 23:00 hàng ngày");
         cinema = theaterRepository.save(cinema);
         
-        // Tạo 5 phòng chiếu đa dạng
-        createAuditoriums(cinema);
+        // Tạo 4 phòng chiếu
+        create4Auditoriums(cinema);
         
-        System.out.println("Created cinema: " + cinema.getName());
+        System.out.println("🏢 Created cinema: " + cinema.getName());
     }
     
-    private void createAuditoriums(Theater cinema) {
-        // Phòng VIP
-        Auditorium vipAuditorium = new Auditorium();
-        vipAuditorium.setTheater(cinema);
-        vipAuditorium.setName("Phòng VIP");
-        vipAuditorium.setTotalSeats(50);
-        vipAuditorium.setScreenType("2D/3D");
-        vipAuditorium.setSoundSystem("Dolby Atmos");
-        vipAuditorium = auditoriumRepository.save(vipAuditorium);
-        createSeatsForAuditorium(vipAuditorium, 5, 10); // 5 hàng, 10 ghế mỗi hàng
+    private void create4Auditoriums(Theater cinema) {
+        String[] auditoriumNames = {"Phòng 1", "Phòng 2", "Phòng 3", "Phòng 4"};
+        String[] screenTypes = {"2D/3D", "2D/3D", "2D/3D", "2D/3D"};
+        String[] soundSystems = {"Dolby Atmos", "DTS", "THX", "Standard"};
         
-        // Phòng Standard
-        Auditorium standardAuditorium = new Auditorium();
-        standardAuditorium.setTheater(cinema);
-        standardAuditorium.setName("Phòng Standard");
-        standardAuditorium.setTotalSeats(120);
-        standardAuditorium.setScreenType("2D");
-        standardAuditorium.setSoundSystem("DTS");
-        standardAuditorium = auditoriumRepository.save(standardAuditorium);
-        createSeatsForAuditorium(standardAuditorium, 8, 15); // 8 hàng, 15 ghế mỗi hàng
-        
-        // Phòng IMAX
-        Auditorium imaxAuditorium = new Auditorium();
-        imaxAuditorium.setTheater(cinema);
-        imaxAuditorium.setName("Phòng IMAX");
-        imaxAuditorium.setTotalSeats(200);
-        imaxAuditorium.setScreenType("IMAX");
-        imaxAuditorium.setSoundSystem("IMAX Sound");
-        imaxAuditorium = auditoriumRepository.save(imaxAuditorium);
-        createSeatsForAuditorium(imaxAuditorium, 10, 20); // 10 hàng, 20 ghế mỗi hàng
-        
-        // Phòng 4DX
-        Auditorium fourDxAuditorium = new Auditorium();
-        fourDxAuditorium.setTheater(cinema);
-        fourDxAuditorium.setName("Phòng 4DX");
-        fourDxAuditorium.setTotalSeats(80);
-        fourDxAuditorium.setScreenType("4DX");
-        fourDxAuditorium.setSoundSystem("4DX Sound");
-        fourDxAuditorium = auditoriumRepository.save(fourDxAuditorium);
-        createSeatsForAuditorium(fourDxAuditorium, 8, 10); // 8 hàng, 10 ghế mỗi hàng
-        
-        // Phòng Family
-        Auditorium familyAuditorium = new Auditorium();
-        familyAuditorium.setTheater(cinema);
-        familyAuditorium.setName("Phòng Family");
-        familyAuditorium.setTotalSeats(150);
-        familyAuditorium.setScreenType("2D/3D");
-        familyAuditorium.setSoundSystem("THX");
-        familyAuditorium = auditoriumRepository.save(familyAuditorium);
-        createSeatsForAuditorium(familyAuditorium, 10, 15); // 10 hàng, 15 ghế mỗi hàng
-        
-        System.out.println("Created 5 auditoriums with different configurations");
-    }
-    
-    private void createSeatsForAuditorium(Auditorium auditorium, int rows, int seatsPerRow) {
-        String[] rowLabels = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O"};
-        
-        for (int row = 0; row < rows; row++) {
-            String rowLabel = rowLabels[row];
+        for (int i = 0; i < 4; i++) {
+            Auditorium auditorium = new Auditorium();
+            auditorium.setTheater(cinema);
+            auditorium.setName(auditoriumNames[i]);
+            auditorium.setTotalSeats(50);
+            auditorium.setScreenType(screenTypes[i]);
+            auditorium.setSoundSystem(soundSystems[i]);
+            auditorium = auditoriumRepository.save(auditorium);
             
-            for (int seatNum = 1; seatNum <= seatsPerRow; seatNum++) {
+            // Tạo 50 ghế cho mỗi phòng
+            create50SeatsForAuditorium(auditorium);
+            
+            System.out.println("🎭 Created " + auditorium.getName() + " with 50 seats");
+        }
+    }
+    
+    private void create50SeatsForAuditorium(Auditorium auditorium) {
+        // Cấu trúc ghế cho mỗi phòng 50 ghế:
+        // Hàng A, B: VIP (20 ghế) - 2 hàng x 10 ghế - hệ số 1.5
+        // Hàng C, D, E: STANDARD (21 ghế) - 3 hàng x 7 ghế - hệ số 1.0  
+        // Hàng F: COUPLE (9 ghế) - 1 hàng x 9 ghế - hệ số 1.3
+        
+        int seatCount = 0;
+        
+        // Hàng A, B: VIP (20 ghế)
+        for (int row = 0; row < 2; row++) {
+            String rowNumber = String.valueOf((char) ('A' + row));
+            for (int position = 1; position <= 10; position++) {
                 Seat seat = new Seat();
                 seat.setAuditorium(auditorium);
-                seat.setRowNumber(rowLabel);
-                seat.setSeatPosition(seatNum);
-                
-                // Xác định loại ghế và giá
-                if (auditorium.getName().contains("VIP") && (row == 0 || row == 1)) {
-                    seat.setSeatType(Seat.SeatType.VIP);
-                    seat.setPriceModifier(new BigDecimal("1.5"));
-                } else if (auditorium.getName().contains("4DX") || auditorium.getName().contains("IMAX")) {
-                    seat.setSeatType(Seat.SeatType.VIP);
-                    seat.setPriceModifier(new BigDecimal("2.0"));
-                } else {
-                    seat.setSeatType(Seat.SeatType.STANDARD);
-                    seat.setPriceModifier(new BigDecimal("1.0"));
-                }
-                
+                seat.setRowNumber(rowNumber);
+                seat.setSeatPosition(position);
+                seat.setSeatType(Seat.SeatType.VIP);
+                seat.setPriceModifier(new BigDecimal("1.50"));
                 seatRepository.save(seat);
+                seatCount++;
             }
         }
+        
+        // Hàng C, D, E: STANDARD (21 ghế)
+        for (int row = 2; row < 5; row++) {
+            String rowNumber = String.valueOf((char) ('A' + row));
+            for (int position = 1; position <= 7; position++) {
+                Seat seat = new Seat();
+                seat.setAuditorium(auditorium);
+                seat.setRowNumber(rowNumber);
+                seat.setSeatPosition(position);
+                seat.setSeatType(Seat.SeatType.STANDARD);
+                seat.setPriceModifier(new BigDecimal("1.00"));
+                seatRepository.save(seat);
+                seatCount++;
+            }
+        }
+        
+        // Hàng F: COUPLE (9 ghế)
+        String rowNumber = "F";
+        for (int position = 1; position <= 9; position++) {
+            Seat seat = new Seat();
+            seat.setAuditorium(auditorium);
+            seat.setRowNumber(rowNumber);
+            seat.setSeatPosition(position);
+            seat.setSeatType(Seat.SeatType.COUPLE);
+            seat.setPriceModifier(new BigDecimal("1.30"));
+            seatRepository.save(seat);
+            seatCount++;
+        }
+        
+        // Cập nhật lại tổng số ghế thực tế
+        auditorium.setTotalSeats(seatCount);
+        auditoriumRepository.save(auditorium);
     }
     
     private void createSampleMovies() {
         if (movieRepository.count() > 0) {
-            System.out.println("Movies already exist in database");
+            System.out.println("📽️ Movies already exist in database");
             return;
         }
         
-        // Tạo một số phim mẫu nếu chưa có
+        // Tạo một số phim mẫu
         Movie movie1 = new Movie();
-        movie1.setTitle("Avengers: Endgame");
-        movie1.setDurationMin(181);
-        movie1.setGenre("Action, Adventure, Drama");
-        movie1.setDescription("Sau sự kiện của Infinity War, các siêu anh hùng sống sót tập hợp một lần nữa...");
-        movie1.setPosterUrl("https://image.tmdb.org/t/p/w500/or06FN3Dka5tukK1e9sl16pB3iy.jpg");
-        movie1.setRating("PG-13");
+        movie1.setTitle("Oppenheimer");
+        movie1.setDurationMin(180);
+        movie1.setGenre("Drama, History");
+        movie1.setDescription("Câu chuyện về J. Robert Oppenheimer, nhà khoa học được giao nhiệm vụ phát triển bom nguyên tử trong Thế chiến II.");
+        movie1.setPosterUrl("https://image.tmdb.org/t/p/w500/8Gxv8gSFCU0XGDykEGv7zR1n2ua.jpg");
+        movie1.setRating("R");
         movieRepository.save(movie1);
         
         Movie movie2 = new Movie();
-        movie2.setTitle("Spider-Man: No Way Home");
-        movie2.setDurationMin(148);
-        movie2.setGenre("Action, Adventure, Fantasy");
-        movie2.setDescription("Peter Parker đối mặt với hậu quả khi danh tính của anh bị tiết lộ...");
-        movie2.setPosterUrl("https://image.tmdb.org/t/p/w500/1g0dhYtq4irTY1GPXvft6k4YLjm.jpg");
+        movie2.setTitle("Barbie");
+        movie2.setDurationMin(114);
+        movie2.setGenre("Comedy, Adventure");
+        movie2.setDescription("Barbie và Ken đang có một ngày tuyệt vời ở thế giới màu hồng, hoàn hảo của họ trong Barbieland.");
+        movie2.setPosterUrl("https://image.tmdb.org/t/p/w500/iuFNMS8U5cb6xfzi51Dbkovj7vM.jpg");
         movie2.setRating("PG-13");
         movieRepository.save(movie2);
         
-        System.out.println("Created sample movies");
+        Movie movie3 = new Movie();
+        movie3.setTitle("Spider-Man: Across the Spider-Verse");
+        movie3.setDurationMin(140);
+        movie3.setGenre("Animation, Action");
+        movie3.setDescription("Sau khi đoàn tụ với Gwen Stacy, Spider-Man thân thiện của Brooklyn được thúc đẩy khắp Đa vũ trụ.");
+        movie3.setPosterUrl("https://image.tmdb.org/t/p/w500/8Vt6mWEReuy4Of61Lnj5Xj704m8.jpg");
+        movie3.setRating("PG");
+        movieRepository.save(movie3);
+        
+        System.out.println("📽️ Created 3 sample movies");
     }
     
     private void createSampleScreenings() {
@@ -234,61 +215,63 @@ public class SingleCinemaDataLoader implements CommandLineRunner {
         for (int day = 0; day < 3; day++) {
             LocalDateTime currentDay = now.plusDays(day);
             
-            for (Movie movie : movies) {
-                for (Auditorium auditorium : auditoriums) {
-                    // Tạo 3 suất chiếu mỗi ngày cho mỗi phim trong mỗi phòng
-                    for (int slot = 0; slot < 3; slot++) {
-                        LocalDateTime startTime = currentDay
-                            .withHour(9 + slot * 4) // 9h, 13h, 17h, 21h
-                            .withMinute(0)
-                            .withSecond(0);
-                            
-                        Screening screening = new Screening();
-                        screening.setMovie(movie);
-                        screening.setAuditorium(auditorium);
-                        screening.setStartTime(startTime);
+            // Mỗi ngày mỗi phòng chiếu 2-3 suất
+            for (int auditoriumIndex = 0; auditoriumIndex < auditoriums.size(); auditoriumIndex++) {
+                Auditorium auditorium = auditoriums.get(auditoriumIndex);
+                Movie movie = movies.get(auditoriumIndex % movies.size()); // Xoay vòng phim
+                
+                // Tạo 3 suất chiếu mỗi ngày cho mỗi phòng
+                int[] timeSlots = {9, 14, 19}; // 9h sáng, 2h chiều, 7h tối
+                
+                for (int slot : timeSlots) {
+                    LocalDateTime startTime = currentDay
+                        .withHour(slot)
+                        .withMinute(0)
+                        .withSecond(0);
                         
-                        // Giá vé khác nhau theo phòng
-                        BigDecimal basePrice;
-                        if (auditorium.getName().contains("IMAX")) {
-                            basePrice = new BigDecimal("200000");
-                        } else if (auditorium.getName().contains("4DX")) {
-                            basePrice = new BigDecimal("250000");
-                        } else if (auditorium.getName().contains("VIP")) {
-                            basePrice = new BigDecimal("150000");
-                        } else {
-                            basePrice = new BigDecimal("100000");
-                        }
-                        
-                        // Giá cao hơn vào cuối tuần
-                        if (startTime.getDayOfWeek().getValue() >= 6) {
-                            basePrice = basePrice.multiply(new BigDecimal("1.2"));
-                        }
-                        
-                        screening.setTicketPrice(basePrice);
-                        screeningRepository.save(screening);
+                    Screening screening = new Screening();
+                    screening.setAuditorium(auditorium);
+                    screening.setStartTime(startTime);
+                    
+                    // Giá vé cơ bản 120,000 VND
+                    BigDecimal basePrice = new BigDecimal("120000");
+                    
+                    // Giá cao hơn vào buổi tối và cuối tuần
+                    if (slot >= 19) {
+                        basePrice = basePrice.multiply(new BigDecimal("1.25")); // +25% buổi tối
                     }
+                    
+                    if (startTime.getDayOfWeek().getValue() >= 6) {
+                        basePrice = basePrice.multiply(new BigDecimal("1.15")); // +15% cuối tuần
+                    }
+                    
+                    screening.setTicketPrice(basePrice);
+                    // Set movie after other properties to avoid lazy initialization issue
+                    screening.setMovie(movie);
+                    
+                    screeningRepository.save(screening);
                 }
             }
         }
         
-        System.out.println("Created sample screenings for next 3 days");
+        System.out.println("🎬 Created sample screenings for next 3 days");
     }
     
     private void createAdminUser() {
         if (userRepository.findByUsername("admin").isPresent()) {
+            System.out.println("👤 Admin user already exists");
             return;
         }
         
         User admin = new User();
         admin.setUsername("admin");
         admin.setEmail("admin@cinemaparadise.vn");
-        admin.setPasswordHash("$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi"); // password
+        admin.setPasswordHash("$2a$12$ql7t3dfII28oIf.6sUe/Uuomu.ClsPplwpbY8pMo83JAI6VwSn5Ra"); // password
         admin.setRole(User.Role.ADMIN);
         admin.setFullName("Cinema Administrator");
         admin.setIsEnabled(true);
         userRepository.save(admin);
         
-        System.out.println("Created admin user (username: admin, password: password)");
+        System.out.println("👤 Created admin user (username: admin, password: password)");
     }
 }

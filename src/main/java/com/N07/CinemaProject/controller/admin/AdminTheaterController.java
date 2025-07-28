@@ -2,6 +2,8 @@ package com.N07.CinemaProject.controller.admin;
 
 import com.N07.CinemaProject.entity.Theater;
 import com.N07.CinemaProject.entity.Auditorium;
+import com.N07.CinemaProject.service.SingleCinemaService;
+import com.N07.CinemaProject.service.AuditoriumService;
 import com.N07.CinemaProject.repository.TheaterRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Controller
@@ -19,72 +22,119 @@ import java.util.Optional;
 public class AdminTheaterController {
 
     @Autowired
+    private SingleCinemaService singleCinemaService;
+    
+    @Autowired
+    private AuditoriumService auditoriumService;
+    
+    @Autowired
     private TheaterRepository theaterRepository;
 
     @GetMapping
-    public String listTheaters(Model model) {
-        List<Theater> theaters = theaterRepository.findAll();
-        model.addAttribute("theaters", theaters);
-        return "admin/theater-management";
-    }
-
-    @GetMapping("/add")
-    public String addTheaterForm(Model model) {
-        model.addAttribute("theater", new Theater());
-        return "admin/theater-form";
-    }
-
-    @PostMapping("/add")
-    public String addTheater(@ModelAttribute Theater theater, RedirectAttributes redirectAttributes) {
+    public String cinemaManagement(Model model) {
         try {
-            theaterRepository.save(theater);
-            redirectAttributes.addFlashAttribute("success", "Đã thêm rạp chiếu thành công!");
+            SingleCinemaService.CinemaInfo cinemaInfo = singleCinemaService.getCinemaInfo();
+            model.addAttribute("cinemaInfo", cinemaInfo);
+            
+            // Thống kê chi tiết về từng phòng chiếu
+            List<Auditorium> auditoriums = cinemaInfo.getAuditoriums();
+            model.addAttribute("auditoriums", auditoriums);
+            
         } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("error", "Lỗi khi thêm rạp chiếu: " + e.getMessage());
+            model.addAttribute("error", "Lỗi khi tải thông tin rạp: " + e.getMessage());
+        }
+        
+        return "admin/cinema-management";
+    }
+
+    @GetMapping("/edit")
+    public String editCinemaForm(Model model) {
+        try {
+            Theater cinema = singleCinemaService.getCinema();
+            model.addAttribute("theater", cinema);
+            return "admin/cinema-edit-form";
+        } catch (Exception e) {
+            model.addAttribute("error", "Lỗi khi tải thông tin rạp: " + e.getMessage());
+            return "redirect:/admin/theaters";
+        }
+    }
+
+    @PostMapping("/edit")
+    public String editCinema(@ModelAttribute Theater theater, RedirectAttributes redirectAttributes) {
+        try {
+            Theater existingCinema = singleCinemaService.getCinema();
+            theater.setId(existingCinema.getId());
+            theaterRepository.save(theater);
+            redirectAttributes.addFlashAttribute("success", "Đã cập nhật thông tin rạp thành công!");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Lỗi khi cập nhật thông tin rạp: " + e.getMessage());
         }
         return "redirect:/admin/theaters";
     }
 
-    @GetMapping("/{id}/edit")
-    public String editTheaterForm(@PathVariable Long id, Model model) {
-        Optional<Theater> theater = theaterRepository.findById(id);
-        if (theater.isPresent()) {
-            model.addAttribute("theater", theater.get());
-            return "admin/theater-form";
-        }
-        return "redirect:/admin/theaters?error=Theater not found";
-    }
-
-    @PostMapping("/{id}/edit")
-    public String editTheater(@PathVariable Long id, @ModelAttribute Theater theater, RedirectAttributes redirectAttributes) {
+    @GetMapping("/auditoriums/{auditoriumId}")
+    public String auditoriumDetail(@PathVariable Long auditoriumId, Model model) {
         try {
-            theater.setId(id);
-            theaterRepository.save(theater);
-            redirectAttributes.addFlashAttribute("success", "Đã cập nhật rạp chiếu thành công!");
+            Optional<Auditorium> auditoriumOpt = auditoriumService.getAuditoriumById(auditoriumId);
+            if (!auditoriumOpt.isPresent()) {
+                model.addAttribute("error", "Không tìm thấy phòng chiếu");
+                return "redirect:/admin/theaters";
+            }
+            
+            Auditorium auditorium = auditoriumOpt.get();
+            
+            // Kiểm tra phòng chiếu có thuộc rạp không
+            if (!singleCinemaService.isAuditoriumBelongsToOurCinema(auditoriumId)) {
+                model.addAttribute("error", "Phòng chiếu không thuộc về rạp này");
+                return "redirect:/admin/theaters";
+            }
+            
+            model.addAttribute("auditorium", auditorium);
+            model.addAttribute("seats", auditorium.getSeats());
+            
         } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("error", "Lỗi khi cập nhật rạp chiếu: " + e.getMessage());
+            model.addAttribute("error", "Lỗi khi tải thông tin phòng chiếu: " + e.getMessage());
+            return "redirect:/admin/theaters";
         }
-        return "redirect:/admin/theaters";
+        
+        return "admin/auditorium-detail";
     }
 
-    @GetMapping("/{id}/auditoriums")
-    @ResponseBody
-    public List<Auditorium> getAuditoriumsByTheater(@PathVariable Long id) {
-        Optional<Theater> theater = theaterRepository.findById(id);
-        if (theater.isPresent()) {
-            return theater.get().getAuditoriums();
-        }
-        return List.of();
-    }
-
-    @DeleteMapping("/{id}")
-    @ResponseBody
-    public String deleteTheater(@PathVariable Long id) {
+    @PostMapping("/auditoriums/{auditoriumId}/reset-seats")
+    public String resetAuditoriumSeats(@PathVariable Long auditoriumId, RedirectAttributes redirectAttributes) {
         try {
-            theaterRepository.deleteById(id);
-            return "success";
+            if (!singleCinemaService.isAuditoriumBelongsToOurCinema(auditoriumId)) {
+                redirectAttributes.addFlashAttribute("error", "Phòng chiếu không thuộc về rạp này");
+                return "redirect:/admin/theaters";
+            }
+            
+            auditoriumService.resetSeatsForAuditorium(auditoriumId);
+            redirectAttributes.addFlashAttribute("success", "Đã reset lại 50 ghế cho phòng chiếu thành công!");
+            
         } catch (Exception e) {
-            return "error";
+            redirectAttributes.addFlashAttribute("error", "Lỗi khi reset ghế: " + e.getMessage());
+        }
+        
+        return "redirect:/admin/theaters/auditoriums/" + auditoriumId;
+    }
+
+    @GetMapping("/api/cinema-stats")
+    @ResponseBody
+    public Object getCinemaStats() {
+        try {
+            return singleCinemaService.getCinemaStats();
+        } catch (Exception e) {
+            return Map.of("error", "Lỗi khi tải thống kê rạp: " + e.getMessage());
+        }
+    }
+
+    @GetMapping("/api/auditoriums")
+    @ResponseBody
+    public List<Auditorium> getAllAuditoriums() {
+        try {
+            return singleCinemaService.getAllAuditoriums();
+        } catch (Exception e) {
+            return List.of();
         }
     }
 }

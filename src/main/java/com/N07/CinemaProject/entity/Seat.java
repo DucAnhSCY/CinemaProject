@@ -1,5 +1,6 @@
 package com.N07.CinemaProject.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,6 +21,7 @@ public class Seat {
     
     @ManyToOne
     @JoinColumn(name = "auditorium_id", nullable = false)
+    @JsonIgnore
     private Auditorium auditorium;
     
     @Column(name = "row_number")
@@ -37,6 +39,7 @@ public class Seat {
     private BigDecimal priceModifier = BigDecimal.ONE; // Default = 1.0
     
     @OneToMany(mappedBy = "seat", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<BookedSeat> bookedSeats;
     
     public enum SeatType {

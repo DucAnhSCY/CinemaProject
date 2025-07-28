@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -111,29 +112,61 @@ public class AuditoriumService {
         auditoriumRepository.deleteById(id);
     }
 
-    // Tạo ghế tự động cho phòng chiếu
+    // Tạo ghế tự động cho phòng chiếu (50 ghế với 3 loại)
     private void createSeatsForAuditorium(Auditorium auditorium, int rows, int seatsPerRow) {
-        for (int row = 0; row < rows; row++) {
+        // Cấu trúc ghế cho mỗi phòng 50 ghế:
+        // Hàng A, B: VIP (20 ghế) - 2 hàng x 10 ghế
+        // Hàng C, D, E: STANDARD (21 ghế) - 3 hàng x 7 ghế 
+        // Hàng F: COUPLE (9 ghế) - 1 hàng x 9 ghế
+        
+        int seatCount = 0;
+        
+        // Hàng A, B: VIP (20 ghế)
+        for (int row = 0; row < 2; row++) {
             String rowNumber = String.valueOf((char) ('A' + row));
-            
-            for (int position = 1; position <= seatsPerRow; position++) {
+            for (int position = 1; position <= 10; position++) {
                 Seat seat = new Seat();
                 seat.setAuditorium(auditorium);
                 seat.setRowNumber(rowNumber);
                 seat.setSeatPosition(position);
-                
-                // Phân loại ghế dựa trên vị trí
-                if (row < 2) {
-                    seat.setSeatType(Seat.SeatType.VIP); // 2 hàng đầu là VIP
-                } else if (row >= rows - 2) {
-                    seat.setSeatType(Seat.SeatType.COUPLE); // 2 hàng cuối là Couple
-                } else {
-                    seat.setSeatType(Seat.SeatType.STANDARD); // Các hàng giữa là Standard
-                }
-                
+                seat.setSeatType(Seat.SeatType.VIP);
+                seat.setPriceModifier(new BigDecimal("1.50")); // VIP có hệ số nhân 1.5
                 seatRepository.save(seat);
+                seatCount++;
             }
         }
+        
+        // Hàng C, D, E: STANDARD (21 ghế)
+        for (int row = 2; row < 5; row++) {
+            String rowNumber = String.valueOf((char) ('A' + row));
+            for (int position = 1; position <= 7; position++) {
+                Seat seat = new Seat();
+                seat.setAuditorium(auditorium);
+                seat.setRowNumber(rowNumber);
+                seat.setSeatPosition(position);
+                seat.setSeatType(Seat.SeatType.STANDARD);
+                seat.setPriceModifier(new BigDecimal("1.00")); // Standard có hệ số nhân 1.0
+                seatRepository.save(seat);
+                seatCount++;
+            }
+        }
+        
+        // Hàng F: COUPLE (9 ghế)
+        String rowNumber = "F";
+        for (int position = 1; position <= 9; position++) {
+            Seat seat = new Seat();
+            seat.setAuditorium(auditorium);
+            seat.setRowNumber(rowNumber);
+            seat.setSeatPosition(position);
+            seat.setSeatType(Seat.SeatType.COUPLE);
+            seat.setPriceModifier(new BigDecimal("1.30")); // Couple có hệ số nhân 1.3
+            seatRepository.save(seat);
+            seatCount++;
+        }
+        
+        // Cập nhật tổng số ghế trong auditorium
+        auditorium.setTotalSeats(seatCount);
+        auditoriumRepository.save(auditorium);
     }
 
     // Lấy ghế của phòng chiếu
@@ -144,8 +177,7 @@ public class AuditoriumService {
     // Cập nhật layout ghế
     @Transactional
     public void updateSeatLayout(Long auditoriumId, String seatLayoutJson) {
-        // TODO: Parse JSON và cập nhật seat layout
-        // Có thể implement sau nếu cần thiết
+        
     }
 
     // Đếm số auditorium theo theater
@@ -164,5 +196,23 @@ public class AuditoriumService {
         List<Auditorium> auditoriums = auditoriumRepository.findByTheaterId(theaterId);
         return auditoriums.stream()
                 .anyMatch(a -> a.getName().equalsIgnoreCase(name) && !a.getId().equals(id));
+    }
+    
+    /**
+     * Reset lại 50 ghế cho phòng chiếu theo layout mới
+     */
+    public void resetSeatsForAuditorium(Long auditoriumId) {
+        Optional<Auditorium> auditoriumOpt = auditoriumRepository.findById(auditoriumId);
+        if (!auditoriumOpt.isPresent()) {
+            throw new RuntimeException("Không tìm thấy phòng chiếu với ID: " + auditoriumId);
+        }
+        
+        Auditorium auditorium = auditoriumOpt.get();
+        
+        // Xóa tất cả ghế cũ
+        seatRepository.deleteByAuditoriumId(auditoriumId);
+        
+        // Tạo lại 50 ghế theo layout mới
+        createSeatsForAuditorium(auditorium, 6, 10); // 6 hàng, 10 ghế mỗi hàng = 60 ghế, nhưng hàng F chỉ có 6 ghế
     }
 }

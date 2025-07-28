@@ -1,5 +1,6 @@
 package com.N07.CinemaProject.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -18,13 +19,16 @@ public class BookedSeat {
     
     @ManyToOne
     @JoinColumn(name = "booking_id", nullable = false)
+    @JsonIgnore
     private Booking booking;
     
     @ManyToOne
     @JoinColumn(name = "seat_id", nullable = false)
+    @JsonIgnore
     private Seat seat;
     
     @ManyToOne
     @JoinColumn(name = "screening_id", nullable = false)
+    @JsonIgnore
     private Screening screening;
 }

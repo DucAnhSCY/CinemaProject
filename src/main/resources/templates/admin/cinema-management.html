@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản Lý Rạp Chiếu - Cinema Admin</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Cinema Theme CSS -->
+    <link th:href="@{/css/cinema-theme.css}" rel="stylesheet">
+    <!-- Cinema Info CSS -->
+    <link th:href="@{/css/cinema-info.css}" rel="stylesheet">
+    
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+</head>
+<body class="bg-dark">
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-custom fixed-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold" th:href="@{/admin}">
+                <i class="fas fa-film me-2"></i>CinemaBooking Admin
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/admin}">
+                            <i class="fas fa-tachometer-alt me-1"></i>Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/admin/movies}">
+                            <i class="fas fa-film me-1"></i>Quản Lý Phim
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" th:href="@{/admin/theaters}">
+                            <i class="fas fa-building me-1"></i>Quản Lý Rạp
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/admin/screenings}">
+                            <i class="fas fa-calendar-alt me-1"></i>Lịch Chiếu
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/admin/bookings}">
+                            <i class="fas fa-ticket-alt me-1"></i>Quản Lý Đặt Vé
+                        </a>
+                    </li>
+                    <li class="nav-item" sec:authorize="hasRole('ADMIN')">
+                        <a class="nav-link" th:href="@{/admin/users}">
+                            <i class="fas fa-users me-1"></i>Quản Lý User
+                        </a>
+                    </li>
+                </ul>
+                
+                <ul class="navbar-nav">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-user me-1"></i>
+                            <span sec:authentication="name">Admin</span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" th:href="@{/}">
+                                <i class="fas fa-home me-2"></i>Về trang chủ
+                            </a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" th:href="@{/auth/logout}">
+                                <i class="fas fa-sign-out-alt me-2"></i>Đăng xuất
+                            </a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <!-- Alert Messages -->
+            <div th:if="${success}" class="alert alert-success alert-dismissible fade show">
+                <i class="fas fa-check-circle me-2"></i>
+                <span th:text="${success}"></span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Đóng"></button>
+            </div>
+            
+            <div th:if="${error}" class="alert alert-danger alert-dismissible fade show">
+                <i class="fas fa-exclamation-circle me-2"></i>
+                <span th:text="${error}"></span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Đóng"></button>
+            </div>
+
+            <!-- Page Header -->
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h1 class="text-white">
+                                <i class="fas fa-building me-3"></i>Quản Lý Rạp Chiếu
+                            </h1>
+                            <p class="text-muted mb-0">Hệ thống 1 rạp duy nhất với 4 phòng chiếu</p>
+                        </div>
+                        <div>
+                            <a th:href="@{/admin/theaters/edit}" class="btn btn-primary">
+                                <i class="fas fa-edit me-2"></i>Chỉnh Sửa Thông Tin Rạp
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cinema Information Card -->
+            <div class="row mb-5" th:if="${cinemaInfo != null}">
+                <div class="col-12">
+                    <div class="cinema-info-card">
+                        <div class="row">
+                            <div class="col-lg-8">
+                                <h2 class="text-white mb-3" th:text="${cinemaInfo.name}">Cinema Paradise</h2>
+                                <div class="cinema-details">
+                                    <p class="text-muted mb-2">
+                                        <i class="fas fa-map-marker-alt text-primary me-2"></i>
+                                        <span th:text="${cinemaInfo.address + ', ' + cinemaInfo.city}">Địa chỉ</span>
+                                    </p>
+                                    <p class="text-muted mb-2" th:if="${cinemaInfo.phone}">
+                                        <i class="fas fa-phone text-primary me-2"></i>
+                                        <span th:text="${cinemaInfo.phone}">Số điện thoại</span>
+                                    </p>
+                                    <p class="text-muted mb-2" th:if="${cinemaInfo.email}">
+                                        <i class="fas fa-envelope text-primary me-2"></i>
+                                        <span th:text="${cinemaInfo.email}">Email</span>
+                                    </p>
+                                    <p class="text-muted mb-2" th:if="${cinemaInfo.openingHours}">
+                                        <i class="fas fa-clock text-primary me-2"></i>
+                                        <span th:text="${cinemaInfo.openingHours}">Giờ mở cửa</span>
+                                    </p>
+                                </div>
+                                <p class="text-white mt-3" th:if="${cinemaInfo.description}" th:text="${cinemaInfo.description}">
+                                    Mô tả rạp phim
+                                </p>
+                            </div>
+                            <div class="col-lg-4 text-center">
+                                <div class="cinema-stats">
+                                    <div class="stat-item">
+                                        <h3 class="text-primary" th:text="${#lists.size(cinemaInfo.auditoriums)}">4</h3>
+                                        <span class="text-muted">Phòng chiếu</span>
+                                    </div>
+                                    <div class="stat-item">
+                                        <h3 class="text-warning">200</h3>
+                                        <span class="text-muted">Tổng ghế</span>
+                                    </div>
+                                    <div class="stat-item">
+                                        <h3 class="text-success">3</h3>
+                                        <span class="text-muted">Loại ghế</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Auditoriums Management -->
+            <div class="row" th:if="${cinemaInfo != null and !#lists.isEmpty(cinemaInfo.auditoriums)}">
+                <div class="col-12 mb-4">
+                    <h3 class="text-white">
+                        <i class="fas fa-door-open me-2"></i>Quản Lý Phòng Chiếu
+                    </h3>
+                    <p class="text-muted">Quản lý các phòng chiếu và ghế ngồi trong rạp</p>
+                </div>
+                
+                <div class="col-lg-6 col-xl-3 mb-4" th:each="auditorium : ${cinemaInfo.auditoriums}">
+                    <div class="auditorium-card h-100">
+                        <div class="auditorium-header">
+                            <h4 class="auditorium-name" th:text="${auditorium.name}">Phòng 1</h4>
+                            <span class="auditorium-capacity" th:text="${auditorium.totalSeats + ' ghế'}">50 ghế</span>
+                        </div>
+                        <div class="auditorium-features">
+                            <div class="feature-item" th:if="${auditorium.soundSystem}">
+                                <i class="fas fa-volume-up text-primary"></i>
+                                <span th:text="${auditorium.soundSystem}">Dolby Atmos</span>
+                            </div>
+                            <div class="feature-item" th:if="${auditorium.projectionType}">
+                                <i class="fas fa-video text-warning"></i>
+                                <span th:text="${auditorium.projectionType}">4K Digital</span>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-couch text-success"></i>
+                                <span>50 ghế (3 loại)</span>
+                            </div>
+                        </div>
+                        <div class="seat-types">
+                            <small class="seat-type standard">
+                                <i class="fas fa-circle"></i> Standard (28 ghế)
+                            </small>
+                            <small class="seat-type vip">
+                                <i class="fas fa-circle"></i> VIP (16 ghế)
+                            </small>
+                            <small class="seat-type couple">
+                                <i class="fas fa-circle"></i> Couple (6 ghế)
+                            </small>
+                        </div>
+                        <div class="auditorium-actions mt-3">
+                            <a th:href="@{'/admin/theaters/auditoriums/' + ${auditorium.id}}" class="btn btn-outline-info btn-sm w-100 mb-2">
+                                <i class="fas fa-eye me-1"></i>Xem Chi Tiết Ghế
+                            </a>
+                            <button type="button" class="btn btn-outline-warning btn-sm w-100" 
+                                    th:onclick="'resetSeats(' + ${auditorium.id} + ')'" title="Reset lại 50 ghế">
+                                <i class="fas fa-redo me-1"></i>Reset Ghế
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- No Cinema Info Message -->
+            <div class="row" th:if="${cinemaInfo == null}">
+                <div class="col-12">
+                    <div class="text-center py-5">
+                        <div class="mb-4">
+                            <i class="fas fa-building fa-5x text-muted"></i>
+                        </div>
+                        <h3 class="text-white mb-3">Không tìm thấy thông tin rạp</h3>
+                        <p class="text-muted mb-4">
+                            Hệ thống đang trong quá trình cập nhật thông tin rạp chiếu phim.
+                        </p>
+                        <a th:href="@{/admin}" class="btn btn-primary btn-lg">
+                            <i class="fas fa-home me-2"></i>Quay về Dashboard
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer bg-dark-secondary mt-5">
+        <div class="container py-4">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <div class="footer-brand">
+                        <i class="fas fa-film me-2 text-primary"></i>
+                        <span class="fw-bold text-white">CinemaBooking Admin</span>
+                    </div>
+                    <p class="text-muted mb-0 mt-2">Hệ thống quản lý rạp chiếu phim</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <p class="text-muted mb-0">&copy; 2025 CinemaBooking. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Reset seats function
+        function resetSeats(auditoriumId) {
+            if (confirm('Bạn có chắc chắn muốn reset lại tất cả ghế trong phòng chiếu này?\nViệc này sẽ xóa tất cả ghế hiện tại và tạo lại 50 ghế mới.')) {
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = '/admin/theaters/auditoriums/' + auditoriumId + '/reset-seats';
+                
+                const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+                const csrfHeader = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
+                
+                const csrfInput = document.createElement('input');
+                csrfInput.type = 'hidden';
+                csrfInput.name = '_csrf';
+                csrfInput.value = csrfToken;
+                
+                form.appendChild(csrfInput);
+                document.body.appendChild(form);
+                form.submit();
+            }
+        }
+    </script>
+</body>
+</html>

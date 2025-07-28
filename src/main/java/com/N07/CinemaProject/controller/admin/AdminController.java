@@ -8,8 +8,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.N07.CinemaProject.repository.UserRepository;
-import com.N07.CinemaProject.repository.TheaterRepository;
 import com.N07.CinemaProject.repository.BookingRepository;
+import com.N07.CinemaProject.repository.MovieRepository;
+import com.N07.CinemaProject.service.SingleCinemaService;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -23,14 +24,34 @@ public class AdminController {
     private UserRepository userRepository;
     
     @Autowired
-    private TheaterRepository theaterRepository;
+    private BookingRepository bookingRepository;
     
     @Autowired
-    private BookingRepository bookingRepository;
+    private MovieRepository movieRepository;
+    
+    @Autowired
+    private SingleCinemaService singleCinemaService;
 
     @GetMapping("")
     public String adminDashboard(Model model) {
-        // Main admin dashboard
+        try {
+            // Thống kê cho hệ thống 1 rạp duy nhất
+            SingleCinemaService.CinemaStats cinemaStats = singleCinemaService.getCinemaStats();
+            model.addAttribute("cinemaStats", cinemaStats);
+            
+            // Các thống kê khác
+            long totalUsers = userRepository.count();
+            long totalMovies = movieRepository.count();
+            long totalBookings = bookingRepository.count();
+            
+            model.addAttribute("totalUsers", totalUsers);
+            model.addAttribute("totalMovies", totalMovies);
+            model.addAttribute("totalBookings", totalBookings);
+            
+        } catch (Exception e) {
+            model.addAttribute("error", "Lỗi khi tải thống kê: " + e.getMessage());
+        }
+        
         model.addAttribute("pageTitle", "Admin Dashboard");
         return "admin/dashboard";
     }
@@ -38,29 +59,35 @@ public class AdminController {
     @GetMapping("/system")
     @PreAuthorize("hasRole('ADMIN')")
     public String systemAdmin(Model model) {
-        // Add any necessary model attributes for system admin dashboard
         model.addAttribute("pageTitle", "Quản Trị Hệ Thống");
         return "system-admin";
     }
 
-    @GetMapping("/theater")
-    public String theaterAdmin(Model model) {
-        // Add any necessary model attributes for theater admin dashboard
+    @GetMapping("/cinema")
+    public String cinemaAdmin(Model model) {
+        try {
+            SingleCinemaService.CinemaInfo cinemaInfo = singleCinemaService.getCinemaInfo();
+            model.addAttribute("cinemaInfo", cinemaInfo);
+        } catch (Exception e) {
+            model.addAttribute("error", "Lỗi khi tải thông tin rạp: " + e.getMessage());
+        }
         model.addAttribute("pageTitle", "Quản Lý Rạp Chiếu");
-        return "theater-admin";
+        return "admin/cinema-management";
     }
 
     @GetMapping("/reports")
     public String reportsPage(Model model) {
         try {
-            // Get basic statistics for reports
+            // Thống kê cho hệ thống 1 rạp
+            SingleCinemaService.CinemaStats cinemaStats = singleCinemaService.getCinemaStats();
             long totalUsers = userRepository.count();
-            long totalTheaters = theaterRepository.count();
             long totalBookings = bookingRepository.count();
+            long totalMovies = movieRepository.count();
             
+            model.addAttribute("cinemaStats", cinemaStats);
             model.addAttribute("totalUsers", totalUsers);
-            model.addAttribute("totalTheaters", totalTheaters);
             model.addAttribute("totalBookings", totalBookings);
+            model.addAttribute("totalMovies", totalMovies);
             model.addAttribute("pageTitle", "Báo Cáo Thống Kê");
         } catch (Exception e) {
             model.addAttribute("error", "Lỗi khi tải báo cáo: " + e.getMessage());
@@ -68,15 +95,22 @@ public class AdminController {
         return "admin/reports";
     }
     
-    // API endpoints for system admin
+    // API endpoints
     @GetMapping("/api/dashboard-stats")
     @ResponseBody
     public Map<String, Object> getDashboardStats() {
         Map<String, Object> stats = new HashMap<>();
-        stats.put("totalUsers", userRepository.count());
-        stats.put("totalTheaters", theaterRepository.count());
-        stats.put("totalBookings", bookingRepository.count());
-        // Add more statistics as needed
+        try {
+            SingleCinemaService.CinemaStats cinemaStats = singleCinemaService.getCinemaStats();
+            stats.put("cinemaName", cinemaStats.getName());
+            stats.put("totalAuditoriums", cinemaStats.getTotalAuditoriums());
+            stats.put("totalSeats", cinemaStats.getTotalSeats());
+            stats.put("totalUsers", userRepository.count());
+            stats.put("totalMovies", movieRepository.count());
+            stats.put("totalBookings", bookingRepository.count());
+        } catch (Exception e) {
+            stats.put("error", "Lỗi khi tải thống kê: " + e.getMessage());
+        }
         return stats;
     }
     
@@ -87,9 +121,13 @@ public class AdminController {
         return userRepository.findAll();
     }
     
-    @GetMapping("/api/theaters")
+    @GetMapping("/api/cinema-info")
     @ResponseBody 
-    public Object getTheaters() {
-        return theaterRepository.findAll();
+    public Object getCinemaInfo() {
+        try {
+            return singleCinemaService.getCinemaInfo();
+        } catch (Exception e) {
+            return Map.of("error", "Lỗi khi tải thông tin rạp: " + e.getMessage());
+        }
     }
 }

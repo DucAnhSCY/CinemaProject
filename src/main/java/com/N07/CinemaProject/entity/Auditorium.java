@@ -1,5 +1,6 @@
 package com.N07.CinemaProject.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,6 +20,7 @@ public class Auditorium {
     
     @ManyToOne
     @JoinColumn(name = "theater_id", nullable = false)
+    @JsonIgnore
     private Theater theater;
     
     @Column(nullable = false)
@@ -35,8 +37,10 @@ public class Auditorium {
     private String soundSystem; // Dolby Atmos, DTS, THX
     
     @OneToMany(mappedBy = "auditorium", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Seat> seats;
     
     @OneToMany(mappedBy = "auditorium", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Screening> screenings;
 }

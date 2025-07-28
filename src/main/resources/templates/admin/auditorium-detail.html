@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chi Tiết Phòng Chiếu - Cinema Admin</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Cinema Theme CSS -->
+    <link th:href="@{/css/cinema-theme.css}" rel="stylesheet">
+    <!-- Seat Selection CSS -->
+    <link th:href="@{/css/seat-selection-50.css}" rel="stylesheet">
+    
+    <style>
+        .seat-map-admin {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 1rem 0;
+        }
+        
+        .screen {
+            background: linear-gradient(45deg, #333, #555);
+            color: white;
+            text-align: center;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            font-weight: bold;
+        }
+        
+        .seat-admin {
+            width: 35px;
+            height: 35px;
+            margin: 2px;
+            border: 2px solid;
+            border-radius: 6px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: bold;
+            cursor: default;
+        }
+        
+        .seat-admin.standard {
+            background: linear-gradient(45deg, #28a745, #34ce57);
+            border-color: #1e7e34;
+            color: white;
+        }
+        
+        .seat-admin.vip {
+            background: linear-gradient(45deg, #ffc107, #ffda6a);
+            border-color: #d39e00;
+            color: #333;
+        }
+        
+        .seat-admin.couple {
+            background: linear-gradient(45deg, #dc3545, #e85a6a);
+            border-color: #bd2130;
+            color: white;
+        }
+        
+        .row-label {
+            display: inline-block;
+            width: 30px;
+            text-align: center;
+            font-weight: bold;
+            color: #333;
+            margin-right: 10px;
+        }
+        
+        .seat-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 8px;
+        }
+        
+        .auditorium-info-card {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            border-radius: 15px;
+            padding: 2rem;
+            color: white;
+            margin-bottom: 2rem;
+        }
+    </style>
+</head>
+<body class="bg-dark">
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid">
+            <a class="navbar-brand" th:href="@{/admin}">
+                <i class="fas fa-film me-2"></i>Cinema Admin
+            </a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" th:href="@{/admin/theaters}">
+                    <i class="fas fa-arrow-left me-1"></i>Quay Về Quản Lý Rạp
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <!-- Alert Messages -->
+        <div th:if="${success}" class="alert alert-success alert-dismissible fade show">
+            <i class="fas fa-check-circle me-2"></i>
+            <span th:text="${success}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Đóng"></button>
+        </div>
+        
+        <div th:if="${error}" class="alert alert-danger alert-dismissible fade show">
+            <i class="fas fa-exclamation-circle me-2"></i>
+            <span th:text="${error}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Đóng"></button>
+        </div>
+
+        <!-- Auditorium Info -->
+        <div class="row mb-4" th:if="${auditorium != null}">
+            <div class="col-12">
+                <div class="auditorium-info-card">
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <h2 class="mb-3" th:text="${auditorium.name}">Phòng Chiếu 1</h2>
+                            <div class="auditorium-details">
+                                <p class="mb-2">
+                                    <i class="fas fa-building text-primary me-2"></i>
+                                    <span th:text="${auditorium.theater.name}">Cinema Paradise</span>
+                                </p>
+                                <p class="mb-2" th:if="${auditorium.soundSystem}">
+                                    <i class="fas fa-volume-up text-primary me-2"></i>
+                                    <span th:text="${auditorium.soundSystem}">Dolby Atmos</span>
+                                </p>
+                                <p class="mb-2" th:if="${auditorium.projectionType}">
+                                    <i class="fas fa-video text-primary me-2"></i>
+                                    <span th:text="${auditorium.projectionType}">4K Digital</span>
+                                </p>
+                                <p class="mb-2">
+                                    <i class="fas fa-couch text-primary me-2"></i>
+                                    <span th:text="${auditorium.totalSeats}">50</span> ghế (3 loại)
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 text-center">
+                            <div class="cinema-stats">
+                                <div class="stat-item">
+                                    <h3 class="text-success">28</h3>
+                                    <span class="text-muted">Standard</span>
+                                </div>
+                                <div class="stat-item">
+                                    <h3 class="text-warning">16</h3>
+                                    <span class="text-muted">VIP</span>
+                                </div>
+                                <div class="stat-item">
+                                    <h3 class="text-danger">6</h3>
+                                    <span class="text-muted">Couple</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Seat Map -->
+        <div class="row" th:if="${auditorium != null and seats != null}">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0">
+                                <i class="fas fa-map me-2"></i>Sơ Đồ Ghế - <span th:text="${auditorium.name}">Phòng 1</span>
+                            </h5>
+                            <form th:action="@{'/admin/theaters/auditoriums/' + ${auditorium.id} + '/reset-seats'}" 
+                                  method="post" style="display: inline;">
+                                <button type="submit" class="btn btn-warning btn-sm" 
+                                        onclick="return confirm('Bạn có chắc chắn muốn reset lại tất cả ghế?\nViệc này sẽ xóa tất cả ghế hiện tại và tạo lại 50 ghế mới.')">
+                                    <i class="fas fa-redo me-1"></i>Reset Ghế
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="seat-map-admin">
+                            <!-- Screen -->
+                            <div class="screen">
+                                <i class="fas fa-video me-2"></i>MÀN HÌNH
+                            </div>
+                            
+                            <!-- Seat Layout -->
+                            <div class="seat-layout" id="seatLayout">
+                                <!-- Seats will be generated here -->
+                                <div class="text-center">
+                                    <div class="spinner-border text-primary" role="status">
+                                        <span class="visually-hidden">Đang tải sơ đồ ghế...</span>
+                                    </div>
+                                    <p class="mt-2">Đang tải sơ đồ ghế...</p>
+                                </div>
+                            </div>
+                            
+                            <!-- Legend -->
+                            <div class="seat-legend mt-4">
+                                <div class="row text-center">
+                                    <div class="col-md-4">
+                                        <div class="seat-admin standard me-2"></div>
+                                        <span>Standard (28 ghế)</span>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="seat-admin vip me-2"></div>
+                                        <span>VIP (16 ghế)</span>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="seat-admin couple me-2"></div>
+                                        <span>Couple (6 ghế)</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- No Data Message -->
+        <div class="row" th:if="${auditorium == null}">
+            <div class="col-12">
+                <div class="text-center py-5">
+                    <div class="mb-4">
+                        <i class="fas fa-door-open fa-5x text-muted"></i>
+                    </div>
+                    <h3 class="text-white mb-3">Không tìm thấy phòng chiếu</h3>
+                    <p class="text-muted mb-4">
+                        Phòng chiếu không tồn tại hoặc đã bị xóa.
+                    </p>
+                    <a th:href="@{/admin/theaters}" class="btn btn-primary btn-lg">
+                        <i class="fas fa-arrow-left me-2"></i>Quay về Quản Lý Rạp
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script th:inline="javascript">
+        // Pass seats data to JavaScript
+        const seats = /*[[${seats}]]*/ [];
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            generateSeatMap();
+        });
+        
+        function generateSeatMap() {
+            const seatLayout = document.getElementById('seatLayout');
+            
+            if (!seats || seats.length === 0) {
+                seatLayout.innerHTML = '<div class="text-center text-muted"><p>Không có ghế nào trong phòng chiếu này</p></div>';
+                return;
+            }
+            
+            // Group seats by row
+            const seatRows = {};
+            seats.forEach(seat => {
+                const rowKey = seat.rowNumber;
+                if (!seatRows[rowKey]) {
+                    seatRows[rowKey] = [];
+                }
+                seatRows[rowKey].push(seat);
+            });
+            
+            // Sort rows and generate HTML
+            const sortedRows = Object.keys(seatRows).sort((a, b) => a - b);
+            let html = '';
+            
+            sortedRows.forEach(rowNumber => {
+                const row = seatRows[rowNumber];
+                row.sort((a, b) => a.seatPosition - b.seatPosition);
+                
+                // Get row letter (1=A, 2=B, etc.)
+                const rowLetter = String.fromCharCode(65 + rowNumber - 1);
+                
+                html += '<div class="seat-row">';
+                html += '<div class="row-label">' + rowLetter + '</div>';
+                
+                row.forEach(seat => {
+                    const seatTypeClass = seat.seatType ? seat.seatType.toLowerCase() : 'standard';
+                    html += '<div class="seat-admin ' + seatTypeClass + '" title="' + rowLetter + seat.seatPosition + ' - ' + seat.seatType + '">';
+                    html += seat.seatPosition;
+                    html += '</div>';
+                });
+                
+                html += '</div>';
+            });
+            
+            seatLayout.innerHTML = html;
+        }
+    </script>
+</body>
+</html>

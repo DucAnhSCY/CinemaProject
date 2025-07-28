@@ -1,7 +1,7 @@
 package com.N07.CinemaProject.controller.api;
 
+import com.N07.CinemaProject.dto.SeatDTO;
 import com.N07.CinemaProject.entity.Booking;
-import com.N07.CinemaProject.entity.Seat;
 import com.N07.CinemaProject.entity.Screening;
 import com.N07.CinemaProject.entity.User;
 import com.N07.CinemaProject.service.BookingService;
@@ -32,9 +32,9 @@ public class BookingApiController {
     @Autowired
     private UserService userService;
     @GetMapping("/screening/{screeningId}/seats")
-    public ResponseEntity<List<Seat>> getAvailableSeats(@PathVariable Long screeningId) {
+    public ResponseEntity<List<SeatDTO>> getAvailableSeats(@PathVariable Long screeningId) {
         try {
-            List<Seat> seats = bookingService.getAvailableSeats(screeningId);
+            List<SeatDTO> seats = bookingService.getSeatsWithStatus(screeningId);
             return ResponseEntity.ok(seats);
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();

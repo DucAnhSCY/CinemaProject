@@ -1,5 +1,6 @@
 package com.N07.CinemaProject.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -34,8 +35,10 @@ public class Screening {
     private BigDecimal ticketPrice;
     
     @OneToMany(mappedBy = "screening", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Booking> bookings;
     
     @OneToMany(mappedBy = "screening", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<BookedSeat> bookedSeats;
 }

@@ -169,7 +169,7 @@
                     <div th:each="movie : ${featuredMovies}" class="col-lg-3 col-md-4 col-sm-6">
                         <div class="movie-card">
                             <div class="movie-image">
-                                <img th:src="${movie.posterUrl}" th:alt="${movie.title != null ? movie.title : 'Movie poster'}" th:title="${movie.title != null ? movie.title : 'Movie poster'}" class="card-img-top" loading="lazy">
+                                <img th:src="${movie.posterUrl}" th:alt="${movie.title != null ? movie.title : 'Movie poster'}" th:title="${movie.title != null ? movie.title : 'Movie poster'}" title="Movie poster" class="card-img-top" loading="lazy">
                                 <div class="movie-overlay">
                                     <div class="movie-actions">
                                         <a th:href="@{/movies/{id}(id=${movie.id})}" class="btn btn-primary btn-sm">

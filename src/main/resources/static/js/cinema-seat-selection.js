@@ -1,11 +1,11 @@
-// Cinema Seat Selection System
-// Integrated with new database structure
+// Cinema Seat Selection System for Single Cinema with 50 seats per auditorium
+// Seat Layout: VIP (A,B) - Standard (C,D,E) - Couple (F)
 
 let selectedSeats = [];
 let seatPrices = {
     'STANDARD': 120000,
-    'VIP': 200000,
-    'COUPLE': 180000
+    'VIP': 180000,      // VIP có giá cao hơn
+    'COUPLE': 156000    // COUPLE = 120000 * 1.3
 };
 
 // Initialize seat selection when page loads
@@ -14,10 +14,47 @@ function initializeSeatSelection() {
         generateSeatMap();
         setupSeatEventListeners();
         updateBookingSummary();
+        displaySeatLegend();
     }
 }
 
-// Generate seat map based on database data
+// Display seat type legend
+function displaySeatLegend() {
+    const legendContainer = document.createElement('div');
+    legendContainer.className = 'seat-legend';
+    legendContainer.innerHTML = `
+        <div class="legend-title">Chú thích loại ghế:</div>
+        <div class="legend-items">
+            <div class="legend-item">
+                <div class="seat-sample vip available"></div>
+                <span>VIP (Hàng A,B) - ${formatPrice(seatPrices.VIP)}</span>
+            </div>
+            <div class="legend-item">
+                <div class="seat-sample standard available"></div>
+                <span>Thường (Hàng C,D,E) - ${formatPrice(seatPrices.STANDARD)}</span>
+            </div>
+            <div class="legend-item">
+                <div class="seat-sample couple available"></div>
+                <span>Couple (Hàng F) - ${formatPrice(seatPrices.COUPLE)}</span>
+            </div>
+            <div class="legend-item">
+                <div class="seat-sample booked"></div>
+                <span>Đã đặt</span>
+            </div>
+            <div class="legend-item">
+                <div class="seat-sample selected"></div>
+                <span>Đang chọn</span>
+            </div>
+        </div>
+    `;
+    
+    const seatMapContainer = document.getElementById('seatMap');
+    if (seatMapContainer && !seatMapContainer.querySelector('.seat-legend')) {
+        seatMapContainer.appendChild(legendContainer);
+    }
+}
+
+// Generate seat map based on database data (50 seats layout)
 function generateSeatMap() {
     const seatMapContainer = document.getElementById('seatMap');
     if (!seatMapContainer) return;
@@ -33,10 +70,12 @@ function generateSeatMap() {
     headerDiv.className = 'seat-map-header';
     headerDiv.innerHTML = `
         <div class="auditorium-info">
-            ${screeningData.auditorium.name}
+            <h3>${screeningData.auditorium.name}</h3>
+            <p>Hệ thống âm thanh: ${screeningData.auditorium.soundSystem}</p>
         </div>
         <div class="capacity-info">
-            Sức chứa: ${screeningData.auditorium.totalSeats} ghế
+            <strong>Sức chứa: ${screeningData.auditorium.totalSeats} ghế</strong><br>
+            <small>VIP (20) • Thường (21) • Couple (9)</small>
         </div>
     `;
     mapContainer.appendChild(headerDiv);
@@ -44,19 +83,20 @@ function generateSeatMap() {
     // Add screen
     const screenDiv = document.createElement('div');
     screenDiv.className = 'screen';
-    screenDiv.innerHTML = '<i class="fas fa-tv"></i>MÀN HÌNH';
+    screenDiv.innerHTML = '<i class="fas fa-tv"></i> MÀN HÌNH';
     mapContainer.appendChild(screenDiv);
 
-    // Group seats by row
+    // Group seats by row (A, B, C, D, E, F)
     const seatsByRow = groupSeatsByRow(availableSeats);
     
-    // Generate rows
-    Object.keys(seatsByRow)
-        .sort() // Sort rows alphabetically
-        .forEach(rowLetter => {
+    // Generate rows with specific layout for 50-seat auditorium
+    const rowOrder = ['A', 'B', 'C', 'D', 'E', 'F'];
+    rowOrder.forEach(rowLetter => {
+        if (seatsByRow[rowLetter]) {
             const rowDiv = createSeatRow(rowLetter, seatsByRow[rowLetter]);
             mapContainer.appendChild(rowDiv);
-        });
+        }
+    });
 
     seatMapContainer.appendChild(mapContainer);
 }

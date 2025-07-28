@@ -1,0 +1,276 @@
+/* CSS for Single Cinema Seat Selection - 50 seats layout */
+
+.seat-map-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+.seat-map-header {
+    text-align: center;
+    margin-bottom: 20px;
+    color: white;
+}
+
+.auditorium-info h3 {
+    margin: 0 0 10px 0;
+    font-size: 1.8em;
+    font-weight: bold;
+}
+
+.auditorium-info p {
+    margin: 5px 0;
+    opacity: 0.9;
+}
+
+.capacity-info {
+    background: rgba(255,255,255,0.1);
+    padding: 10px;
+    border-radius: 8px;
+    margin-top: 10px;
+}
+
+.screen {
+    background: linear-gradient(45deg, #444, #666);
+    color: white;
+    text-align: center;
+    padding: 15px;
+    margin: 20px 0;
+    border-radius: 50px;
+    font-weight: bold;
+    letter-spacing: 2px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.screen i {
+    margin-right: 10px;
+}
+
+.seat-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 8px 0;
+    gap: 4px;
+}
+
+.row-label {
+    width: 30px;
+    text-align: center;
+    font-weight: bold;
+    color: white;
+    font-size: 1.1em;
+}
+
+.seat {
+    width: 35px;
+    height: 35px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+    position: relative;
+}
+
+/* VIP Seats (Rows A, B) */
+.seat.vip.available {
+    background: linear-gradient(45deg, #FFD700, #FFA500);
+    color: #333;
+    box-shadow: 0 3px 8px rgba(255, 215, 0, 0.4);
+}
+
+.seat.vip.available:hover {
+    transform: scale(1.1);
+    box-shadow: 0 5px 15px rgba(255, 215, 0, 0.6);
+}
+
+/* Standard Seats (Rows C, D, E) */
+.seat.standard.available {
+    background: linear-gradient(45deg, #4CAF50, #45a049);
+    color: white;
+    box-shadow: 0 3px 8px rgba(76, 175, 80, 0.4);
+}
+
+.seat.standard.available:hover {
+    transform: scale(1.1);
+    box-shadow: 0 5px 15px rgba(76, 175, 80, 0.6);
+}
+
+/* Couple Seats (Row F) */
+.seat.couple.available {
+    background: linear-gradient(45deg, #E91E63, #C2185B);
+    color: white;
+    box-shadow: 0 3px 8px rgba(233, 30, 99, 0.4);
+    border-radius: 12px; /* More rounded for couple seats */
+}
+
+.seat.couple.available:hover {
+    transform: scale(1.1);
+    box-shadow: 0 5px 15px rgba(233, 30, 99, 0.6);
+}
+
+/* Booked Seats */
+.seat.booked {
+    background: #666;
+    color: #999;
+    cursor: not-allowed;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
+}
+
+/* Selected Seats */
+.seat.selected {
+    background: linear-gradient(45deg, #FF5722, #D84315) !important;
+    color: white !important;
+    transform: scale(1.15);
+    border: 2px solid #fff;
+    box-shadow: 0 5px 20px rgba(255, 87, 34, 0.7);
+    z-index: 10;
+}
+
+/* Seat Legend */
+.seat-legend {
+    margin-top: 25px;
+    background: rgba(255,255,255,0.1);
+    padding: 15px;
+    border-radius: 10px;
+    -webkit-backdrop-filter : blur(10px);
+    backdrop-filter: blur(10px);
+}
+
+.legend-title {
+    color: white;
+    font-weight: bold;
+    margin-bottom: 15px;
+    text-align: center;
+    font-size: 1.1em;
+}
+
+.legend-items {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 10px;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: white;
+    font-size: 0.9em;
+}
+
+.seat-sample {
+    width: 25px;
+    height: 25px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: bold;
+    flex-shrink: 0;
+}
+
+/* Booking Summary */
+.booking-summary {
+    background: rgba(255,255,255,0.95);
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 20px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.booking-summary h4 {
+    margin-top: 0;
+    color: #333;
+    border-bottom: 2px solid #667eea;
+    padding-bottom: 10px;
+}
+
+.selected-seats-list {
+    margin: 15px 0;
+}
+
+.selected-seat-item {
+    display: inline-block;
+    background: #667eea;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 15px;
+    margin: 3px;
+    font-size: 0.9em;
+}
+
+.total-amount {
+    font-size: 1.3em;
+    font-weight: bold;
+    color: #E91E63;
+    text-align: center;
+    margin: 15px 0;
+    padding: 10px;
+    background: #f0f0f0;
+    border-radius: 8px;
+}
+
+/* Row Spacing for Better Visual */
+.seat-row:first-of-type, 
+.seat-row:nth-of-type(2) {
+    /* VIP rows A, B */
+    margin-bottom: 15px;
+}
+
+.seat-row:nth-of-type(5) {
+    /* Row E - last standard row */
+    margin-bottom: 15px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .seat-map-container {
+        padding: 15px;
+    }
+    
+    .seat {
+        width: 30px;
+        height: 30px;
+        font-size: 10px;
+    }
+    
+    .row-label {
+        width: 25px;
+        font-size: 1em;
+    }
+    
+    .legend-items {
+        grid-template-columns: 1fr;
+    }
+    
+    .auditorium-info h3 {
+        font-size: 1.5em;
+    }
+}
+
+@media (max-width: 480px) {
+    .seat {
+        width: 25px;
+        height: 25px;
+        font-size: 9px;
+    }
+    
+    .row-label {
+        width: 20px;
+        font-size: 0.9em;
+    }
+    
+    .seat-row {
+        gap: 2px;
+    }
+}
