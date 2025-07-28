@@ -57,8 +57,12 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Booking> bookings;
     
+    @JsonIgnore
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private OAuth2UserProfile oauth2Profile;
+    
     public enum Role {
-        CUSTOMER, ADMIN, THEATER_MANAGER
+        CUSTOMER, ADMIN, THEATER_MANAGER, STAFF
     }
     
     public enum AuthProvider {

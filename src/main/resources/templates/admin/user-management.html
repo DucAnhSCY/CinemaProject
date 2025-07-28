@@ -119,7 +119,8 @@
                                 <td>
                                     <div class="btn-group" role="group">
                                         <a th:href="@{/admin/users/{id}/edit(id=${user.id})}" 
-                                           class="btn btn-outline-primary btn-sm" title="Chỉnh sửa">
+                                           class="btn btn-outline-primary btn-sm" title="Chỉnh sửa"
+                                           th:disabled="${user.role.name() == 'ADMIN'}">
                                             <i class="fas fa-edit"></i>
                                         </a>
                                         <button type="button" class="btn btn-outline-warning btn-sm" 

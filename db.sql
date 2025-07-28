@@ -4,14 +4,14 @@
  Source Server         : Java
  Source Server Type    : SQL Server
  Source Server Version : 16001140
- Source Catalog        : cinema_db
+ Source Catalog        : cinema
  Source Schema         : dbo
 
  Target Server Type    : SQL Server
  Target Server Version : 16001140
  File Encoding         : 65001
 
- Date: 28/07/2025 15:52:26
+ Date: 28/07/2025 17:34:29
 */
 
 
@@ -42,19 +42,16 @@ GO
 SET IDENTITY_INSERT [dbo].[auditoriums] ON
 GO
 
-INSERT INTO [dbo].[auditoriums] ([id], [theater_id], [name], [total_seats], [screen_type], [sound_system]) VALUES (N'1', N'1', N'Phòng VIP', N'50', N'2D/3D', N'Dolby Atmos')
+INSERT INTO [dbo].[auditoriums] ([id], [theater_id], [name], [total_seats], [screen_type], [sound_system]) VALUES (N'105', N'27', N'Phòng 1', N'50', N'2D/3D', N'Dolby Atmos')
 GO
 
-INSERT INTO [dbo].[auditoriums] ([id], [theater_id], [name], [total_seats], [screen_type], [sound_system]) VALUES (N'2', N'1', N'Phòng Standard', N'120', N'2D', N'DTS')
+INSERT INTO [dbo].[auditoriums] ([id], [theater_id], [name], [total_seats], [screen_type], [sound_system]) VALUES (N'106', N'27', N'Phòng 2', N'50', N'2D/3D', N'DTS')
 GO
 
-INSERT INTO [dbo].[auditoriums] ([id], [theater_id], [name], [total_seats], [screen_type], [sound_system]) VALUES (N'3', N'1', N'Phòng IMAX', N'200', N'IMAX', N'IMAX Sound')
+INSERT INTO [dbo].[auditoriums] ([id], [theater_id], [name], [total_seats], [screen_type], [sound_system]) VALUES (N'107', N'27', N'Phòng 3', N'50', N'2D/3D', N'THX')
 GO
 
-INSERT INTO [dbo].[auditoriums] ([id], [theater_id], [name], [total_seats], [screen_type], [sound_system]) VALUES (N'4', N'1', N'Phòng 4DX', N'80', N'4DX', N'4DX Sound')
-GO
-
-INSERT INTO [dbo].[auditoriums] ([id], [theater_id], [name], [total_seats], [screen_type], [sound_system]) VALUES (N'5', N'1', N'Phòng Family', N'150', N'2D/3D', N'THX')
+INSERT INTO [dbo].[auditoriums] ([id], [theater_id], [name], [total_seats], [screen_type], [sound_system]) VALUES (N'108', N'27', N'Phòng 4', N'50', N'2D/3D', N'Standard')
 GO
 
 SET IDENTITY_INSERT [dbo].[auditoriums] OFF
@@ -201,73 +198,157 @@ GO
 INSERT INTO [dbo].[movies] ([id], [title], [duration_min], [genre], [description], [release_date], [poster_url], [tmdb_id], [backdrop_url], [original_language], [vote_average], [vote_count], [popularity], [original_title], [adult], [director], [cast], [country], [language], [overview], [image_url], [rating], [status]) VALUES (N'3', N'Spider-Man: Across the Spider-Verse', N'140', N'Animation, Action', N'Sau khi đoàn tụ với Gwen Stacy, Spider-Man thân thiện của Brooklyn được thúc đẩy khắp Đa vũ trụ.', N'2023-06-02', N'https://image.tmdb.org/t/p/w500/8Vt6mWEReuy4Of61Lnj5Xj704m8.jpg', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, N'PG', N'ACTIVE')
 GO
 
-INSERT INTO [dbo].[movies] ([id], [title], [duration_min], [genre], [description], [release_date], [poster_url], [tmdb_id], [backdrop_url], [original_language], [vote_average], [vote_count], [popularity], [original_title], [adult], [director], [cast], [country], [language], [overview], [image_url], [rating], [status]) VALUES (N'4', N'Superman', N'150', N'Science Fiction, Adventure, Action', N'Phiên bản mới của siêu anh hùng Superman với câu chuyện khởi nguồn mới.', N'2025-07-09', N'https://image.tmdb.org/t/p/w500/f4hJ5yVSiOSnW9S6vtoGlNYvW5J.jpg', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, N'PG-13', N'COMING_SOON')
+INSERT INTO [dbo].[movies] ([id], [title], [duration_min], [genre], [description], [release_date], [poster_url], [tmdb_id], [backdrop_url], [original_language], [vote_average], [vote_count], [popularity], [original_title], [adult], [director], [cast], [country], [language], [overview], [image_url], [rating], [status]) VALUES (N'4', N'Bí Kíp Luyện Rồng', NULL, N'Fantasy, Family, Action', N'Phiên bản Live Action (người đóng) của studio DreamWorks rất được mong chờ đã ra mắt. Câu chuyện về một chàng trai trẻ với ước mơ trở thành thợ săn rồng, nhưng định mệnh lại đưa đẩy anh đến tình bạn bất ngờ với một chú rồng.', N'2025-06-06', N'https://image.tmdb.org/t/p/w500/sIQRZYHRJN1ZzulxpXuoXEgkkSe.jpg', N'1087192', N'https://image.tmdb.org/t/p/w1280/8J6UlIFcU7eZfq9iCLbgc8Auklg.jpg', N'en', N'8.082', N'1281', N'793.171', N'How to Train Your Dragon', N'0', NULL, NULL, NULL, NULL, NULL, NULL, NULL, N'ACTIVE')
 GO
 
-INSERT INTO [dbo].[movies] ([id], [title], [duration_min], [genre], [description], [release_date], [poster_url], [tmdb_id], [backdrop_url], [original_language], [vote_average], [vote_count], [popularity], [original_title], [adult], [director], [cast], [country], [language], [overview], [image_url], [rating], [status]) VALUES (N'5', N'Từ Vũ Trụ John Wick: Ballerina', N'115', N'Action, Thriller, Crime', N'Câu chuyện về Eve Macarro trên hành trình trả thù cho cái chết của gia đình mình.', N'2025-06-04', N'https://image.tmdb.org/t/p/w500/bw7gsWIJgoPyxrAgfSHc8xqVhDA.jpg', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, N'R', N'COMING_SOON')
+INSERT INTO [dbo].[movies] ([id], [title], [duration_min], [genre], [description], [release_date], [poster_url], [tmdb_id], [backdrop_url], [original_language], [vote_average], [vote_count], [popularity], [original_title], [adult], [director], [cast], [country], [language], [overview], [image_url], [rating], [status]) VALUES (N'5', N'Thanh Gươm Diệt Quỷ: Vô Hạn Thành', NULL, N'Animation, Action, Fantasy, Thriller', N'Khi các thành viên của Sát Quỷ Đoàn và Trụ Cột tham gia vào chương trình đặc huấn để chuẩn bị cho trận chiến sắp với lũ quỷ, Kibutsuji Muzan xuất hiện tại Dinh thự Ubuyashiki. Khi thủ lĩnh của Sát Quỷ Đoàn gặp nguy hiểm, Tanjiro và các Trụ Cột trở về trụ sở Thế nhưng, Muzan bất ngờ kéo toàn bộ Sát Quỷ Đoàn đến hang ổ cuối cùng của lũ quỷ là Vô Hạn Thành, mở màn cho trận đánh cuối cùng của cả hai phe.', N'2025-07-18', N'https://image.tmdb.org/t/p/w500/nV99ACeAa8fFFso0tQZ3HktEf5X.jpg', N'1311031', N'https://image.tmdb.org/t/p/w1280/1RgPyOhN4DRs225BGTlHJqCudII.jpg', N'ja', N'6.7', N'34', N'675.0133', N'劇場版「鬼滅の刃」無限城編 第一章 猗窩座再来', N'0', NULL, NULL, NULL, NULL, NULL, NULL, NULL, N'ACTIVE')
 GO
 
-INSERT INTO [dbo].[movies] ([id], [title], [duration_min], [genre], [description], [release_date], [poster_url], [tmdb_id], [backdrop_url], [original_language], [vote_average], [vote_count], [popularity], [original_title], [adult], [director], [cast], [country], [language], [overview], [image_url], [rating], [status]) VALUES (N'6', N'Bí Kíp Luyện Rồng', NULL, N'Fantasy, Family, Action', N'Phiên bản Live Action (người đóng) của studio DreamWorks rất được mong chờ đã ra mắt. Câu chuyện về một chàng trai trẻ với ước mơ trở thành thợ săn rồng, nhưng định mệnh lại đưa đẩy anh đến tình bạn bất ngờ với một chú rồng.', N'2025-06-06', N'https://image.tmdb.org/t/p/w500/sIQRZYHRJN1ZzulxpXuoXEgkkSe.jpg', N'1087192', N'https://image.tmdb.org/t/p/w1280/7HqLLVjdjhXS0Qoz1SgZofhkIpE.jpg', N'en', N'8.097', N'1182', N'976.0125', N'How to Train Your Dragon', N'0', NULL, NULL, NULL, NULL, NULL, NULL, NULL, N'ACTIVE')
+INSERT INTO [dbo].[movies] ([id], [title], [duration_min], [genre], [description], [release_date], [poster_url], [tmdb_id], [backdrop_url], [original_language], [vote_average], [vote_count], [popularity], [original_title], [adult], [director], [cast], [country], [language], [overview], [image_url], [rating], [status]) VALUES (N'6', N'Lilo và Stitch', NULL, N'Family, Science Fiction, Comedy, Adventure', N'Cuộc sống của hai chị em bị xáo trộn khi Lilo nhận nuôi một "con chó" kỳ lạ từ trại cứu hộ động vật. Con vật đó thực chất là Thí nghiệm 626, hay còn gọi là Stitch (lồng tiếng bởi Chris Sanders, người lồng tiếng cho Stitch trong bản hoạt hình gốc), một sinh vật ngoài hành tinh được tạo ra bởi nhà khoa học điên rồ Dr. Jumba Jookiba (Zach Galifianakis) với mục đích gây hỗn loạn. Stitch là một "quả bóng hủy diệt" không thể kiểm soát, nhưng Lilo lại coi cậu bé là người bạn thân nhất mà cô hằng mong ước.', N'2025-05-17', N'https://image.tmdb.org/t/p/w500/aOfmWQHIdunw4Xnc4ZL7DUDDgNl.jpg', N'552524', N'https://image.tmdb.org/t/p/w1280/7Zx3wDG5bBtcfk8lcnCWDOLM4Y4.jpg', N'en', N'7.347', N'1124', N'633.1745', N'Lilo & Stitch', N'0', NULL, NULL, NULL, NULL, NULL, NULL, NULL, N'ACTIVE')
 GO
 
-INSERT INTO [dbo].[movies] ([id], [title], [duration_min], [genre], [description], [release_date], [poster_url], [tmdb_id], [backdrop_url], [original_language], [vote_average], [vote_count], [popularity], [original_title], [adult], [director], [cast], [country], [language], [overview], [image_url], [rating], [status]) VALUES (N'7', N'M3GAN 2.0', NULL, N'Action, Science Fiction, Thriller', N'Phim lấy bối cảnh 2 năm sau các sự kiện ở phần 1. Lúc này, Gemma phát hiện công nghệ sản xuất MEGAN đã bị đánh cắp. Kẻ gian đã tạo ra một robot AI khác với chức năng tương tự MEGAN, nhưng được trang bị sức mạnh chiến đấu "khủng" hơn mang tên Amelia. Để "đối đầu" với Amelia, Gemma buộc phải "hồi sinh" và cải tiến MEGAN, hứa hẹn một trận chiến "nảy lửa" trên màn ảnh vào năm 2025.', N'2025-06-25', N'https://image.tmdb.org/t/p/w500/psASSoFLAGFoXwyfRg4hDZHgshN.jpg', N'1071585', N'https://image.tmdb.org/t/p/w1280/cEQMqB3ahd4mfeUN6VGC0ouVnZZ.jpg', N'en', N'7.7', N'452', N'697.3743', N'M3GAN 2.0', N'0', NULL, NULL, NULL, NULL, NULL, NULL, NULL, N'ACTIVE')
+INSERT INTO [dbo].[movies] ([id], [title], [duration_min], [genre], [description], [release_date], [poster_url], [tmdb_id], [backdrop_url], [original_language], [vote_average], [vote_count], [popularity], [original_title], [adult], [director], [cast], [country], [language], [overview], [image_url], [rating], [status]) VALUES (N'7', N'M3GAN 2.0', NULL, N'Action, Science Fiction, Thriller', N'Phim lấy bối cảnh 2 năm sau các sự kiện ở phần 1. Lúc này, Gemma phát hiện công nghệ sản xuất MEGAN đã bị đánh cắp. Kẻ gian đã tạo ra một robot AI khác với chức năng tương tự MEGAN, nhưng được trang bị sức mạnh chiến đấu "khủng" hơn mang tên Amelia. Để "đối đầu" với Amelia, Gemma buộc phải "hồi sinh" và cải tiến MEGAN, hứa hẹn một trận chiến "nảy lửa" trên màn ảnh vào năm 2025.', N'2025-06-25', N'https://image.tmdb.org/t/p/w500/psASSoFLAGFoXwyfRg4hDZHgshN.jpg', N'1071585', N'https://image.tmdb.org/t/p/w1280/cEQMqB3ahd4mfeUN6VGC0ouVnZZ.jpg', N'en', N'7.626', N'518', N'505.6093', N'M3GAN 2.0', N'0', NULL, NULL, NULL, NULL, NULL, NULL, NULL, N'ACTIVE')
 GO
 
-INSERT INTO [dbo].[movies] ([id], [title], [duration_min], [genre], [description], [release_date], [poster_url], [tmdb_id], [backdrop_url], [original_language], [vote_average], [vote_count], [popularity], [original_title], [adult], [director], [cast], [country], [language], [overview], [image_url], [rating], [status]) VALUES (N'8', N'Thanh Gươm Diệt Quỷ: Vô Hạn Thành', NULL, N'Animation, Action, Fantasy, Thriller', N'Khi các thành viên của Sát Quỷ Đoàn và Trụ Cột tham gia vào chương trình đặc huấn để chuẩn bị cho trận chiến sắp với lũ quỷ, Kibutsuji Muzan xuất hiện tại Dinh thự Ubuyashiki. Khi thủ lĩnh của Sát Quỷ Đoàn gặp nguy hiểm, Tanjiro và các Trụ Cột trở về trụ sở Thế nhưng, Muzan bất ngờ kéo toàn bộ Sát Quỷ Đoàn đến hang ổ cuối cùng của lũ quỷ là Vô Hạn Thành, mở màn cho trận đánh cuối cùng của cả hai phe.', N'2025-07-18', N'https://image.tmdb.org/t/p/w500/nV99ACeAa8fFFso0tQZ3HktEf5X.jpg', N'1311031', N'https://image.tmdb.org/t/p/w1280/1RgPyOhN4DRs225BGTlHJqCudII.jpg', N'ja', N'6.8', N'18', N'474.4508', N'劇場版「鬼滅の刃」無限城編 第一章 猗窩座再来', N'0', NULL, NULL, NULL, NULL, NULL, NULL, NULL, N'ACTIVE')
+INSERT INTO [dbo].[movies] ([id], [title], [duration_min], [genre], [description], [release_date], [poster_url], [tmdb_id], [backdrop_url], [original_language], [vote_average], [vote_count], [popularity], [original_title], [adult], [director], [cast], [country], [language], [overview], [image_url], [rating], [status]) VALUES (N'8', N'Bộ Tứ Siêu Đẳng: Bước Đi Đầu Tiên', NULL, N'Science Fiction, Adventure', N'Sau một chuyến bay thám hiểm vũ trụ, bốn phi hành gia bất ngờ sở hữu năng lực siêu nhiên và trở thành gia đình siêu anh hùng đầu tiên của Marvel. The Fantastic Four: First Steps là bộ phim mở đầu Kỷ nguyên anh hùng thứ sáu (Phase Six), đặt nền móng cho siêu bom tấn Avengers: Doomsday trong năm sau.', N'2025-07-23', N'https://image.tmdb.org/t/p/w500/n0bqzWiKGJsmnvOlkTiYykhhM4E.jpg', N'617126', N'https://image.tmdb.org/t/p/w1280/s94NjfKkcSczZ1FembwmQZwsuwY.jpg', N'en', N'7.335', N'460', N'416.2964', N'The Fantastic 4: First Steps', N'0', NULL, NULL, NULL, NULL, NULL, NULL, NULL, N'ACTIVE')
 GO
 
-INSERT INTO [dbo].[movies] ([id], [title], [duration_min], [genre], [description], [release_date], [poster_url], [tmdb_id], [backdrop_url], [original_language], [vote_average], [vote_count], [popularity], [original_title], [adult], [director], [cast], [country], [language], [overview], [image_url], [rating], [status]) VALUES (N'9', N'Superman', NULL, N'Science Fiction, Adventure, Action', N'Mùa hè tới đây, Warner Bros. Pictures sẽ mang “Superman” - phim điện ảnh đầu tiên của DC Studios đến các rạp chiếu trên toàn cầu. Với phong cách riêng biệt của mình, James Gunn sẽ khắc họa người hùng huyền thoại trong vũ trụ DC hoàn toàn mới, với sự kết hợp độc đáo của các yếu tố hành động đỉnh cao, hài hước và vô cùng cảm xúc. Một Superman với lòng trắc ẩn và niềm tin vào sự thiện lương của con người sẽ xuất hiện đầy hứa hẹn trên màn ảnh.', N'2025-07-09', N'https://image.tmdb.org/t/p/w500/f4hJ5yVSiOSnW9S6vtoGlNYvW5J.jpg', N'1061474', N'https://image.tmdb.org/t/p/w1280/ApRxyHFuvv5yghedxXPJSm9FEDe.jpg', N'en', N'7.446', N'1116', N'354.5509', N'Superman', N'0', NULL, NULL, NULL, NULL, NULL, NULL, NULL, N'ACTIVE')
+INSERT INTO [dbo].[movies] ([id], [title], [duration_min], [genre], [description], [release_date], [poster_url], [tmdb_id], [backdrop_url], [original_language], [vote_average], [vote_count], [popularity], [original_title], [adult], [director], [cast], [country], [language], [overview], [image_url], [rating], [status]) VALUES (N'9', N'Cô Dâu Hành Động', NULL, N'Action, Comedy', N'', N'2025-06-19', N'https://image.tmdb.org/t/p/w500/3mExdWLSxAiUCb4NMcYmxSkO7n4.jpg', N'1124619', N'https://image.tmdb.org/t/p/w1280/h6gChZHFpmbwqwV3uQsoakp77p1.jpg', N'en', N'6.059', N'34', N'398.7898', N'Bride Hard', N'0', NULL, NULL, NULL, NULL, NULL, NULL, NULL, N'ACTIVE')
 GO
 
-INSERT INTO [dbo].[movies] ([id], [title], [duration_min], [genre], [description], [release_date], [poster_url], [tmdb_id], [backdrop_url], [original_language], [vote_average], [vote_count], [popularity], [original_title], [adult], [director], [cast], [country], [language], [overview], [image_url], [rating], [status]) VALUES (N'10', N'Siêu Nhí Karate: Những Câu Chuyện Huyền Thoại', NULL, N'Action, Adventure, Drama', N'', N'2025-05-08', N'https://image.tmdb.org/t/p/w500/jMtD6YLSTCaBlCAsGxGOa4n2Po8.jpg', N'1011477', N'https://image.tmdb.org/t/p/w1280/7Q2CmqIVJuDAESPPp76rWIiA0AD.jpg', N'en', N'7.231', N'526', N'339.016', N'Karate Kid: Legends', N'0', NULL, NULL, NULL, NULL, NULL, NULL, NULL, N'ACTIVE')
+INSERT INTO [dbo].[movies] ([id], [title], [duration_min], [genre], [description], [release_date], [poster_url], [tmdb_id], [backdrop_url], [original_language], [vote_average], [vote_count], [popularity], [original_title], [adult], [director], [cast], [country], [language], [overview], [image_url], [rating], [status]) VALUES (N'10', N'Người Đàn Ông Không Có Quá Khứ', NULL, N'Action, Drama', N'Người đàn ông mất trí nhớ tỉnh dậy ở một thành phố xa lạ, tìm kiếm sự thật về quá khứ. Được đồng minh hỗ trợ, thâm nhập vào băng đảng hùng mạnh, tham gia vào trận chiến vượt thời gian trong khi số phận đang rình rập.', N'2025-01-13', N'https://image.tmdb.org/t/p/w500/eWHvROuznSzcxBAAkzX1X0Rmzoe.jpg', N'1315986', N'https://image.tmdb.org/t/p/w1280/8or4S9BPhkeYK0vlKsPFee4JVWI.jpg', N'en', N'6.413', N'40', N'326.2724', N'Man with No Past', N'0', NULL, NULL, NULL, NULL, NULL, NULL, NULL, N'ACTIVE')
 GO
 
-INSERT INTO [dbo].[movies] ([id], [title], [duration_min], [genre], [description], [release_date], [poster_url], [tmdb_id], [backdrop_url], [original_language], [vote_average], [vote_count], [popularity], [original_title], [adult], [director], [cast], [country], [language], [overview], [image_url], [rating], [status]) VALUES (N'11', N'Con Đường Băng 2: Trả Đũa', NULL, N'Action, Thriller, Drama', N'Tài xế xe tải đường băng huyền thoại Mike McCann đến Nepal để hoàn thành tâm nguyện cuối cùng của người anh trai quá cố: rải tro cốt trên đỉnh Everest. Nhưng hành trình tưởng như bình yên lại trở thành ác mộng khi chiếc xe buýt chở đầy du khách mà anh đi cùng bị tấn công trên cung đường “Tiến về bầu trời” – một trong những tuyến đường nguy hiểm nhất thế giới. Trên vùng núi cao hiểm trở, McCann và người hướng dẫn leo núi buộc phải chiến đấu với nhóm lính đánh thuê bí ẩn, bảo vệ những người dân vô tội – và một ngôi làng đang đứng bên bờ vực bị xóa sổ.', N'2025-06-27', N'https://image.tmdb.org/t/p/w500/cQN9rZj06rXMVkk76UF1DfBAico.jpg', N'1119878', N'https://image.tmdb.org/t/p/w1280/962KXsr09uK8wrmUg9TjzmE7c4e.jpg', N'en', N'7.025', N'139', N'317.834', N'Ice Road: Vengeance', N'0', NULL, NULL, NULL, NULL, NULL, NULL, NULL, N'ACTIVE')
+INSERT INTO [dbo].[movies] ([id], [title], [duration_min], [genre], [description], [release_date], [poster_url], [tmdb_id], [backdrop_url], [original_language], [vote_average], [vote_count], [popularity], [original_title], [adult], [director], [cast], [country], [language], [overview], [image_url], [rating], [status]) VALUES (N'11', N'Superman', NULL, N'Science Fiction, Adventure, Action', N'Mùa hè tới đây, Warner Bros. Pictures sẽ mang “Superman” - phim điện ảnh đầu tiên của DC Studios đến các rạp chiếu trên toàn cầu. Với phong cách riêng biệt của mình, James Gunn sẽ khắc họa người hùng huyền thoại trong vũ trụ DC hoàn toàn mới, với sự kết hợp độc đáo của các yếu tố hành động đỉnh cao, hài hước và vô cùng cảm xúc. Một Superman với lòng trắc ẩn và niềm tin vào sự thiện lương của con người sẽ xuất hiện đầy hứa hẹn trên màn ảnh.', N'2025-07-09', N'https://image.tmdb.org/t/p/w500/f4hJ5yVSiOSnW9S6vtoGlNYvW5J.jpg', N'1061474', N'https://image.tmdb.org/t/p/w1280/ApRxyHFuvv5yghedxXPJSm9FEDe.jpg', N'en', N'7.4', N'1229', N'320.7292', N'Superman', N'0', NULL, NULL, NULL, NULL, NULL, NULL, NULL, N'ACTIVE')
 GO
 
-INSERT INTO [dbo].[movies] ([id], [title], [duration_min], [genre], [description], [release_date], [poster_url], [tmdb_id], [backdrop_url], [original_language], [vote_average], [vote_count], [popularity], [original_title], [adult], [director], [cast], [country], [language], [overview], [image_url], [rating], [status]) VALUES (N'12', N'Cô Dâu Hành Động', NULL, N'Action, Comedy', N'', N'2025-06-19', N'https://image.tmdb.org/t/p/w500/3mExdWLSxAiUCb4NMcYmxSkO7n4.jpg', N'1124619', N'https://image.tmdb.org/t/p/w1280/h6gChZHFpmbwqwV3uQsoakp77p1.jpg', N'en', N'5.68', N'25', N'289.0716', N'Bride Hard', N'0', NULL, NULL, NULL, NULL, NULL, NULL, NULL, N'ACTIVE')
+INSERT INTO [dbo].[movies] ([id], [title], [duration_min], [genre], [description], [release_date], [poster_url], [tmdb_id], [backdrop_url], [original_language], [vote_average], [vote_count], [popularity], [original_title], [adult], [director], [cast], [country], [language], [overview], [image_url], [rating], [status]) VALUES (N'12', N'Siêu Nhí Karate: Những Câu Chuyện Huyền Thoại', NULL, N'Action, Adventure, Drama', N'', N'2025-05-08', N'https://image.tmdb.org/t/p/w500/jMtD6YLSTCaBlCAsGxGOa4n2Po8.jpg', N'1011477', N'https://image.tmdb.org/t/p/w1280/7Q2CmqIVJuDAESPPp76rWIiA0AD.jpg', N'en', N'7.218', N'554', N'306.2789', N'Karate Kid: Legends', N'0', NULL, NULL, NULL, NULL, NULL, NULL, NULL, N'ACTIVE')
 GO
 
-INSERT INTO [dbo].[movies] ([id], [title], [duration_min], [genre], [description], [release_date], [poster_url], [tmdb_id], [backdrop_url], [original_language], [vote_average], [vote_count], [popularity], [original_title], [adult], [director], [cast], [country], [language], [overview], [image_url], [rating], [status]) VALUES (N'13', N'Thế Giới Khủng Long: Tái Sinh', NULL, N'Science Fiction, Adventure, Action', N'Thế Giới Khủng Long: Tái Sinh lấy bối cảnh 5 năm sau phần phim Thế Giới Khủng Long: Lãnh Địa, môi trường Trái đất đã chứng tỏ phần lớn là không phù hợp với khủng long. Nhiều loài thằn lằn tiền sử được tái sinh đã chết. Những con chưa chết đã rút lui đến một vùng nhiệt đới hẻo lánh gần phòng thí nghiệm. Địa điểm đó chính là nơi bộ ba Scarlett Johansson, Mahershala Ali và Jonathan Bailey dấn thân vào một nhiệm vụ cực kỳ hiểm nguy.', N'2025-07-01', N'https://image.tmdb.org/t/p/w500/2IVVciw7dPhUlNmYIaz0s1d56SZ.jpg', N'1234821', N'https://image.tmdb.org/t/p/w1280/zNriRTr0kWwyaXPzdg1EIxf0BWk.jpg', N'en', N'6.373', N'783', N'244.2464', N'Jurassic World Rebirth', N'0', NULL, NULL, NULL, NULL, NULL, NULL, NULL, N'ACTIVE')
+INSERT INTO [dbo].[movies] ([id], [title], [duration_min], [genre], [description], [release_date], [poster_url], [tmdb_id], [backdrop_url], [original_language], [vote_average], [vote_count], [popularity], [original_title], [adult], [director], [cast], [country], [language], [overview], [image_url], [rating], [status]) VALUES (N'13', N'Con Đường Băng 2: Trả Đũa', NULL, N'Action, Thriller, Drama', N'Tài xế xe tải đường băng huyền thoại Mike McCann đến Nepal để hoàn thành tâm nguyện cuối cùng của người anh trai quá cố: rải tro cốt trên đỉnh Everest. Nhưng hành trình tưởng như bình yên lại trở thành ác mộng khi chiếc xe buýt chở đầy du khách mà anh đi cùng bị tấn công trên cung đường “Tiến về bầu trời” – một trong những tuyến đường nguy hiểm nhất thế giới. Trên vùng núi cao hiểm trở, McCann và người hướng dẫn leo núi buộc phải chiến đấu với nhóm lính đánh thuê bí ẩn, bảo vệ những người dân vô tội – và một ngôi làng đang đứng bên bờ vực bị xóa sổ.', N'2025-06-27', N'https://image.tmdb.org/t/p/w500/cQN9rZj06rXMVkk76UF1DfBAico.jpg', N'1119878', N'https://image.tmdb.org/t/p/w1280/962KXsr09uK8wrmUg9TjzmE7c4e.jpg', N'en', N'6.912', N'147', N'307.8691', N'Ice Road: Vengeance', N'0', NULL, NULL, NULL, NULL, NULL, NULL, NULL, N'ACTIVE')
 GO
 
-INSERT INTO [dbo].[movies] ([id], [title], [duration_min], [genre], [description], [release_date], [poster_url], [tmdb_id], [backdrop_url], [original_language], [vote_average], [vote_count], [popularity], [original_title], [adult], [director], [cast], [country], [language], [overview], [image_url], [rating], [status]) VALUES (N'14', N'Bad Boas: Bộ đôi phá án', NULL, N'Action, Comedy, Crime, Mystery', N'Khi một cảnh sát cộng đồng hăng hái quá mức và một cựu thanh tra liều lĩnh buộc phải hợp tác, hàng loạt hỗn loạn bùng nổ trên đường phố Rotterdam.', N'2025-07-10', N'https://image.tmdb.org/t/p/w500/upzsNh9Ue3DmFlGnUlxwXtnEpQc.jpg', N'1374534', N'https://image.tmdb.org/t/p/w1280/9l6bcHNFLR2fcCBSPzEeqxiQhwU.jpg', N'nl', N'5.826', N'92', N'235.3907', N'Bad Boa''s', N'0', NULL, NULL, NULL, NULL, NULL, NULL, NULL, N'ACTIVE')
+INSERT INTO [dbo].[movies] ([id], [title], [duration_min], [genre], [description], [release_date], [poster_url], [tmdb_id], [backdrop_url], [original_language], [vote_average], [vote_count], [popularity], [original_title], [adult], [director], [cast], [country], [language], [overview], [image_url], [rating], [status]) VALUES (N'14', N'Gilmore, tay golf cừ khôi 2', NULL, N'Comedy', N'Cú đánh xa. Nóng tính. Không thể thua? Happy Gilmore không vung gậy đánh golf trong nhiều năm, nhưng để giúp đỡ gia đình, anh phải thực hiện màn lội ngược dòng ngoạn mục.', N'2025-07-25', N'https://image.tmdb.org/t/p/w500/ynT06XivgBDkg7AtbDbX1dJeBGY.jpg', N'1263256', N'https://image.tmdb.org/t/p/w1280/88DDOXggxZLxobBolSRRLkaS8h7.jpg', N'en', N'6.774', N'215', N'372.098', N'Happy Gilmore 2', N'0', NULL, NULL, NULL, NULL, NULL, NULL, NULL, N'ACTIVE')
 GO
 
-INSERT INTO [dbo].[movies] ([id], [title], [duration_min], [genre], [description], [release_date], [poster_url], [tmdb_id], [backdrop_url], [original_language], [vote_average], [vote_count], [popularity], [original_title], [adult], [director], [cast], [country], [language], [overview], [image_url], [rating], [status]) VALUES (N'15', N'Thợ săn quỷ Kpop', NULL, N'Animation, Fantasy, Comedy, Music, Family, Action', N'Khi các siêu sao Kpop Rumi, Mira và Zoey không bận trình diễn tại các sân vận động cháy vé, họ sử dụng sức mạnh bí mật để bảo vệ người hâm mộ khỏi những mối đe dọa siêu nhiên.', N'2025-06-20', N'https://image.tmdb.org/t/p/w500/y8OyohPhdTtusY0nXd2XdX4NN8W.jpg', N'803796', N'https://image.tmdb.org/t/p/w1280/l3ycQYwWmbz7p8otwbomFDXIEhn.jpg', N'en', N'8.534', N'769', N'212.9718', N'KPop Demon Hunters', N'0', NULL, NULL, NULL, NULL, NULL, NULL, NULL, N'ACTIVE')
+INSERT INTO [dbo].[movies] ([id], [title], [duration_min], [genre], [description], [release_date], [poster_url], [tmdb_id], [backdrop_url], [original_language], [vote_average], [vote_count], [popularity], [original_title], [adult], [director], [cast], [country], [language], [overview], [image_url], [rating], [status]) VALUES (N'15', N'Thiên Thần Sa Ngã: Những Chiến Binh Hòa Bình', NULL, N'Horror, Action, Fantasy, Adventure', N'', N'2024-07-09', N'https://image.tmdb.org/t/p/w500/dKdKUSGQ9E0G73WPr9xIHrofpkT.jpg', N'1058537', N'https://image.tmdb.org/t/p/w1280/xVcffNU61CclEGgtiWP7KLIE2dm.jpg', N'en', N'5.838', N'34', N'281.3527', N'Angels Fallen: Warriors of Peace', N'0', NULL, NULL, NULL, NULL, NULL, NULL, NULL, N'ACTIVE')
 GO
 
-INSERT INTO [dbo].[movies] ([id], [title], [duration_min], [genre], [description], [release_date], [poster_url], [tmdb_id], [backdrop_url], [original_language], [vote_average], [vote_count], [popularity], [original_title], [adult], [director], [cast], [country], [language], [overview], [image_url], [rating], [status]) VALUES (N'16', N'Bộ Tứ Siêu Đẳng: Bước Đi Đầu Tiên', NULL, N'Science Fiction, Adventure', N'Sau một chuyến bay thám hiểm vũ trụ, bốn phi hành gia bất ngờ sở hữu năng lực siêu nhiên và trở thành gia đình siêu anh hùng đầu tiên của Marvel. The Fantastic Four: First Steps là bộ phim mở đầu Kỷ nguyên anh hùng thứ sáu (Phase Six), đặt nền móng cho siêu bom tấn Avengers: Doomsday trong năm sau.', N'2025-07-23', N'https://image.tmdb.org/t/p/w500/n0bqzWiKGJsmnvOlkTiYykhhM4E.jpg', N'617126', N'https://image.tmdb.org/t/p/w1280/3IgJReIyunq95ta86CTSOs9vAht.jpg', N'en', N'7.137', N'168', N'194.6445', N'The Fantastic Four: First Steps', N'0', NULL, NULL, NULL, NULL, NULL, NULL, NULL, N'ACTIVE')
+INSERT INTO [dbo].[movies] ([id], [title], [duration_min], [genre], [description], [release_date], [poster_url], [tmdb_id], [backdrop_url], [original_language], [vote_average], [vote_count], [popularity], [original_title], [adult], [director], [cast], [country], [language], [overview], [image_url], [rating], [status]) VALUES (N'16', N'Từ Vũ Trụ John Wick: Ballerina', NULL, N'Action, Thriller, Crime', N'Lấy bối cảnh giữa sự kiện của Sát thủ John Wick: Phần 3 – Chuẩn Bị Chiến Tranh, bộ phim Từ Vũ Trụ John Wick: Ballerina theo chân Eve Macarro (thủ vai bởi Ana de Armas) trên hành trình trả thù cho cái chết của gia đình mình, dưới sự huấn luyện của tổ chức tội phạm Ruska Roma.', N'2025-06-04', N'https://image.tmdb.org/t/p/w500/bw7gsWIJgoPyxrAgfSHc8xqVhDA.jpg', N'541671', N'https://image.tmdb.org/t/p/w1280/oPgXVSdGR9dGwbmvIToOCMmsdc2.jpg', N'en', N'7.5', N'1170', N'245.5089', N'Ballerina', N'0', NULL, NULL, NULL, NULL, NULL, NULL, NULL, N'ACTIVE')
 GO
 
-INSERT INTO [dbo].[movies] ([id], [title], [duration_min], [genre], [description], [release_date], [poster_url], [tmdb_id], [backdrop_url], [original_language], [vote_average], [vote_count], [popularity], [original_title], [adult], [director], [cast], [country], [language], [overview], [image_url], [rating], [status]) VALUES (N'17', N'The Old Guard 2', NULL, N'Action, Fantasy', N'Andy và đội chiến binh bất tử chiến đấu với mục đích mới khi họ đương đầu với một kẻ thù mới hùng mạnh đang đe dọa sứ mệnh bảo vệ nhân loại của họ.', N'2025-07-01', N'https://image.tmdb.org/t/p/w500/wqfu3bPLJaEWJVk3QOm0rKhxf1A.jpg', N'846422', N'https://image.tmdb.org/t/p/w1280/fd9K7ZDfzRAcbLh8JlG4HIKbtuR.jpg', N'en', N'6.062', N'537', N'177.9416', N'The Old Guard 2', N'0', NULL, NULL, NULL, NULL, NULL, NULL, NULL, N'ACTIVE')
+INSERT INTO [dbo].[movies] ([id], [title], [duration_min], [genre], [description], [release_date], [poster_url], [tmdb_id], [backdrop_url], [original_language], [vote_average], [vote_count], [popularity], [original_title], [adult], [director], [cast], [country], [language], [overview], [image_url], [rating], [status]) VALUES (N'17', N'Thế Giới Khủng Long: Tái Sinh', NULL, N'Science Fiction, Adventure, Action', N'Thế Giới Khủng Long: Tái Sinh lấy bối cảnh 5 năm sau phần phim Thế Giới Khủng Long: Lãnh Địa, môi trường Trái đất đã chứng tỏ phần lớn là không phù hợp với khủng long. Nhiều loài thằn lằn tiền sử được tái sinh đã chết. Những con chưa chết đã rút lui đến một vùng nhiệt đới hẻo lánh gần phòng thí nghiệm. Địa điểm đó chính là nơi bộ ba Scarlett Johansson, Mahershala Ali và Jonathan Bailey dấn thân vào một nhiệm vụ cực kỳ hiểm nguy.', N'2025-07-01', N'https://image.tmdb.org/t/p/w500/2IVVciw7dPhUlNmYIaz0s1d56SZ.jpg', N'1234821', N'https://image.tmdb.org/t/p/w1280/zNriRTr0kWwyaXPzdg1EIxf0BWk.jpg', N'en', N'6.333', N'818', N'250.4601', N'Jurassic World Rebirth', N'0', NULL, NULL, NULL, NULL, NULL, NULL, NULL, N'ACTIVE')
 GO
 
-INSERT INTO [dbo].[movies] ([id], [title], [duration_min], [genre], [description], [release_date], [poster_url], [tmdb_id], [backdrop_url], [original_language], [vote_average], [vote_count], [popularity], [original_title], [adult], [director], [cast], [country], [language], [overview], [image_url], [rating], [status]) VALUES (N'18', N'Nguyên Thủ Đối Đầu', NULL, N'Action, Thriller, Comedy', N'Hai nhà lãnh đạo – Tổng thống Mỹ (John Cena) và Thủ tướng Anh (Idris Elba) – bị rơi vào âm mưu khủng bố khi tham dự hội nghị NATO. Bị lạc ở Belarus, họ buộc phải bắt tay để sinh tồn, dù tính cách trái ngược. Cùng với đặc vụ MI6 (Priyanka Chopra), họ đối đầu kẻ thù quốc tế, qua chuỗi hành động–hài hước kịch tính xuyên châu Âu.', N'2025-07-02', N'https://image.tmdb.org/t/p/w500/lVgE5oLzf7ABmzyASEVcjYyHI41.jpg', N'749170', N'https://image.tmdb.org/t/p/w1280/vJbEUMeI2AxBUZKjP6ZVeVNNTLh.jpg', N'en', N'6.944', N'536', N'164.3775', N'Heads of State', N'0', NULL, NULL, NULL, NULL, NULL, NULL, NULL, N'ACTIVE')
+INSERT INTO [dbo].[movies] ([id], [title], [duration_min], [genre], [description], [release_date], [poster_url], [tmdb_id], [backdrop_url], [original_language], [vote_average], [vote_count], [popularity], [original_title], [adult], [director], [cast], [country], [language], [overview], [image_url], [rating], [status]) VALUES (N'18', N'Thợ săn quỷ Kpop', NULL, N'Animation, Fantasy, Comedy, Music, Family, Action', N'Khi các siêu sao Kpop Rumi, Mira và Zoey không bận trình diễn tại các sân vận động cháy vé, họ sử dụng sức mạnh bí mật để bảo vệ người hâm mộ khỏi những mối đe dọa siêu nhiên.', N'2025-06-20', N'https://image.tmdb.org/t/p/w500/y8OyohPhdTtusY0nXd2XdX4NN8W.jpg', N'803796', N'https://image.tmdb.org/t/p/w1280/l3ycQYwWmbz7p8otwbomFDXIEhn.jpg', N'en', N'8.486', N'828', N'218.7749', N'KPop Demon Hunters', N'0', NULL, NULL, NULL, NULL, NULL, NULL, NULL, N'ACTIVE')
 GO
 
-INSERT INTO [dbo].[movies] ([id], [title], [duration_min], [genre], [description], [release_date], [poster_url], [tmdb_id], [backdrop_url], [original_language], [vote_average], [vote_count], [popularity], [original_title], [adult], [director], [cast], [country], [language], [overview], [image_url], [rating], [status]) VALUES (N'19', N'F1 Phim Điện Ảnh', NULL, N'Action, Drama', N'', N'2025-06-25', N'https://image.tmdb.org/t/p/w500/qsn0OsLY2luKOkWr2RbGFrijmoy.jpg', N'911430', N'https://image.tmdb.org/t/p/w1280/lSbblLngbeZIn6G4WXDcyQ6SLhw.jpg', N'en', N'7.614', N'879', N'147.5591', N'F1', N'0', NULL, NULL, NULL, NULL, NULL, NULL, NULL, N'ACTIVE')
+INSERT INTO [dbo].[movies] ([id], [title], [duration_min], [genre], [description], [release_date], [poster_url], [tmdb_id], [backdrop_url], [original_language], [vote_average], [vote_count], [popularity], [original_title], [adult], [director], [cast], [country], [language], [overview], [image_url], [rating], [status]) VALUES (N'19', N'Biệt Đội Sấm Sét*', NULL, N'Action, Science Fiction, Adventure', N'Sau khi thấy mình bị mắc kẹt trong một cái bẫy chết người, bảy người bị bỏ rơi vỡ mộng phải bắt tay vào một nhiệm vụ nguy hiểm sẽ buộc họ phải đối mặt với những góc đen tối nhất trong quá khứ của họ.', N'2025-04-30', N'https://image.tmdb.org/t/p/w500/8SHwKExQ9dkR8xEmtT3y2vrHZEY.jpg', N'986056', N'https://image.tmdb.org/t/p/w1280/rthMuZfFv4fqEU4JVbgSW9wQ8rs.jpg', N'en', N'7.405', N'2028', N'216.9315', N'Thunderbolts*', N'0', NULL, NULL, NULL, NULL, NULL, NULL, NULL, N'ACTIVE')
 GO
 
-INSERT INTO [dbo].[movies] ([id], [title], [duration_min], [genre], [description], [release_date], [poster_url], [tmdb_id], [backdrop_url], [original_language], [vote_average], [vote_count], [popularity], [original_title], [adult], [director], [cast], [country], [language], [overview], [image_url], [rating], [status]) VALUES (N'20', N'Kaiju No.8: Nhiệm Vụ Trinh Sát', NULL, N'Animation, Action, Science Fiction', N'Kaiju No.8: Nhiệm Vụ Trinh Sát là một phần ngoại truyện của bộ manga Kaiju No.8 (Kaijuu 8-gou). Câu chuyện tập trung vào Kafka Hibino, người có khả năng biến hình thành quái vật (Kaiju) và phải giữ bí mật về năng lực này khi gia nhập Lực lượng Phòng vệ Nhật Bản, một tổ chức chuyên tiêu diệt quái vật. Nhiệm vụ của anh là vừa chiến đấu với quái vật, vừa che giấu thân phận thực sự của mình.', N'2025-03-28', N'https://image.tmdb.org/t/p/w500/qp0EuVdQZzb3lBf7acnr5wIOATx.jpg', N'1326106', N'https://image.tmdb.org/t/p/w1280/iZ0ZSnhmHB3k1KDkDzEz65f5iia.jpg', N'ja', N'7.784', N'37', N'142.2022', N'アニメ『怪獣８号』第１期総集編／同時上映「保科の休日」', N'0', NULL, NULL, NULL, NULL, NULL, NULL, NULL, N'ACTIVE')
+INSERT INTO [dbo].[movies] ([id], [title], [duration_min], [genre], [description], [release_date], [poster_url], [tmdb_id], [backdrop_url], [original_language], [vote_average], [vote_count], [popularity], [original_title], [adult], [director], [cast], [country], [language], [overview], [image_url], [rating], [status]) VALUES (N'20', N'Bad Boas: Bộ đôi phá án', NULL, N'Action, Comedy, Crime, Mystery', N'Khi một cảnh sát cộng đồng hăng hái quá mức và một cựu thanh tra liều lĩnh buộc phải hợp tác, hàng loạt hỗn loạn bùng nổ trên đường phố Rotterdam.', N'2025-07-10', N'https://image.tmdb.org/t/p/w500/upzsNh9Ue3DmFlGnUlxwXtnEpQc.jpg', N'1374534', N'https://image.tmdb.org/t/p/w1280/9l6bcHNFLR2fcCBSPzEeqxiQhwU.jpg', N'nl', N'5.85', N'103', N'209.5423', N'Bad Boa''s', N'0', NULL, NULL, NULL, NULL, NULL, NULL, NULL, N'ACTIVE')
 GO
 
-INSERT INTO [dbo].[movies] ([id], [title], [duration_min], [genre], [description], [release_date], [poster_url], [tmdb_id], [backdrop_url], [original_language], [vote_average], [vote_count], [popularity], [original_title], [adult], [director], [cast], [country], [language], [overview], [image_url], [rating], [status]) VALUES (N'21', N'Ziam', NULL, N'Horror, Thriller, Action', N'Trong cuộc chiến sinh tồn trước đội quân thây ma kinh hoàng, một cựu võ sĩ Muay Thái phải dốc toàn bộ kỹ năng, tốc độ và ý chí để cứu bạn gái.', N'2025-07-09', N'https://image.tmdb.org/t/p/w500/rE5Bf1ejCUuHxmQGIJTZ7W7M13p.jpg', N'1429744', N'https://image.tmdb.org/t/p/w1280/tdMbbFhqyEqOK1QzNTvJjHWKbZX.jpg', N'th', N'6.639', N'115', N'120.6702', N'ปากกัด ตีนถีบ', N'0', NULL, NULL, NULL, NULL, NULL, NULL, NULL, N'ACTIVE')
+INSERT INTO [dbo].[movies] ([id], [title], [duration_min], [genre], [description], [release_date], [poster_url], [tmdb_id], [backdrop_url], [original_language], [vote_average], [vote_count], [popularity], [original_title], [adult], [director], [cast], [country], [language], [overview], [image_url], [rating], [status]) VALUES (N'21', N'Lưỡi hái tử thần 6: Huyết thống', NULL, N'Horror, Mystery', N'Thương hiệu kinh dị đình đám Hollywood Final Destination sẽ trở lại với phần phim mới, hứa hẹn khuấy đảo phòng vé mùa hè 2025. Final Destination: Bloodlines là phần thứ 6 trong series, và cho đến hiện tại, các thông tin về nội dung phần phim này vẫn đang được giữ kín. Bộ đôi Zach Lipovsky và Adam Stein được chọn từ hơn 200 ứng viên để ngồi ghế đạo diễn, trong khi Guy Busick – biên kịch của Ready or Not sẽ chấp bút cho bộ phim. Tony Todd – gương mặt quen thuộc của series cũng sẽ trở lại trong phần 6 với vai diễn William Bludworth.', N'2025-05-14', N'https://image.tmdb.org/t/p/w500/6WxhEvFsauuACfv8HyoVX6mZKFj.jpg', N'574475', N'https://image.tmdb.org/t/p/w1280/uIpJPDNFoeX0TVml9smPrs9KUVx.jpg', N'en', N'7.174', N'1757', N'213.8732', N'Final Destination Bloodlines', N'0', NULL, NULL, NULL, NULL, NULL, NULL, NULL, N'ACTIVE')
 GO
 
-INSERT INTO [dbo].[movies] ([id], [title], [duration_min], [genre], [description], [release_date], [poster_url], [tmdb_id], [backdrop_url], [original_language], [vote_average], [vote_count], [popularity], [original_title], [adult], [director], [cast], [country], [language], [overview], [image_url], [rating], [status]) VALUES (N'22', N'Khủng Long Xanh Du Hành Thế Giới Truyện Tranh', NULL, N'Animation, Family, Adventure, Fantasy, Comedy', N'', N'2024-10-04', N'https://image.tmdb.org/t/p/w500/8h26apBjkp20NndgK0rSbcOW4uW.jpg', N'947478', N'https://image.tmdb.org/t/p/w1280/wcFV4uOdSbC0cSjs7ecAyOU6t59.jpg', N'en', N'8', N'8', N'120.3385', N'Diplodocus', N'0', NULL, NULL, NULL, NULL, NULL, NULL, NULL, N'ACTIVE')
+INSERT INTO [dbo].[movies] ([id], [title], [duration_min], [genre], [description], [release_date], [poster_url], [tmdb_id], [backdrop_url], [original_language], [vote_average], [vote_count], [popularity], [original_title], [adult], [director], [cast], [country], [language], [overview], [image_url], [rating], [status]) VALUES (N'22', N'Giờ Thả Máu', NULL, N'Horror, Thriller', N'', N'2025-06-05', N'https://image.tmdb.org/t/p/w500/mClqoQYzgmro8C4TXnVqgiXSxl3.jpg', N'1285965', N'https://image.tmdb.org/t/p/w1280/dUGIhpvAVoX0YtKcjLHCGtNYq4p.jpg', N'en', N'6.569', N'87', N'198.0632', N'Dangerous Animals', N'0', NULL, NULL, NULL, NULL, NULL, NULL, NULL, N'ACTIVE')
 GO
 
-INSERT INTO [dbo].[movies] ([id], [title], [duration_min], [genre], [description], [release_date], [poster_url], [tmdb_id], [backdrop_url], [original_language], [vote_average], [vote_count], [popularity], [original_title], [adult], [director], [cast], [country], [language], [overview], [image_url], [rating], [status]) VALUES (N'23', N'Một Nửa Hoàn Hảo', NULL, N'Romance, Drama', N'Lucy (Dakota Johnson), một cô gái xinh đẹp làm công việc mai mối ở New York. “Mát tay” trong chuyện mai mối giúp người khác, nhưng trớ trêu Lucy lại “lạc lối” trong câu chuyện tình cảm của chính mình. Bất ngờ đối mặt với ngã rẽ tình cảm khi gặp lại người yêu cũ "không hoàn hảo" (Chris Evans) và một người đàn ông "hoàn hảo" (Pedro Pascal). Cô nàng bị đẩy vào tình thế khó xử. Đứng giữa những lựa chọn cảm xúc đầy mâu thuẫn, lúc này đây, Lucy mới nhận ra việc tìm kiếm tình yêu đích thực chưa bao giờ là điều dễ dàng', N'2025-06-12', N'https://image.tmdb.org/t/p/w500/edSuYya7wFzFPu1PDtwMlU0Em2W.jpg', N'1136867', N'https://image.tmdb.org/t/p/w1280/lqwwGkwJHtz9QgKtz4zeY19YgDg.jpg', N'en', N'6.917', N'145', N'117.3064', N'Materialists', N'0', NULL, NULL, NULL, NULL, NULL, NULL, NULL, N'ACTIVE')
+INSERT INTO [dbo].[movies] ([id], [title], [duration_min], [genre], [description], [release_date], [poster_url], [tmdb_id], [backdrop_url], [original_language], [vote_average], [vote_count], [popularity], [original_title], [adult], [director], [cast], [country], [language], [overview], [image_url], [rating], [status]) VALUES (N'23', N'The Old Guard 2', NULL, N'Action, Fantasy', N'Andy và đội chiến binh bất tử chiến đấu với mục đích mới khi họ đương đầu với một kẻ thù mới hùng mạnh đang đe dọa sứ mệnh bảo vệ nhân loại của họ.', N'2025-07-01', N'https://image.tmdb.org/t/p/w500/wqfu3bPLJaEWJVk3QOm0rKhxf1A.jpg', N'846422', N'https://image.tmdb.org/t/p/w1280/fd9K7ZDfzRAcbLh8JlG4HIKbtuR.jpg', N'en', N'6.039', N'567', N'166.9309', N'The Old Guard 2', N'0', NULL, NULL, NULL, NULL, NULL, NULL, NULL, N'ACTIVE')
 GO
 
-INSERT INTO [dbo].[movies] ([id], [title], [duration_min], [genre], [description], [release_date], [poster_url], [tmdb_id], [backdrop_url], [original_language], [vote_average], [vote_count], [popularity], [original_title], [adult], [director], [cast], [country], [language], [overview], [image_url], [rating], [status]) VALUES (N'24', N'戏台', NULL, N'Drama, Comedy', N'', N'2025-07-12', N'https://image.tmdb.org/t/p/w500/wSFGtkoz8SW6yIgu1Xvxs584QQt.jpg', N'1406607', N'https://image.tmdb.org/t/p/w1280/cfAGn86j4LYzRCKWSkXPnMxoru6.jpg', N'zh', N'10', N'2', N'108.0459', N'戏台', N'0', NULL, NULL, NULL, NULL, NULL, NULL, NULL, N'ACTIVE')
-GO
-
-INSERT INTO [dbo].[movies] ([id], [title], [duration_min], [genre], [description], [release_date], [poster_url], [tmdb_id], [backdrop_url], [original_language], [vote_average], [vote_count], [popularity], [original_title], [adult], [director], [cast], [country], [language], [overview], [image_url], [rating], [status]) VALUES (N'25', N'Mượn Hồn Đoạt Xác', NULL, N'Horror', N'Sự trở lại của bộ óc sáng tạo đằng sau Talk to Me, Danny và Michael Philippou cùng A24 với một bộ phim kinh dị mới nhất Mượn Hồn Đoạt Xác. Nhiều người tin rằng linh hồn vẫn sẽ ở lại trong thân xác một thời gian trước khi rời đi, đây cũng là niềm tin đáng sợ cho nghi lễ ám ảnh nhất tháng 5.', N'2025-05-28', N'https://image.tmdb.org/t/p/w500/zNNDCFTnSNz7Y5GZDxs8SYO2MIi.jpg', N'1151031', N'https://image.tmdb.org/t/p/w1280/5esDYWV0NoFwqPa1iC0g9akqZo9.jpg', N'en', N'7.4', N'309', N'105.9636', N'Bring Her Back', N'0', NULL, NULL, NULL, NULL, NULL, NULL, NULL, N'ACTIVE')
+INSERT INTO [dbo].[movies] ([id], [title], [duration_min], [genre], [description], [release_date], [poster_url], [tmdb_id], [backdrop_url], [original_language], [vote_average], [vote_count], [popularity], [original_title], [adult], [director], [cast], [country], [language], [overview], [image_url], [rating], [status]) VALUES (N'24', N'Xì Trum', N'102', N'Phim Hoạt Hình, Phim Gia Đình, Phim Phiêu Lưu, Phim Hài, Phim Giả Tượng', N'Lão phù thủy độc ác Gargamel rượt đưổi các chú xì - trum ra khỏi ngôi làng của mình. Tình cờ họ đã vô tình lạc vào hang động cấm mà không biết đó chính là Blue moon , một cánh cửa thần kỳ giúp đưa các xì trum đến thời hiện tại ở công viên Trung tâm New York. Họ đã phải nương náu tại nhà của một cặp đôi mới cưới và tìm cách quay trở lại ngôi làng của họ trước khi lão Gargamel tóm gọn.', N'2011-07-29', N'https://image.tmdb.org/t/p/w500/r1avMYngCKgbQ5OaRhgW3voiSEd.jpg', N'41513', N'https://image.tmdb.org/t/p/w1280/iYLimHUF0C0R61v1ofg79SUIja9.jpg', N'en', N'5.761', N'3848', N'12.0573', N'The Smurfs', N'0', NULL, NULL, NULL, NULL, NULL, NULL, NULL, N'ACTIVE')
 GO
 
 SET IDENTITY_INSERT [dbo].[movies] OFF
+GO
+
+
+-- ----------------------------
+-- Table structure for oauth2_configs
+-- ----------------------------
+IF EXISTS (SELECT * FROM sys.all_objects WHERE object_id = OBJECT_ID(N'[dbo].[oauth2_configs]') AND type IN ('U'))
+	DROP TABLE [dbo].[oauth2_configs]
+GO
+
+CREATE TABLE [dbo].[oauth2_configs] (
+  [id] bigint  IDENTITY(1,1) NOT NULL,
+  [provider_name] nvarchar(50) COLLATE SQL_Latin1_General_CP1_CI_AS  NOT NULL,
+  [client_id] nvarchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS  NOT NULL,
+  [client_secret] nvarchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS  NOT NULL,
+  [authorization_uri] nvarchar(500) COLLATE SQL_Latin1_General_CP1_CI_AS  NULL,
+  [token_uri] nvarchar(500) COLLATE SQL_Latin1_General_CP1_CI_AS  NULL,
+  [user_info_uri] nvarchar(500) COLLATE SQL_Latin1_General_CP1_CI_AS  NULL,
+  [redirect_uri] nvarchar(500) COLLATE SQL_Latin1_General_CP1_CI_AS  NULL,
+  [scope] nvarchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS  NULL,
+  [is_enabled] bit DEFAULT 1 NOT NULL,
+  [created_at] datetime2(7) DEFAULT getdate() NOT NULL,
+  [updated_at] datetime2(7) DEFAULT getdate() NOT NULL
+)
+GO
+
+ALTER TABLE [dbo].[oauth2_configs] SET (LOCK_ESCALATION = TABLE)
+GO
+
+
+-- ----------------------------
+-- Records of oauth2_configs
+-- ----------------------------
+SET IDENTITY_INSERT [dbo].[oauth2_configs] ON
+GO
+
+INSERT INTO [dbo].[oauth2_configs] ([id], [provider_name], [client_id], [client_secret], [authorization_uri], [token_uri], [user_info_uri], [redirect_uri], [scope], [is_enabled], [created_at], [updated_at]) VALUES (N'1', N'google', N'725122679388-icmijjb52pu5c3kq0s67mv8a906c3vh8.apps.googleusercontent.com', N'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', N'https://accounts.google.com/o/oauth2/auth', N'https://oauth2.googleapis.com/token', N'https://www.googleapis.com/oauth2/v2/userinfo', N'http://localhost:8080/login/oauth2/code/google', N'openid,profile,email', N'1', N'2025-07-28 17:21:27.3533333', N'2025-07-28 17:25:27.3500000')
+GO
+
+INSERT INTO [dbo].[oauth2_configs] ([id], [provider_name], [client_id], [client_secret], [authorization_uri], [token_uri], [user_info_uri], [redirect_uri], [scope], [is_enabled], [created_at], [updated_at]) VALUES (N'2', N'github', N'Ov23liBYyO6ZWco7KmCH', N'ed56a2be94fe4d9703ac617e6a2c31a1babb23ee', N'https://github.com/login/oauth/authorize', N'https://github.com/login/oauth/access_token', N'https://api.github.com/user', N'http://localhost:8080/login/oauth2/code/github', N'user:email', N'1', N'2025-07-28 17:21:27.3533333', N'2025-07-28 17:25:27.3733333')
+GO
+
+SET IDENTITY_INSERT [dbo].[oauth2_configs] OFF
+GO
+
+
+-- ----------------------------
+-- Table structure for oauth2_user_profiles
+-- ----------------------------
+IF EXISTS (SELECT * FROM sys.all_objects WHERE object_id = OBJECT_ID(N'[dbo].[oauth2_user_profiles]') AND type IN ('U'))
+	DROP TABLE [dbo].[oauth2_user_profiles]
+GO
+
+CREATE TABLE [dbo].[oauth2_user_profiles] (
+  [id] bigint  IDENTITY(1,1) NOT NULL,
+  [user_id] bigint  NOT NULL,
+  [provider_name] nvarchar(50) COLLATE SQL_Latin1_General_CP1_CI_AS  NOT NULL,
+  [provider_user_id] nvarchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS  NOT NULL,
+  [provider_username] nvarchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS  NULL,
+  [provider_email] nvarchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS  NOT NULL,
+  [provider_name_display] nvarchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS  NULL,
+  [provider_avatar_url] nvarchar(500) COLLATE SQL_Latin1_General_CP1_CI_AS  NULL,
+  [provider_profile_url] nvarchar(500) COLLATE SQL_Latin1_General_CP1_CI_AS  NULL,
+  [access_token] nvarchar(max) COLLATE SQL_Latin1_General_CP1_CI_AS  NULL,
+  [refresh_token] nvarchar(max) COLLATE SQL_Latin1_General_CP1_CI_AS  NULL,
+  [token_expires_at] datetime2(7)  NULL,
+  [raw_attributes] ntext COLLATE SQL_Latin1_General_CP1_CI_AS  NULL,
+  [first_login] datetime2(7) DEFAULT getdate() NOT NULL,
+  [last_login] datetime2(7) DEFAULT getdate() NOT NULL,
+  [login_count] int DEFAULT 0 NOT NULL,
+  [is_active] bit DEFAULT 1 NOT NULL,
+  [created_at] datetime2(7) DEFAULT getdate() NOT NULL,
+  [updated_at] datetime2(7) DEFAULT getdate() NOT NULL
+)
+GO
+
+ALTER TABLE [dbo].[oauth2_user_profiles] SET (LOCK_ESCALATION = TABLE)
+GO
+
+
+-- ----------------------------
+-- Records of oauth2_user_profiles
+-- ----------------------------
+SET IDENTITY_INSERT [dbo].[oauth2_user_profiles] ON
+GO
+
+SET IDENTITY_INSERT [dbo].[oauth2_user_profiles] OFF
 GO
 
 
@@ -339,15 +420,6 @@ GO
 INSERT INTO [dbo].[promotions] ([id], [code], [name], [description], [discount_type], [discount_value], [minimum_amount], [start_date], [end_date], [max_uses], [current_uses], [active]) VALUES (N'1', N'WELCOME10', N'Giảm giá 10% cho khách hàng mới', N'Giảm giá 10% cho lần đầu đặt vé', N'PERCENTAGE', N'10.00', N'.00', N'2025-07-01', N'2025-12-31', N'1000', N'0', N'1')
 GO
 
-INSERT INTO [dbo].[promotions] ([id], [code], [name], [description], [discount_type], [discount_value], [minimum_amount], [start_date], [end_date], [max_uses], [current_uses], [active]) VALUES (N'2', N'STUDENT20', N'Giảm giá 20% cho sinh viên', N'Giảm giá 20% cho sinh viên có thẻ', N'PERCENTAGE', N'20.00', N'.00', N'2025-07-01', N'2025-12-31', N'500', N'0', N'1')
-GO
-
-INSERT INTO [dbo].[promotions] ([id], [code], [name], [description], [discount_type], [discount_value], [minimum_amount], [start_date], [end_date], [max_uses], [current_uses], [active]) VALUES (N'3', N'SAVE50K', N'Giảm 50.000đ cho hóa đơn từ 300.000đ', N'Giảm 50.000đ cho hóa đơn từ 300.000đ trở lên', N'FIXED_AMOUNT', N'50000.00', N'300000.00', N'2025-07-01', N'2025-09-30', N'200', N'0', N'1')
-GO
-
-INSERT INTO [dbo].[promotions] ([id], [code], [name], [description], [discount_type], [discount_value], [minimum_amount], [start_date], [end_date], [max_uses], [current_uses], [active]) VALUES (N'4', N'WEEKEND15', N'Giảm giá 15% cuối tuần', N'Giảm giá 15% cho các suất chiếu cuối tuần', N'PERCENTAGE', N'15.00', N'.00', N'2025-07-05', N'2025-12-31', N'1000', N'0', N'1')
-GO
-
 SET IDENTITY_INSERT [dbo].[promotions] OFF
 GO
 
@@ -380,31 +452,112 @@ GO
 SET IDENTITY_INSERT [dbo].[screenings] ON
 GO
 
-INSERT INTO [dbo].[screenings] ([id], [movie_id], [auditorium_id], [start_time], [end_time], [ticket_price], [status]) VALUES (N'1', N'1', N'1', N'2025-07-26 09:00:00.0000000', NULL, N'120000.00', N'ACTIVE')
+INSERT INTO [dbo].[screenings] ([id], [movie_id], [auditorium_id], [start_time], [end_time], [ticket_price], [status]) VALUES (N'804', N'1', N'105', N'2025-07-28 09:00:00.4596970', NULL, N'120000.00', N'ACTIVE')
 GO
 
-INSERT INTO [dbo].[screenings] ([id], [movie_id], [auditorium_id], [start_time], [end_time], [ticket_price], [status]) VALUES (N'2', N'1', N'1', N'2025-07-26 14:00:00.0000000', NULL, N'120000.00', N'ACTIVE')
+INSERT INTO [dbo].[screenings] ([id], [movie_id], [auditorium_id], [start_time], [end_time], [ticket_price], [status]) VALUES (N'805', N'1', N'105', N'2025-07-28 14:00:00.4596970', NULL, N'120000.00', N'ACTIVE')
 GO
 
-INSERT INTO [dbo].[screenings] ([id], [movie_id], [auditorium_id], [start_time], [end_time], [ticket_price], [status]) VALUES (N'3', N'1', N'1', N'2025-07-26 19:00:00.0000000', NULL, N'150000.00', N'ACTIVE')
+INSERT INTO [dbo].[screenings] ([id], [movie_id], [auditorium_id], [start_time], [end_time], [ticket_price], [status]) VALUES (N'806', N'1', N'105', N'2025-07-28 19:00:00.4596970', NULL, N'150000.00', N'ACTIVE')
 GO
 
-INSERT INTO [dbo].[screenings] ([id], [movie_id], [auditorium_id], [start_time], [end_time], [ticket_price], [status]) VALUES (N'4', N'2', N'2', N'2025-07-26 10:00:00.0000000', NULL, N'100000.00', N'ACTIVE')
+INSERT INTO [dbo].[screenings] ([id], [movie_id], [auditorium_id], [start_time], [end_time], [ticket_price], [status]) VALUES (N'807', N'2', N'106', N'2025-07-28 09:00:00.4596970', NULL, N'120000.00', N'ACTIVE')
 GO
 
-INSERT INTO [dbo].[screenings] ([id], [movie_id], [auditorium_id], [start_time], [end_time], [ticket_price], [status]) VALUES (N'5', N'2', N'2', N'2025-07-26 15:00:00.0000000', NULL, N'100000.00', N'ACTIVE')
+INSERT INTO [dbo].[screenings] ([id], [movie_id], [auditorium_id], [start_time], [end_time], [ticket_price], [status]) VALUES (N'808', N'2', N'106', N'2025-07-28 14:00:00.4596970', NULL, N'120000.00', N'ACTIVE')
 GO
 
-INSERT INTO [dbo].[screenings] ([id], [movie_id], [auditorium_id], [start_time], [end_time], [ticket_price], [status]) VALUES (N'6', N'2', N'2', N'2025-07-26 20:00:00.0000000', NULL, N'120000.00', N'ACTIVE')
+INSERT INTO [dbo].[screenings] ([id], [movie_id], [auditorium_id], [start_time], [end_time], [ticket_price], [status]) VALUES (N'809', N'2', N'106', N'2025-07-28 19:00:00.4596970', NULL, N'150000.00', N'ACTIVE')
 GO
 
-INSERT INTO [dbo].[screenings] ([id], [movie_id], [auditorium_id], [start_time], [end_time], [ticket_price], [status]) VALUES (N'7', N'3', N'3', N'2025-07-26 11:00:00.0000000', NULL, N'200000.00', N'ACTIVE')
+INSERT INTO [dbo].[screenings] ([id], [movie_id], [auditorium_id], [start_time], [end_time], [ticket_price], [status]) VALUES (N'810', N'3', N'107', N'2025-07-28 09:00:00.4596970', NULL, N'120000.00', N'ACTIVE')
 GO
 
-INSERT INTO [dbo].[screenings] ([id], [movie_id], [auditorium_id], [start_time], [end_time], [ticket_price], [status]) VALUES (N'8', N'3', N'3', N'2025-07-26 16:00:00.0000000', NULL, N'200000.00', N'ACTIVE')
+INSERT INTO [dbo].[screenings] ([id], [movie_id], [auditorium_id], [start_time], [end_time], [ticket_price], [status]) VALUES (N'811', N'3', N'107', N'2025-07-28 14:00:00.4596970', NULL, N'120000.00', N'ACTIVE')
 GO
 
-INSERT INTO [dbo].[screenings] ([id], [movie_id], [auditorium_id], [start_time], [end_time], [ticket_price], [status]) VALUES (N'9', N'3', N'3', N'2025-07-26 21:00:00.0000000', NULL, N'250000.00', N'ACTIVE')
+INSERT INTO [dbo].[screenings] ([id], [movie_id], [auditorium_id], [start_time], [end_time], [ticket_price], [status]) VALUES (N'812', N'3', N'107', N'2025-07-28 19:00:00.4596970', NULL, N'150000.00', N'ACTIVE')
+GO
+
+INSERT INTO [dbo].[screenings] ([id], [movie_id], [auditorium_id], [start_time], [end_time], [ticket_price], [status]) VALUES (N'813', N'4', N'108', N'2025-07-28 09:00:00.4596970', NULL, N'120000.00', N'ACTIVE')
+GO
+
+INSERT INTO [dbo].[screenings] ([id], [movie_id], [auditorium_id], [start_time], [end_time], [ticket_price], [status]) VALUES (N'814', N'4', N'108', N'2025-07-28 14:00:00.4596970', NULL, N'120000.00', N'ACTIVE')
+GO
+
+INSERT INTO [dbo].[screenings] ([id], [movie_id], [auditorium_id], [start_time], [end_time], [ticket_price], [status]) VALUES (N'815', N'4', N'108', N'2025-07-28 19:00:00.4596970', NULL, N'150000.00', N'ACTIVE')
+GO
+
+INSERT INTO [dbo].[screenings] ([id], [movie_id], [auditorium_id], [start_time], [end_time], [ticket_price], [status]) VALUES (N'816', N'1', N'105', N'2025-07-29 09:00:00.4596970', NULL, N'120000.00', N'ACTIVE')
+GO
+
+INSERT INTO [dbo].[screenings] ([id], [movie_id], [auditorium_id], [start_time], [end_time], [ticket_price], [status]) VALUES (N'817', N'1', N'105', N'2025-07-29 14:00:00.4596970', NULL, N'120000.00', N'ACTIVE')
+GO
+
+INSERT INTO [dbo].[screenings] ([id], [movie_id], [auditorium_id], [start_time], [end_time], [ticket_price], [status]) VALUES (N'818', N'1', N'105', N'2025-07-29 19:00:00.4596970', NULL, N'150000.00', N'ACTIVE')
+GO
+
+INSERT INTO [dbo].[screenings] ([id], [movie_id], [auditorium_id], [start_time], [end_time], [ticket_price], [status]) VALUES (N'819', N'2', N'106', N'2025-07-29 09:00:00.4596970', NULL, N'120000.00', N'ACTIVE')
+GO
+
+INSERT INTO [dbo].[screenings] ([id], [movie_id], [auditorium_id], [start_time], [end_time], [ticket_price], [status]) VALUES (N'820', N'2', N'106', N'2025-07-29 14:00:00.4596970', NULL, N'120000.00', N'ACTIVE')
+GO
+
+INSERT INTO [dbo].[screenings] ([id], [movie_id], [auditorium_id], [start_time], [end_time], [ticket_price], [status]) VALUES (N'821', N'2', N'106', N'2025-07-29 19:00:00.4596970', NULL, N'150000.00', N'ACTIVE')
+GO
+
+INSERT INTO [dbo].[screenings] ([id], [movie_id], [auditorium_id], [start_time], [end_time], [ticket_price], [status]) VALUES (N'822', N'3', N'107', N'2025-07-29 09:00:00.4596970', NULL, N'120000.00', N'ACTIVE')
+GO
+
+INSERT INTO [dbo].[screenings] ([id], [movie_id], [auditorium_id], [start_time], [end_time], [ticket_price], [status]) VALUES (N'823', N'3', N'107', N'2025-07-29 14:00:00.4596970', NULL, N'120000.00', N'ACTIVE')
+GO
+
+INSERT INTO [dbo].[screenings] ([id], [movie_id], [auditorium_id], [start_time], [end_time], [ticket_price], [status]) VALUES (N'824', N'3', N'107', N'2025-07-29 19:00:00.4596970', NULL, N'150000.00', N'ACTIVE')
+GO
+
+INSERT INTO [dbo].[screenings] ([id], [movie_id], [auditorium_id], [start_time], [end_time], [ticket_price], [status]) VALUES (N'825', N'4', N'108', N'2025-07-29 09:00:00.4596970', NULL, N'120000.00', N'ACTIVE')
+GO
+
+INSERT INTO [dbo].[screenings] ([id], [movie_id], [auditorium_id], [start_time], [end_time], [ticket_price], [status]) VALUES (N'826', N'4', N'108', N'2025-07-29 14:00:00.4596970', NULL, N'120000.00', N'ACTIVE')
+GO
+
+INSERT INTO [dbo].[screenings] ([id], [movie_id], [auditorium_id], [start_time], [end_time], [ticket_price], [status]) VALUES (N'827', N'4', N'108', N'2025-07-29 19:00:00.4596970', NULL, N'150000.00', N'ACTIVE')
+GO
+
+INSERT INTO [dbo].[screenings] ([id], [movie_id], [auditorium_id], [start_time], [end_time], [ticket_price], [status]) VALUES (N'828', N'1', N'105', N'2025-07-30 09:00:00.4596970', NULL, N'120000.00', N'ACTIVE')
+GO
+
+INSERT INTO [dbo].[screenings] ([id], [movie_id], [auditorium_id], [start_time], [end_time], [ticket_price], [status]) VALUES (N'829', N'1', N'105', N'2025-07-30 14:00:00.4596970', NULL, N'120000.00', N'ACTIVE')
+GO
+
+INSERT INTO [dbo].[screenings] ([id], [movie_id], [auditorium_id], [start_time], [end_time], [ticket_price], [status]) VALUES (N'830', N'1', N'105', N'2025-07-30 19:00:00.4596970', NULL, N'150000.00', N'ACTIVE')
+GO
+
+INSERT INTO [dbo].[screenings] ([id], [movie_id], [auditorium_id], [start_time], [end_time], [ticket_price], [status]) VALUES (N'831', N'2', N'106', N'2025-07-30 09:00:00.4596970', NULL, N'120000.00', N'ACTIVE')
+GO
+
+INSERT INTO [dbo].[screenings] ([id], [movie_id], [auditorium_id], [start_time], [end_time], [ticket_price], [status]) VALUES (N'832', N'2', N'106', N'2025-07-30 14:00:00.4596970', NULL, N'120000.00', N'ACTIVE')
+GO
+
+INSERT INTO [dbo].[screenings] ([id], [movie_id], [auditorium_id], [start_time], [end_time], [ticket_price], [status]) VALUES (N'833', N'2', N'106', N'2025-07-30 19:00:00.4596970', NULL, N'150000.00', N'ACTIVE')
+GO
+
+INSERT INTO [dbo].[screenings] ([id], [movie_id], [auditorium_id], [start_time], [end_time], [ticket_price], [status]) VALUES (N'834', N'3', N'107', N'2025-07-30 09:00:00.4596970', NULL, N'120000.00', N'ACTIVE')
+GO
+
+INSERT INTO [dbo].[screenings] ([id], [movie_id], [auditorium_id], [start_time], [end_time], [ticket_price], [status]) VALUES (N'835', N'3', N'107', N'2025-07-30 14:00:00.4596970', NULL, N'120000.00', N'ACTIVE')
+GO
+
+INSERT INTO [dbo].[screenings] ([id], [movie_id], [auditorium_id], [start_time], [end_time], [ticket_price], [status]) VALUES (N'836', N'3', N'107', N'2025-07-30 19:00:00.4596970', NULL, N'150000.00', N'ACTIVE')
+GO
+
+INSERT INTO [dbo].[screenings] ([id], [movie_id], [auditorium_id], [start_time], [end_time], [ticket_price], [status]) VALUES (N'837', N'4', N'108', N'2025-07-30 09:00:00.4596970', NULL, N'120000.00', N'ACTIVE')
+GO
+
+INSERT INTO [dbo].[screenings] ([id], [movie_id], [auditorium_id], [start_time], [end_time], [ticket_price], [status]) VALUES (N'838', N'4', N'108', N'2025-07-30 14:00:00.4596970', NULL, N'120000.00', N'ACTIVE')
+GO
+
+INSERT INTO [dbo].[screenings] ([id], [movie_id], [auditorium_id], [start_time], [end_time], [ticket_price], [status]) VALUES (N'839', N'4', N'108', N'2025-07-30 19:00:00.4596970', NULL, N'150000.00', N'ACTIVE')
 GO
 
 SET IDENTITY_INSERT [dbo].[screenings] OFF
@@ -438,154 +591,604 @@ GO
 SET IDENTITY_INSERT [dbo].[seats] ON
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'1', N'1', N'A', N'1', N'VIP', N'1.50')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5052', N'105', N'A', N'1', N'VIP', N'1.50')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'2', N'1', N'A', N'2', N'VIP', N'1.50')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5053', N'105', N'A', N'2', N'VIP', N'1.50')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'3', N'1', N'A', N'3', N'VIP', N'1.50')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5054', N'105', N'A', N'3', N'VIP', N'1.50')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'4', N'1', N'A', N'4', N'VIP', N'1.50')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5055', N'105', N'A', N'4', N'VIP', N'1.50')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5', N'1', N'A', N'5', N'VIP', N'1.50')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5056', N'105', N'A', N'5', N'VIP', N'1.50')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'6', N'1', N'A', N'6', N'VIP', N'1.50')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5057', N'105', N'A', N'6', N'VIP', N'1.50')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'7', N'1', N'A', N'7', N'VIP', N'1.50')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5058', N'105', N'A', N'7', N'VIP', N'1.50')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'8', N'1', N'A', N'8', N'VIP', N'1.50')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5059', N'105', N'A', N'8', N'VIP', N'1.50')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'9', N'1', N'A', N'9', N'VIP', N'1.50')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5060', N'105', N'A', N'9', N'VIP', N'1.50')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'10', N'1', N'A', N'10', N'VIP', N'1.50')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5061', N'105', N'A', N'10', N'VIP', N'1.50')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'11', N'1', N'B', N'1', N'VIP', N'1.50')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5062', N'105', N'B', N'1', N'VIP', N'1.50')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12', N'1', N'B', N'2', N'VIP', N'1.50')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5063', N'105', N'B', N'2', N'VIP', N'1.50')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'13', N'1', N'B', N'3', N'VIP', N'1.50')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5064', N'105', N'B', N'3', N'VIP', N'1.50')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'14', N'1', N'B', N'4', N'VIP', N'1.50')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5065', N'105', N'B', N'4', N'VIP', N'1.50')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'15', N'1', N'B', N'5', N'VIP', N'1.50')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5066', N'105', N'B', N'5', N'VIP', N'1.50')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'16', N'1', N'B', N'6', N'VIP', N'1.50')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5067', N'105', N'B', N'6', N'VIP', N'1.50')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'17', N'1', N'B', N'7', N'VIP', N'1.50')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5068', N'105', N'B', N'7', N'VIP', N'1.50')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'18', N'1', N'B', N'8', N'VIP', N'1.50')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5069', N'105', N'B', N'8', N'VIP', N'1.50')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'19', N'1', N'B', N'9', N'VIP', N'1.50')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5070', N'105', N'B', N'9', N'VIP', N'1.50')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'20', N'1', N'B', N'10', N'VIP', N'1.50')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5071', N'105', N'B', N'10', N'VIP', N'1.50')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'21', N'1', N'C', N'1', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5072', N'105', N'C', N'1', N'STANDARD', N'1.00')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'22', N'1', N'C', N'2', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5073', N'105', N'C', N'2', N'STANDARD', N'1.00')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'23', N'1', N'C', N'3', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5074', N'105', N'C', N'3', N'STANDARD', N'1.00')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'24', N'1', N'C', N'4', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5075', N'105', N'C', N'4', N'STANDARD', N'1.00')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'25', N'1', N'C', N'5', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5076', N'105', N'C', N'5', N'STANDARD', N'1.00')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'26', N'1', N'C', N'6', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5077', N'105', N'C', N'6', N'STANDARD', N'1.00')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'27', N'1', N'C', N'7', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5078', N'105', N'C', N'7', N'STANDARD', N'1.00')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'28', N'1', N'C', N'8', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5079', N'105', N'D', N'1', N'STANDARD', N'1.00')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'29', N'1', N'C', N'9', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5080', N'105', N'D', N'2', N'STANDARD', N'1.00')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'30', N'1', N'C', N'10', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5081', N'105', N'D', N'3', N'STANDARD', N'1.00')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'31', N'1', N'C', N'11', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5082', N'105', N'D', N'4', N'STANDARD', N'1.00')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'32', N'1', N'C', N'12', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5083', N'105', N'D', N'5', N'STANDARD', N'1.00')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'33', N'1', N'C', N'13', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5084', N'105', N'D', N'6', N'STANDARD', N'1.00')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'34', N'1', N'C', N'14', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5085', N'105', N'D', N'7', N'STANDARD', N'1.00')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'35', N'1', N'C', N'15', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5086', N'105', N'E', N'1', N'STANDARD', N'1.00')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'36', N'1', N'D', N'1', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5087', N'105', N'E', N'2', N'STANDARD', N'1.00')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'37', N'1', N'D', N'2', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5088', N'105', N'E', N'3', N'STANDARD', N'1.00')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'38', N'1', N'D', N'3', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5089', N'105', N'E', N'4', N'STANDARD', N'1.00')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'39', N'1', N'D', N'4', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5090', N'105', N'E', N'5', N'STANDARD', N'1.00')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'40', N'1', N'D', N'5', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5091', N'105', N'E', N'6', N'STANDARD', N'1.00')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'41', N'1', N'D', N'6', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5092', N'105', N'E', N'7', N'STANDARD', N'1.00')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'42', N'1', N'D', N'7', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5093', N'105', N'F', N'1', N'COUPLE', N'1.30')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'43', N'1', N'D', N'8', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5094', N'105', N'F', N'2', N'COUPLE', N'1.30')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'44', N'1', N'D', N'9', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5095', N'105', N'F', N'3', N'COUPLE', N'1.30')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'45', N'1', N'D', N'10', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5096', N'105', N'F', N'4', N'COUPLE', N'1.30')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'46', N'1', N'D', N'11', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5097', N'105', N'F', N'5', N'COUPLE', N'1.30')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'47', N'1', N'D', N'12', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5098', N'105', N'F', N'6', N'COUPLE', N'1.30')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'48', N'1', N'D', N'13', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5099', N'105', N'F', N'7', N'COUPLE', N'1.30')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'49', N'1', N'D', N'14', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5100', N'105', N'F', N'8', N'COUPLE', N'1.30')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'50', N'1', N'D', N'15', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5101', N'105', N'F', N'9', N'COUPLE', N'1.30')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5102', N'106', N'A', N'1', N'VIP', N'1.50')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5103', N'106', N'A', N'2', N'VIP', N'1.50')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5104', N'106', N'A', N'3', N'VIP', N'1.50')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5105', N'106', N'A', N'4', N'VIP', N'1.50')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5106', N'106', N'A', N'5', N'VIP', N'1.50')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5107', N'106', N'A', N'6', N'VIP', N'1.50')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5108', N'106', N'A', N'7', N'VIP', N'1.50')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5109', N'106', N'A', N'8', N'VIP', N'1.50')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5110', N'106', N'A', N'9', N'VIP', N'1.50')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5111', N'106', N'A', N'10', N'VIP', N'1.50')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5112', N'106', N'B', N'1', N'VIP', N'1.50')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5113', N'106', N'B', N'2', N'VIP', N'1.50')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5114', N'106', N'B', N'3', N'VIP', N'1.50')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5115', N'106', N'B', N'4', N'VIP', N'1.50')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5116', N'106', N'B', N'5', N'VIP', N'1.50')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5117', N'106', N'B', N'6', N'VIP', N'1.50')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5118', N'106', N'B', N'7', N'VIP', N'1.50')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5119', N'106', N'B', N'8', N'VIP', N'1.50')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5120', N'106', N'B', N'9', N'VIP', N'1.50')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5121', N'106', N'B', N'10', N'VIP', N'1.50')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5122', N'106', N'C', N'1', N'STANDARD', N'1.00')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5123', N'106', N'C', N'2', N'STANDARD', N'1.00')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5124', N'106', N'C', N'3', N'STANDARD', N'1.00')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5125', N'106', N'C', N'4', N'STANDARD', N'1.00')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5126', N'106', N'C', N'5', N'STANDARD', N'1.00')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5127', N'106', N'C', N'6', N'STANDARD', N'1.00')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5128', N'106', N'C', N'7', N'STANDARD', N'1.00')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5129', N'106', N'D', N'1', N'STANDARD', N'1.00')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5130', N'106', N'D', N'2', N'STANDARD', N'1.00')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5131', N'106', N'D', N'3', N'STANDARD', N'1.00')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5132', N'106', N'D', N'4', N'STANDARD', N'1.00')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5133', N'106', N'D', N'5', N'STANDARD', N'1.00')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5134', N'106', N'D', N'6', N'STANDARD', N'1.00')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5135', N'106', N'D', N'7', N'STANDARD', N'1.00')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5136', N'106', N'E', N'1', N'STANDARD', N'1.00')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5137', N'106', N'E', N'2', N'STANDARD', N'1.00')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5138', N'106', N'E', N'3', N'STANDARD', N'1.00')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5139', N'106', N'E', N'4', N'STANDARD', N'1.00')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5140', N'106', N'E', N'5', N'STANDARD', N'1.00')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5141', N'106', N'E', N'6', N'STANDARD', N'1.00')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5142', N'106', N'E', N'7', N'STANDARD', N'1.00')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5143', N'106', N'F', N'1', N'COUPLE', N'1.30')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5144', N'106', N'F', N'2', N'COUPLE', N'1.30')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5145', N'106', N'F', N'3', N'COUPLE', N'1.30')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5146', N'106', N'F', N'4', N'COUPLE', N'1.30')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5147', N'106', N'F', N'5', N'COUPLE', N'1.30')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5148', N'106', N'F', N'6', N'COUPLE', N'1.30')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5149', N'106', N'F', N'7', N'COUPLE', N'1.30')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5150', N'106', N'F', N'8', N'COUPLE', N'1.30')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5151', N'106', N'F', N'9', N'COUPLE', N'1.30')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5152', N'107', N'A', N'1', N'VIP', N'1.50')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5153', N'107', N'A', N'2', N'VIP', N'1.50')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5154', N'107', N'A', N'3', N'VIP', N'1.50')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5155', N'107', N'A', N'4', N'VIP', N'1.50')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5156', N'107', N'A', N'5', N'VIP', N'1.50')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5157', N'107', N'A', N'6', N'VIP', N'1.50')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5158', N'107', N'A', N'7', N'VIP', N'1.50')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5159', N'107', N'A', N'8', N'VIP', N'1.50')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5160', N'107', N'A', N'9', N'VIP', N'1.50')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5161', N'107', N'A', N'10', N'VIP', N'1.50')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5162', N'107', N'B', N'1', N'VIP', N'1.50')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5163', N'107', N'B', N'2', N'VIP', N'1.50')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5164', N'107', N'B', N'3', N'VIP', N'1.50')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5165', N'107', N'B', N'4', N'VIP', N'1.50')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5166', N'107', N'B', N'5', N'VIP', N'1.50')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5167', N'107', N'B', N'6', N'VIP', N'1.50')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5168', N'107', N'B', N'7', N'VIP', N'1.50')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5169', N'107', N'B', N'8', N'VIP', N'1.50')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5170', N'107', N'B', N'9', N'VIP', N'1.50')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5171', N'107', N'B', N'10', N'VIP', N'1.50')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5172', N'107', N'C', N'1', N'STANDARD', N'1.00')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5173', N'107', N'C', N'2', N'STANDARD', N'1.00')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5174', N'107', N'C', N'3', N'STANDARD', N'1.00')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5175', N'107', N'C', N'4', N'STANDARD', N'1.00')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5176', N'107', N'C', N'5', N'STANDARD', N'1.00')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5177', N'107', N'C', N'6', N'STANDARD', N'1.00')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5178', N'107', N'C', N'7', N'STANDARD', N'1.00')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5179', N'107', N'D', N'1', N'STANDARD', N'1.00')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5180', N'107', N'D', N'2', N'STANDARD', N'1.00')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5181', N'107', N'D', N'3', N'STANDARD', N'1.00')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5182', N'107', N'D', N'4', N'STANDARD', N'1.00')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5183', N'107', N'D', N'5', N'STANDARD', N'1.00')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5184', N'107', N'D', N'6', N'STANDARD', N'1.00')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5185', N'107', N'D', N'7', N'STANDARD', N'1.00')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5186', N'107', N'E', N'1', N'STANDARD', N'1.00')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5187', N'107', N'E', N'2', N'STANDARD', N'1.00')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5188', N'107', N'E', N'3', N'STANDARD', N'1.00')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5189', N'107', N'E', N'4', N'STANDARD', N'1.00')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5190', N'107', N'E', N'5', N'STANDARD', N'1.00')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5191', N'107', N'E', N'6', N'STANDARD', N'1.00')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5192', N'107', N'E', N'7', N'STANDARD', N'1.00')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5193', N'107', N'F', N'1', N'COUPLE', N'1.30')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5194', N'107', N'F', N'2', N'COUPLE', N'1.30')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5195', N'107', N'F', N'3', N'COUPLE', N'1.30')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5196', N'107', N'F', N'4', N'COUPLE', N'1.30')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5197', N'107', N'F', N'5', N'COUPLE', N'1.30')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5198', N'107', N'F', N'6', N'COUPLE', N'1.30')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5199', N'107', N'F', N'7', N'COUPLE', N'1.30')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5200', N'107', N'F', N'8', N'COUPLE', N'1.30')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5201', N'107', N'F', N'9', N'COUPLE', N'1.30')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5202', N'108', N'A', N'1', N'VIP', N'1.50')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5203', N'108', N'A', N'2', N'VIP', N'1.50')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5204', N'108', N'A', N'3', N'VIP', N'1.50')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5205', N'108', N'A', N'4', N'VIP', N'1.50')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5206', N'108', N'A', N'5', N'VIP', N'1.50')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5207', N'108', N'A', N'6', N'VIP', N'1.50')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5208', N'108', N'A', N'7', N'VIP', N'1.50')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5209', N'108', N'A', N'8', N'VIP', N'1.50')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5210', N'108', N'A', N'9', N'VIP', N'1.50')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5211', N'108', N'A', N'10', N'VIP', N'1.50')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5212', N'108', N'B', N'1', N'VIP', N'1.50')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5213', N'108', N'B', N'2', N'VIP', N'1.50')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5214', N'108', N'B', N'3', N'VIP', N'1.50')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5215', N'108', N'B', N'4', N'VIP', N'1.50')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5216', N'108', N'B', N'5', N'VIP', N'1.50')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5217', N'108', N'B', N'6', N'VIP', N'1.50')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5218', N'108', N'B', N'7', N'VIP', N'1.50')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5219', N'108', N'B', N'8', N'VIP', N'1.50')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5220', N'108', N'B', N'9', N'VIP', N'1.50')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5221', N'108', N'B', N'10', N'VIP', N'1.50')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5222', N'108', N'C', N'1', N'STANDARD', N'1.00')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5223', N'108', N'C', N'2', N'STANDARD', N'1.00')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5224', N'108', N'C', N'3', N'STANDARD', N'1.00')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5225', N'108', N'C', N'4', N'STANDARD', N'1.00')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5226', N'108', N'C', N'5', N'STANDARD', N'1.00')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5227', N'108', N'C', N'6', N'STANDARD', N'1.00')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5228', N'108', N'C', N'7', N'STANDARD', N'1.00')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5229', N'108', N'D', N'1', N'STANDARD', N'1.00')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5230', N'108', N'D', N'2', N'STANDARD', N'1.00')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5231', N'108', N'D', N'3', N'STANDARD', N'1.00')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5232', N'108', N'D', N'4', N'STANDARD', N'1.00')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5233', N'108', N'D', N'5', N'STANDARD', N'1.00')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5234', N'108', N'D', N'6', N'STANDARD', N'1.00')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5235', N'108', N'D', N'7', N'STANDARD', N'1.00')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5236', N'108', N'E', N'1', N'STANDARD', N'1.00')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5237', N'108', N'E', N'2', N'STANDARD', N'1.00')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5238', N'108', N'E', N'3', N'STANDARD', N'1.00')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5239', N'108', N'E', N'4', N'STANDARD', N'1.00')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5240', N'108', N'E', N'5', N'STANDARD', N'1.00')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5241', N'108', N'E', N'6', N'STANDARD', N'1.00')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5242', N'108', N'E', N'7', N'STANDARD', N'1.00')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5243', N'108', N'F', N'1', N'COUPLE', N'1.30')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5244', N'108', N'F', N'2', N'COUPLE', N'1.30')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5245', N'108', N'F', N'3', N'COUPLE', N'1.30')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5246', N'108', N'F', N'4', N'COUPLE', N'1.30')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5247', N'108', N'F', N'5', N'COUPLE', N'1.30')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5248', N'108', N'F', N'6', N'COUPLE', N'1.30')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5249', N'108', N'F', N'7', N'COUPLE', N'1.30')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5250', N'108', N'F', N'8', N'COUPLE', N'1.30')
+GO
+
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'5251', N'108', N'F', N'9', N'COUPLE', N'1.30')
 GO
 
 SET IDENTITY_INSERT [dbo].[seats] OFF
@@ -621,7 +1224,7 @@ GO
 SET IDENTITY_INSERT [dbo].[theaters] ON
 GO
 
-INSERT INTO [dbo].[theaters] ([id], [name], [city], [address], [phone], [email], [description], [opening_hours]) VALUES (N'1', N'Cinema Paradise', N'Đà Nẵng', N'123 Lê Duẩn, Quận Hải Châu, Đà Nẵng', N'0236.3888.999', N'info@cinemaparadise.vn', N'Rạp chiếu phim hiện đại với công nghệ âm thanh và hình ảnh tối tân', N'8:00 - 23:00 hàng ngày')
+INSERT INTO [dbo].[theaters] ([id], [name], [city], [address], [phone], [email], [description], [opening_hours]) VALUES (N'27', N'Cinema Paradise', N'Đà Nẵng', N'123 Lê Duẩn, Quận Hải Châu, Đà Nẵng', N'0236.3888.999', N'info@cinemaparadise.vn', N'Rạp chiếu phim hiện đại với 4 phòng chiếu, mỗi phòng có 50 ghế được chia thành 3 loại: VIP, Thường và Couple', N'8:00 - 23:00 hàng ngày')
 GO
 
 SET IDENTITY_INSERT [dbo].[theaters] OFF
@@ -664,13 +1267,16 @@ GO
 SET IDENTITY_INSERT [dbo].[users] ON
 GO
 
-INSERT INTO [dbo].[users] ([id], [username], [email], [password_hash], [role], [full_name], [phone], [date_of_birth], [created_at], [status], [auth_provider], [provider_id], [avatar_url], [last_login], [is_enabled]) VALUES (N'1', N'admin', N'admin@cinemaparadise.vn', N'$2a$12$ql7t3dfII28oIf.6sUe/Uuomu.ClsPplwpbY8pMo83JAI6VwSn5Ra', N'ADMIN', N'Administrator', N'0236.3888.999', NULL, N'2025-07-25 07:49:45.3700000', N'ACTIVE', N'LOCAL', NULL, NULL, NULL, N'1')
+INSERT INTO [dbo].[users] ([id], [username], [email], [password_hash], [role], [full_name], [phone], [date_of_birth], [created_at], [status], [auth_provider], [provider_id], [avatar_url], [last_login], [is_enabled]) VALUES (N'1', N'admin', N'admin@cinemaparadise.vn', N'$2a$12$ql7t3dfII28oIf.6sUe/Uuomu.ClsPplwpbY8pMo83JAI6VwSn5Ra', N'ADMIN', N'Administrator', N'0236.3888.999', NULL, N'2025-07-28 16:00:55.8866667', N'ACTIVE', N'LOCAL', NULL, NULL, NULL, N'1')
 GO
 
-INSERT INTO [dbo].[users] ([id], [username], [email], [password_hash], [role], [full_name], [phone], [date_of_birth], [created_at], [status], [auth_provider], [provider_id], [avatar_url], [last_login], [is_enabled]) VALUES (N'2', N'staff1', N'staff1@cinemaparadise.vn', N'$2a$12$ql7t3dfII28oIf.6sUe/Uuomu.ClsPplwpbY8pMo83JAI6VwSn5Ra', N'STAFF', N'Nhân viên 1', N'0236.3888.998', NULL, N'2025-07-25 07:49:45.3700000', N'ACTIVE', N'LOCAL', NULL, NULL, NULL, N'1')
+INSERT INTO [dbo].[users] ([id], [username], [email], [password_hash], [role], [full_name], [phone], [date_of_birth], [created_at], [status], [auth_provider], [provider_id], [avatar_url], [last_login], [is_enabled]) VALUES (N'2', N'staff1', N'staff1@cinemaparadise.vn', N'$2a$12$ql7t3dfII28oIf.6sUe/Uuomu.ClsPplwpbY8pMo83JAI6VwSn5Ra', N'STAFF', N'Nhân viên 1', N'0236.3888.998', NULL, N'2025-07-28 16:00:55.8866667', N'ACTIVE', N'LOCAL', NULL, NULL, NULL, N'1')
 GO
 
-INSERT INTO [dbo].[users] ([id], [username], [email], [password_hash], [role], [full_name], [phone], [date_of_birth], [created_at], [status], [auth_provider], [provider_id], [avatar_url], [last_login], [is_enabled]) VALUES (N'3', N'customer1', N'customer1@gmail.com', N'$2a$12$ql7t3dfII28oIf.6sUe/Uuomu.ClsPplwpbY8pMo83JAI6VwSn5Ra', N'CUSTOMER', N'Khách hàng 1', N'0901234567', NULL, N'2025-07-25 07:49:45.3700000', N'ACTIVE', N'LOCAL', NULL, NULL, NULL, N'1')
+INSERT INTO [dbo].[users] ([id], [username], [email], [password_hash], [role], [full_name], [phone], [date_of_birth], [created_at], [status], [auth_provider], [provider_id], [avatar_url], [last_login], [is_enabled]) VALUES (N'3', N'customer1', N'customer1@gmail.com', N'$2a$12$ql7t3dfII28oIf.6sUe/Uuomu.ClsPplwpbY8pMo83JAI6VwSn5Ra', N'CUSTOMER', N'Khách hàng 1', N'0901234567', NULL, N'2025-07-28 16:00:55.8866667', N'ACTIVE', N'LOCAL', NULL, NULL, NULL, N'1')
+GO
+
+INSERT INTO [dbo].[users] ([id], [username], [email], [password_hash], [role], [full_name], [phone], [date_of_birth], [created_at], [status], [auth_provider], [provider_id], [avatar_url], [last_login], [is_enabled]) VALUES (N'4', N'DucAnh808', N'ducanh.aoa@gmail.com', N'$2a$10$ty5dKA6OpsVovmG01EzDE.jG7oSHDHMpk4JGo8bCagxiCuVBx27Oq', N'CUSTOMER', NULL, NULL, NULL, N'2025-07-28 16:36:41.3574050', N'ACTIVE', N'LOCAL', NULL, NULL, NULL, N'1')
 GO
 
 SET IDENTITY_INSERT [dbo].[users] OFF
@@ -678,106 +1284,9 @@ GO
 
 
 -- ----------------------------
--- View structure for v_booking_details
--- ----------------------------
-IF EXISTS (SELECT * FROM sys.all_objects WHERE object_id = OBJECT_ID(N'[dbo].[v_booking_details]') AND type IN ('V'))
-	DROP VIEW [dbo].[v_booking_details]
-GO
-
-CREATE VIEW [dbo].[v_booking_details] AS SELECT 
-    b.id as booking_id,
-    b.booking_code,
-    b.booking_time,
-    b.total_amount,
-    b.booking_status,
-    b.customer_name,
-    b.customer_phone,
-    b.customer_email,
-    u.username,
-    u.full_name as user_full_name,
-    s.start_time as screening_time,
-    m.title as movie_title,
-    a.name as auditorium_name,
-    STRING_AGG(CONCAT(se.row_number, se.seat_position), ', ') as seat_numbers
-FROM [dbo].[bookings] b
-JOIN [dbo].[users] u ON b.user_id = u.id
-JOIN [dbo].[screenings] s ON b.screening_id = s.id
-JOIN [dbo].[movies] m ON s.movie_id = m.id
-JOIN [dbo].[auditoriums] a ON s.auditorium_id = a.id
-LEFT JOIN [dbo].[booked_seats] bs ON b.id = bs.booking_id
-LEFT JOIN [dbo].[seats] se ON bs.seat_id = se.id
-GROUP BY b.id, b.booking_code, b.booking_time, b.total_amount, b.booking_status,
-         b.customer_name, b.customer_phone, b.customer_email, u.username, u.full_name,
-         s.start_time, m.title, a.name
-GO
-
-
--- ----------------------------
--- View structure for v_screening_details
--- ----------------------------
-IF EXISTS (SELECT * FROM sys.all_objects WHERE object_id = OBJECT_ID(N'[dbo].[v_screening_details]') AND type IN ('V'))
-	DROP VIEW [dbo].[v_screening_details]
-GO
-
-CREATE VIEW [dbo].[v_screening_details] AS SELECT 
-    s.id as screening_id,
-    s.start_time,
-    s.end_time,
-    s.base_price,
-    s.status as screening_status,
-    m.title as movie_title,
-    m.duration_min,
-    m.genre,
-    m.rating,
-    m.poster_url,
-    a.name as auditorium_name,
-    a.total_seats,
-    a.screen_type,
-    a.sound_system,
-    t.name as theater_name
-FROM [dbo].[screenings] s
-JOIN [dbo].[movies] m ON s.movie_id = m.id
-JOIN [dbo].[auditoriums] a ON s.auditorium_id = a.id  
-JOIN [dbo].[theaters] t ON a.theater_id = t.id
-GO
-
-
--- ----------------------------
--- procedure structure for sp_generate_booking_code
--- ----------------------------
-IF EXISTS (SELECT * FROM sys.all_objects WHERE object_id = OBJECT_ID(N'[dbo].[sp_generate_booking_code]') AND type IN ('P', 'PC', 'RF', 'X'))
-	DROP PROCEDURE[dbo].[sp_generate_booking_code]
-GO
-
-CREATE PROCEDURE [dbo].[sp_generate_booking_code]
-AS
-BEGIN
-    DECLARE @code NVARCHAR(10)
-    DECLARE @counter INT = 1
-    DECLARE @exists BIT = 1
-    
-    WHILE @exists = 1
-    BEGIN
-        SET @code = 'CP' + FORMAT(DATEPART(year, GETDATE()), '00') + 
-                    FORMAT(DATEPART(month, GETDATE()), '00') + 
-                    FORMAT(DATEPART(day, GETDATE()), '00') + 
-                    FORMAT(@counter, '000')
-        
-        IF NOT EXISTS (SELECT 1 FROM [dbo].[bookings] WHERE booking_code = @code)
-            SET @exists = 0
-        ELSE
-            SET @counter = @counter + 1
-    END
-    
-    SELECT @code AS booking_code
-END
-GO
-
-
--- ----------------------------
 -- Auto increment value for auditoriums
 -- ----------------------------
-DBCC CHECKIDENT ('[dbo].[auditoriums]', RESEED, 5)
+DBCC CHECKIDENT ('[dbo].[auditoriums]', RESEED, 108)
 GO
 
 
@@ -793,7 +1302,7 @@ GO
 -- ----------------------------
 -- Auto increment value for booked_seats
 -- ----------------------------
-DBCC CHECKIDENT ('[dbo].[booked_seats]', RESEED, 1)
+DBCC CHECKIDENT ('[dbo].[booked_seats]', RESEED, 4)
 GO
 
 
@@ -823,22 +1332,6 @@ GO
 
 
 -- ----------------------------
--- Indexes structure for table bookings
--- ----------------------------
-CREATE UNIQUE NONCLUSTERED INDEX [UQ_bookings_code]
-ON [dbo].[bookings] (
-  [booking_code] ASC
-)
-GO
-
-CREATE NONCLUSTERED INDEX [IX_bookings_booking_time]
-ON [dbo].[bookings] (
-  [booking_time] ASC
-)
-GO
-
-
--- ----------------------------
 -- Primary Key structure for table bookings
 -- ----------------------------
 ALTER TABLE [dbo].[bookings] ADD CONSTRAINT [PK_bookings] PRIMARY KEY CLUSTERED ([id])
@@ -850,7 +1343,7 @@ GO
 -- ----------------------------
 -- Auto increment value for movies
 -- ----------------------------
-DBCC CHECKIDENT ('[dbo].[movies]', RESEED, 25)
+DBCC CHECKIDENT ('[dbo].[movies]', RESEED, 24)
 GO
 
 
@@ -858,6 +1351,135 @@ GO
 -- Primary Key structure for table movies
 -- ----------------------------
 ALTER TABLE [dbo].[movies] ADD CONSTRAINT [PK_movies] PRIMARY KEY CLUSTERED ([id])
+WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON)  
+ON [PRIMARY]
+GO
+
+
+-- ----------------------------
+-- Auto increment value for oauth2_configs
+-- ----------------------------
+DBCC CHECKIDENT ('[dbo].[oauth2_configs]', RESEED, 2)
+GO
+
+
+-- ----------------------------
+-- Indexes structure for table oauth2_configs
+-- ----------------------------
+CREATE NONCLUSTERED INDEX [IDX_oauth2_configs_provider_enabled]
+ON [dbo].[oauth2_configs] (
+  [provider_name] ASC,
+  [is_enabled] ASC
+)
+GO
+
+
+-- ----------------------------
+-- Triggers structure for table oauth2_configs
+-- ----------------------------
+CREATE TRIGGER [dbo].[TRG_oauth2_configs_updated_at]
+ON [dbo].[oauth2_configs]
+WITH EXECUTE AS CALLER
+FOR UPDATE
+AS
+BEGIN
+    UPDATE [oauth2_configs]
+    SET [updated_at] = GETDATE()
+    FROM [oauth2_configs] o
+    INNER JOIN [inserted] i ON o.[id] = i.[id];
+END;
+GO
+
+
+-- ----------------------------
+-- Uniques structure for table oauth2_configs
+-- ----------------------------
+ALTER TABLE [dbo].[oauth2_configs] ADD CONSTRAINT [UK_oauth2_configs_provider] UNIQUE NONCLUSTERED ([provider_name] ASC)
+WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON)  
+ON [PRIMARY]
+GO
+
+
+-- ----------------------------
+-- Primary Key structure for table oauth2_configs
+-- ----------------------------
+ALTER TABLE [dbo].[oauth2_configs] ADD CONSTRAINT [PK_oauth2_configs] PRIMARY KEY CLUSTERED ([id])
+WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON)  
+ON [PRIMARY]
+GO
+
+
+-- ----------------------------
+-- Auto increment value for oauth2_user_profiles
+-- ----------------------------
+DBCC CHECKIDENT ('[dbo].[oauth2_user_profiles]', RESEED, 1)
+GO
+
+
+-- ----------------------------
+-- Indexes structure for table oauth2_user_profiles
+-- ----------------------------
+CREATE NONCLUSTERED INDEX [IDX_oauth2_user_profiles_provider]
+ON [dbo].[oauth2_user_profiles] (
+  [provider_name] ASC
+)
+GO
+
+CREATE NONCLUSTERED INDEX [IDX_oauth2_user_profiles_provider_email]
+ON [dbo].[oauth2_user_profiles] (
+  [provider_name] ASC,
+  [provider_email] ASC
+)
+GO
+
+CREATE NONCLUSTERED INDEX [IDX_oauth2_user_profiles_last_login]
+ON [dbo].[oauth2_user_profiles] (
+  [last_login] ASC
+)
+GO
+
+CREATE NONCLUSTERED INDEX [IDX_oauth2_user_profiles_active]
+ON [dbo].[oauth2_user_profiles] (
+  [is_active] ASC
+)
+GO
+
+
+-- ----------------------------
+-- Triggers structure for table oauth2_user_profiles
+-- ----------------------------
+CREATE TRIGGER [dbo].[TRG_oauth2_user_profiles_updated_at]
+ON [dbo].[oauth2_user_profiles]
+WITH EXECUTE AS CALLER
+FOR UPDATE
+AS
+BEGIN
+    UPDATE [oauth2_user_profiles]
+    SET [updated_at] = GETDATE()
+    FROM [oauth2_user_profiles] o
+    INNER JOIN [inserted] i ON o.[id] = i.[id];
+END;
+GO
+
+
+-- ----------------------------
+-- Uniques structure for table oauth2_user_profiles
+-- ----------------------------
+ALTER TABLE [dbo].[oauth2_user_profiles] ADD CONSTRAINT [UK_oauth2_user_profiles_provider_user] UNIQUE NONCLUSTERED ([provider_name] ASC, [provider_user_id] ASC)
+WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON)  
+ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[oauth2_user_profiles] ADD CONSTRAINT [UK_oauth2_user_profiles_user] UNIQUE NONCLUSTERED ([user_id] ASC)
+WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON)  
+ON [PRIMARY]
+GO
+
+
+-- ----------------------------
+-- Primary Key structure for table oauth2_user_profiles
+-- ----------------------------
+ALTER TABLE [dbo].[oauth2_user_profiles] ADD CONSTRAINT [PK_oauth2_user_profiles] PRIMARY KEY CLUSTERED ([id])
 WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON)  
 ON [PRIMARY]
 GO
@@ -882,7 +1504,7 @@ GO
 -- ----------------------------
 -- Auto increment value for promotions
 -- ----------------------------
-DBCC CHECKIDENT ('[dbo].[promotions]', RESEED, 4)
+DBCC CHECKIDENT ('[dbo].[promotions]', RESEED, 1)
 GO
 
 
@@ -908,17 +1530,7 @@ GO
 -- ----------------------------
 -- Auto increment value for screenings
 -- ----------------------------
-DBCC CHECKIDENT ('[dbo].[screenings]', RESEED, 9)
-GO
-
-
--- ----------------------------
--- Indexes structure for table screenings
--- ----------------------------
-CREATE NONCLUSTERED INDEX [IX_screenings_start_time]
-ON [dbo].[screenings] (
-  [start_time] ASC
-)
+DBCC CHECKIDENT ('[dbo].[screenings]', RESEED, 839)
 GO
 
 
@@ -934,7 +1546,7 @@ GO
 -- ----------------------------
 -- Auto increment value for seats
 -- ----------------------------
-DBCC CHECKIDENT ('[dbo].[seats]', RESEED, 50)
+DBCC CHECKIDENT ('[dbo].[seats]', RESEED, 5251)
 GO
 
 
@@ -950,7 +1562,7 @@ GO
 -- ----------------------------
 -- Auto increment value for theaters
 -- ----------------------------
-DBCC CHECKIDENT ('[dbo].[theaters]', RESEED, 1)
+DBCC CHECKIDENT ('[dbo].[theaters]', RESEED, 27)
 GO
 
 
@@ -966,7 +1578,7 @@ GO
 -- ----------------------------
 -- Auto increment value for users
 -- ----------------------------
-DBCC CHECKIDENT ('[dbo].[users]', RESEED, 3)
+DBCC CHECKIDENT ('[dbo].[users]', RESEED, 5)
 GO
 
 
@@ -1016,22 +1628,19 @@ GO
 
 
 -- ----------------------------
--- Foreign Keys structure for table booking_promotions
--- ----------------------------
-ALTER TABLE [dbo].[booking_promotions] ADD CONSTRAINT [FK_booking_promotions_bookings] FOREIGN KEY ([booking_id]) REFERENCES [dbo].[bookings] ([id]) ON DELETE NO ACTION ON UPDATE NO ACTION
-GO
-
-ALTER TABLE [dbo].[booking_promotions] ADD CONSTRAINT [FK_booking_promotions_promotions] FOREIGN KEY ([promotion_id]) REFERENCES [dbo].[promotions] ([id]) ON DELETE NO ACTION ON UPDATE NO ACTION
-GO
-
-
--- ----------------------------
 -- Foreign Keys structure for table bookings
 -- ----------------------------
 ALTER TABLE [dbo].[bookings] ADD CONSTRAINT [FK_bookings_users] FOREIGN KEY ([user_id]) REFERENCES [dbo].[users] ([id]) ON DELETE NO ACTION ON UPDATE NO ACTION
 GO
 
 ALTER TABLE [dbo].[bookings] ADD CONSTRAINT [FK_bookings_screenings] FOREIGN KEY ([screening_id]) REFERENCES [dbo].[screenings] ([id]) ON DELETE NO ACTION ON UPDATE NO ACTION
+GO
+
+
+-- ----------------------------
+-- Foreign Keys structure for table oauth2_user_profiles
+-- ----------------------------
+ALTER TABLE [dbo].[oauth2_user_profiles] ADD CONSTRAINT [FK_oauth2_user_profiles_user] FOREIGN KEY ([user_id]) REFERENCES [dbo].[users] ([id]) ON DELETE CASCADE ON UPDATE NO ACTION
 GO
 
 
