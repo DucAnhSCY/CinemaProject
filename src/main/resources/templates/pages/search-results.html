@@ -51,7 +51,7 @@
             
             <div class="movie-grid" th:if="${not #lists.isEmpty(movies)}">
                 <div th:each="movie : ${movies}" class="movie-card">
-                    <img th:src="${movie.posterUrl}" th:alt="${movie.title}" th:title="${movie.title}" class="movie-poster">
+                    <img th:src="${movie.posterUrl}" th:alt="${movie.title}" th:title="${movie.title}" class="movie-poster" alt="Movie poster" title="Movie poster">
                     <div class="movie-info">
                         <h5 class="movie-title" th:text="${movie.title}">Tên phim</h5>
                         <p class="movie-genre" th:text="${movie.genre}">Thể loại</p>
