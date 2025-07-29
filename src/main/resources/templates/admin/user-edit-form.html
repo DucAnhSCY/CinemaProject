@@ -87,7 +87,6 @@
                                         <option value="">-- Chọn vai trò --</option>
                                         <option value="CUSTOMER" th:selected="${user.role != null and user.role.name() == 'CUSTOMER'}">Khách Hàng</option>
                                         <option value="THEATER_MANAGER" th:selected="${user.role != null and user.role.name() == 'THEATER_MANAGER'}">Quản Lý Rạp</option>
-                                        <option value="ADMIN" th:selected="${user.role != null and user.role.name() == 'ADMIN'}">Quản Trị Viên</option>
                                     </select>
                                     <div class="invalid-feedback">
                                         Vui lòng chọn vai trò.

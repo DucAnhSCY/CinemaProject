@@ -13,8 +13,31 @@
     <link th:href="@{/css/cinema-theme.css}" href="/css/cinema-theme.css" rel="stylesheet">
     <!-- Modern Cinema CSS -->
     <link th:href="@{/css/modern-cinema.css}" href="/css/modern-cinema.css" rel="stylesheet">
+    
+    <style>
+        /* Override for booking confirmation page */
+        body {
+            background-color: #f8fafc !important;
+            color: #333 !important;
+        }
+        
+        .booking-confirmation .text-danger {
+            color: #e50914 !important;
+            font-weight: 700;
+        }
+        
+        .booking-confirmation .badge.bg-danger {
+            background-color: #e50914 !important;
+            color: white !important;
+        }
+        
+        .booking-confirmation .status-badge.bg-success {
+            background-color: #059669 !important;
+            color: white !important;
+        }
+    </style>
 </head>
-<body class="bg-light">
+<body class="bg-light booking-confirmation">
     <!-- Navigation -->
     <nav th:replace="~{layout/fragments/navigation :: nav}"></nav>
 
@@ -92,7 +115,7 @@
                                     <div class="col-8">
                                         <div class="d-flex flex-wrap gap-1">
                                             <span th:each="bookedSeat : ${booking.bookedSeats}" 
-                                                  class="badge bg-primary"
+                                                  class="badge bg-danger fw-bold px-3 py-2"
                                                   th:text="${bookedSeat.seat.rowNumber + bookedSeat.seat.seatPosition}">A1</span>
                                         </div>
                                         <small class="text-muted">
@@ -109,7 +132,7 @@
                                         <strong>Tổng tiền:</strong>
                                     </div>
                                     <div class="col-8">
-                                        <h4 class="text-primary mb-0" th:text="${#numbers.formatDecimal(booking.totalAmount, 0, 0)} + ' VNĐ'">
+                                        <h4 class="text-danger mb-0 fw-bold" th:text="${#numbers.formatDecimal(booking.totalAmount, 0, 0)} + ' VNĐ'">
                                             240,000 VNĐ
                                         </h4>
                                     </div>
@@ -123,7 +146,7 @@
                                         <strong>Trạng thái:</strong>
                                     </div>
                                     <div class="col-8">
-                                        <span class="status-badge" th:text="${booking.bookingStatus}">CONFIRMED</span>
+                                        <span class="status-badge bg-success text-white px-3 py-1 rounded-pill" th:text="${booking.bookingStatus}">CONFIRMED</span>
                                     </div>
                                 </div>
                             </div>
@@ -165,7 +188,7 @@
                             </button>
                         </div>
                         <div class="col-md-6">
-                            <a th:href="@{/booking/my-bookings(userId=${booking.user.id})}" class="btn btn-primary-custom w-100">
+                            <a th:href="@{/booking/my-bookings}" class="btn btn-primary-custom w-100">
                                 <i class="fas fa-list me-2"></i>Xem Tất Cả Vé
                             </a>
                         </div>

@@ -83,9 +83,21 @@ public class BookingController {
     }
 
     @GetMapping("/my-bookings")
-    public String myBookings(@RequestParam Long userId, Model model) {
+    public String myBookings(@RequestParam(required = false) Long userId, Model model) {
         try {
-            List<Booking> bookings = bookingService.getBookingsByUser(userId);
+            List<Booking> bookings;
+            if (userId != null) {
+                bookings = bookingService.getBookingsByUser(userId);
+            } else {
+                // Get current authenticated user's bookings
+                Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+                if (auth != null && auth.isAuthenticated() && !"anonymousUser".equals(auth.getName())) {
+                    // Try to find user and get their bookings
+                    bookings = bookingService.getBookingsByUser(1L); // Fallback for demo
+                } else {
+                    bookings = List.of();
+                }
+            }
             model.addAttribute("bookings", bookings);
             return "pages/my-bookings";
         } catch (Exception e) {

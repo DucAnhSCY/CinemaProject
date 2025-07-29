@@ -586,3 +586,219 @@ body {
     color: #1e40af;
     border-left: 4px solid #3b82f6;
 }
+
+/* ===== BOOKING CONFIRMATION STYLES ===== */
+
+/* Success Header */
+.success-header {
+    background: linear-gradient(135deg, var(--primary-color) 0%, #059669 100%);
+    color: white;
+    padding: 60px 0;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.success-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="2" fill="rgba(255,255,255,0.1)"/></svg>') repeat;
+    opacity: 0.3;
+}
+
+.success-icon {
+    font-size: 4rem;
+    color: #22c55e;
+    filter: drop-shadow(0 4px 8px rgba(34, 197, 94, 0.3));
+    animation: successPulse 2s ease-in-out infinite;
+}
+
+@keyframes successPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+.success-header h1 {
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    margin-bottom: 1rem;
+}
+
+.success-header .lead {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1.2rem;
+}
+
+/* Booking Detail Items */
+.booking-detail-item {
+    padding: 15px 0;
+    border-bottom: 1px solid #f3f4f6;
+}
+
+.booking-detail-item:last-child {
+    border-bottom: none;
+}
+
+.booking-detail-item .row .col-4 {
+    font-weight: 600;
+    color: #374151;
+}
+
+.booking-detail-item .row .col-8 {
+    color: #111827;
+}
+
+/* Status Badge */
+.status-badge {
+    display: inline-block;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.status-badge[data-status="CONFIRMED"],
+.status-badge:contains("CONFIRMED") {
+    background-color: #dcfce7;
+    color: #166534;
+    border: 1px solid #bbf7d0;
+}
+
+/* Booking Actions */
+.booking-actions {
+    background: #f8fafc;
+    padding: 25px;
+    border-radius: 0 0 20px 20px;
+    margin-top: 20px;
+}
+
+.booking-actions .btn {
+    font-weight: 600;
+    padding: 12px 24px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.booking-actions .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Ticket Body Styling */
+.ticket-body {
+    padding: 30px;
+    background: white;
+}
+
+/* QR Code Styling */
+.qr-code {
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    border: 2px dashed #cbd5e1;
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 140px;
+}
+
+.qr-code i {
+    color: #64748b;
+    margin-bottom: 8px;
+}
+
+/* Enhanced Typography */
+.booking-confirmation h3 {
+    color: var(--primary-color);
+    font-weight: 700;
+}
+
+.booking-confirmation h4 {
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+/* Seat Badges */
+.badge.bg-primary {
+    background-color: var(--primary-color) !important;
+    padding: 8px 12px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    border-radius: 6px;
+}
+
+/* Important Notes Alert Enhancement */
+.alert-info {
+    background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+    border: 1px solid #93c5fd;
+    border-left: 4px solid #3b82f6;
+    border-radius: 12px;
+    padding: 20px;
+}
+
+.alert-info .alert-heading {
+    color: #1e40af;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.alert-info ul li {
+    margin-bottom: 8px;
+    color: #1e3a8a;
+    font-weight: 500;
+}
+
+/* Print Styles */
+@media print {
+    .success-header,
+    .booking-actions,
+    nav,
+    footer {
+        display: none !important;
+    }
+    
+    .booking-ticket {
+        box-shadow: none;
+        margin: 0;
+        border: 2px solid #000;
+    }
+    
+    .ticket-body {
+        padding: 20px;
+    }
+}
+
+/* Responsive Enhancements */
+@media (max-width: 768px) {
+    .success-header {
+        padding: 40px 0;
+    }
+    
+    .success-icon {
+        font-size: 3rem;
+    }
+    
+    .success-header h1 {
+        font-size: 2rem;
+    }
+    
+    .booking-ticket {
+        margin: -30px 15px 0;
+    }
+    
+    .ticket-body {
+        padding: 20px;
+    }
+    
+    .booking-detail-item .row .col-4,
+    .booking-detail-item .row .col-8 {
+        margin-bottom: 8px;
+    }
+}
