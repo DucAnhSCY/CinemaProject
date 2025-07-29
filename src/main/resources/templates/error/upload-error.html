@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lỗi Upload - Cinema</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" th:href="@{/css/cinema-theme.css}">
+</head>
+<body class="bg-dark text-light">
+
+    <div class="container d-flex justify-content-center align-items-center min-vh-100">
+        <div class="row justify-content-center w-100">
+            <div class="col-md-8 col-lg-6">
+                <div class="card bg-card border-warning">
+                    <div class="card-body text-center p-5">
+                        <!-- Error Icon -->
+                        <div class="mb-4">
+                            <i class="fas fa-upload text-warning error-icon"></i>
+                        </div>
+                        
+                        <!-- Error Title -->
+                        <h1 class="display-6 text-warning mb-3">
+                            <i class="fas fa-file-exclamation me-2"></i>
+                            Lỗi Upload File
+                        </h1>
+                        
+                        <!-- Error Message -->
+                        <div class="alert alert-warning" role="alert">
+                            <h5 class="alert-heading text-dark">
+                                <i class="fas fa-info-circle me-2"></i>
+                                Upload không thành công!
+                            </h5>
+                            <p class="mb-0 text-dark" th:if="${error}" th:text="${error}">
+                                File quá lớn hoặc định dạng không được hỗ trợ.
+                            </p>
+                            <p class="mb-0 text-dark" th:unless="${error}">
+                                File quá lớn hoặc định dạng không được hỗ trợ.
+                            </p>
+                        </div>
+                        
+                        <!-- Upload Guidelines -->
+                        <div class="mt-4 p-3 bg-dark-secondary rounded">
+                            <h6 class="text-primary mb-3">
+                                <i class="fas fa-lightbulb me-1"></i>
+                                Hướng dẫn upload file:
+                            </h6>
+                            <ul class="list-unstyled text-start text-muted">
+                                <li class="mb-2">
+                                    <i class="fas fa-check-circle text-success me-2"></i>
+                                    Kích thước tối đa: <strong>10MB</strong>
+                                </li>
+                                <li class="mb-2">
+                                    <i class="fas fa-check-circle text-success me-2"></i>
+                                    Số lượng file tối đa: <strong>5 files cùng lúc</strong>
+                                </li>
+                                <li class="mb-2">
+                                    <i class="fas fa-check-circle text-success me-2"></i>
+                                    Định dạng được hỗ trợ: <strong>JPG, PNG, PDF, DOC</strong>
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <!-- Action Buttons -->
+                        <div class="mt-4">
+                            <a href="javascript:history.back()" class="btn btn-outline-primary me-2">
+                                <i class="fas fa-arrow-left me-1"></i>
+                                Thử Lại
+                            </a>
+                            <a th:href="@{/}" class="btn btn-primary">
+                                <i class="fas fa-home me-1"></i>
+                                Trang Chủ
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

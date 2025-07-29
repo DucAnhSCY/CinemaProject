@@ -137,4 +137,19 @@ public class AdminTheaterController {
             return List.of();
         }
     }
+    
+    @GetMapping("/{theaterId}/auditoriums")
+    @ResponseBody
+    public List<Auditorium> getAuditoriumsByTheaterId(@PathVariable Long theaterId) {
+        try {
+            System.out.println("Getting auditoriums for theater ID: " + theaterId);
+            List<Auditorium> auditoriums = auditoriumService.getAuditoriumsByTheaterId(theaterId);
+            System.out.println("Found " + auditoriums.size() + " auditoriums");
+            return auditoriums;
+        } catch (Exception e) {
+            System.out.println("Error getting auditoriums: " + e.getMessage());
+            e.printStackTrace();
+            return List.of();
+        }
+    }
 }

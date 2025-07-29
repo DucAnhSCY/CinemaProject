@@ -1210,6 +1210,11 @@ body {
     border-color: var(--purple-color);
 }
 
+/* Error page styles */
+.error-icon {
+    font-size: 4rem;
+}
+
 @media (max-width: 576px) {
     .search-container .col-md-4,
     .search-container .col-md-2 {
