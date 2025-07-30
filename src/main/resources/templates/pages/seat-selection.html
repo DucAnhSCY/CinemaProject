@@ -157,12 +157,13 @@
         .seat.standard.available {
             background: linear-gradient(135deg, #4a90e2, #357abd);
             border-color: #357abd;
+            color: white;
         }
 
         .seat.vip.available {
             background: linear-gradient(135deg, var(--cgv-gold), #e6c200);
             border-color: #e6c200;
-            color: #333;
+            color: white;
         }
 
         .seat.couple.available {
@@ -181,6 +182,7 @@
         .seat.selected {
             background: var(--cgv-red) !important;
             border-color: #ff1744 !important;
+            color: white !important;
             transform: scale(1.1);
             box-shadow: 0 0 15px rgba(210, 0, 31, 0.6);
         }
@@ -188,6 +190,7 @@
         .seat.held {
             background: #ff9800 !important;
             border-color: #f57c00 !important;
+            color: white !important;
             cursor: not-allowed;
         }
 
@@ -525,14 +528,14 @@
                 <!-- Total Price -->
                 <div class="total-price">
                     <div>Tổng cộng:</div>
-                    <div id="totalPrice">0 VND</div>
+                    <div id="totalPrice">0 VNĐ</div>
                 </div>
 
                 <!-- Action Buttons -->
                 <div class="action-buttons">
                     <form th:action="@{/booking/create}" method="post" id="bookingForm">
                         <input type="hidden" name="screeningId" th:value="${screening.id}" th:data-screening-id="${screening.id}">
-                        <input type="hidden" name="userId" value="1">
+                        <input type="hidden" name="userId" th:value="${currentUser.id}">
                         <input type="hidden" name="seatIds" id="seatIds">
                         
                         <button type="submit" class="btn-book" id="bookingBtn" disabled style="background: var(--cinema-red);">
@@ -548,8 +551,8 @@
                 <div class="seat-info mt-3">
                     <div class="price-line">
                         <span>Giá vé cơ bản:</span>
-                        <span th:text="${#numbers.formatCurrency(screening.ticketPrice)}"
-                              th:data-ticket-price="${screening.ticketPrice}">120,000 VND</span>
+                        <span th:text="${#numbers.formatDecimal(screening.ticketPrice / 1000, 0, 'COMMA', 3, 'POINT')} + ' VNĐ'"
+                              th:data-ticket-price="${screening.ticketPrice}">120,000 VNĐ</span>
                     </div>
                 </div>
             </div>
@@ -571,8 +574,8 @@
         // Seat prices by type
         const seatPrices = {
             'STANDARD': /*[[${screening.ticketPrice}]]*/ 120000,
-            'VIP': /*[[${screening.ticketPrice}]]*/ 120000 * 1.5,
-            'COUPLE': /*[[${screening.ticketPrice}]]*/ 120000 * 1.3
+            'VIP': /*[[${screening.ticketPrice}]]*/ 120000 * 1.2,
+            'COUPLE': /*[[${screening.ticketPrice}]]*/ 120000 * 2.0
         };
 
         // Initialize on page load
@@ -773,26 +776,30 @@
 
             if (selectedSeats.length === 0) {
                 breakdown.style.display = 'none';
-                totalElement.textContent = '0 VND';
+                totalElement.textContent = '0 VNĐ';
                 return;
             }
 
-            // Group by seat type
+            // Calculate total using actual seat price modifiers
+            let total = 0;
+            let detailsHtml = '';
+            
+            // Group by seat type và tính giá thực
             const seatGroups = {};
             selectedSeats.forEach(seat => {
                 if (!seatGroups[seat.seatType]) {
-                    seatGroups[seat.seatType] = 0;
+                    seatGroups[seat.seatType] = {
+                        count: 0,
+                        priceModifier: seat.priceModifier || getSeatTypeMultiplier(seat.seatType)
+                    };
                 }
-                seatGroups[seat.seatType]++;
+                seatGroups[seat.seatType].count++;
             });
 
-            // Calculate total
-            let total = 0;
-            let detailsHtml = '';
-
-            Object.entries(seatGroups).forEach(([type, count]) => {
-                const price = seatPrices[type];
-                const subtotal = price * count;
+            Object.entries(seatGroups).forEach(([type, data]) => {
+                const basePrice = ticketPrice;
+                const price = basePrice * data.priceModifier;
+                const subtotal = price * data.count;
                 total += subtotal;
 
                 const typeName = type === 'STANDARD' ? 'Thường' : 
@@ -800,7 +807,7 @@
                 
                 detailsHtml += `
                     <div class="price-line">
-                        <span>${typeName} x${count}</span>
+                        <span>${typeName} x${data.count} (x${data.priceModifier})</span>
                         <span>${formatCurrency(subtotal)}</span>
                     </div>
                 `;
@@ -819,11 +826,23 @@
             seatIdsInput.value = selectedSeats.map(s => s.id).join(',');
         }
 
+        function getSeatTypeMultiplier(seatType) {
+            switch(seatType) {
+                case 'VIP': return 1.2;
+                case 'COUPLE': return 2.0;
+                case 'STANDARD':
+                default: return 1.0;
+            }
+        }
+
         function formatCurrency(amount) {
+            // Chia cho 1000 để loại bỏ 3 số 0 từ giá gốc
+            const adjustedAmount = amount;
             return new Intl.NumberFormat('vi-VN', {
-                style: 'currency',
-                currency: 'VND'
-            }).format(amount);
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0,
+                useGrouping: true
+            }).format(adjustedAmount).replace(/\./g, ',') + ' VNĐ';
         }
 
         async function requestSeatHold() {

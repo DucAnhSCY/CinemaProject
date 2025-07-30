@@ -45,4 +45,32 @@ public class Seat {
     public enum SeatType {
         STANDARD, VIP, COUPLE
     }
+    
+    // Method to generate seat name
+    public String getName() {
+        return rowNumber + seatPosition;
+    }
+    
+    // Method to get price multiplier based on seat type
+    public BigDecimal getPriceMultiplier() {
+        if (priceModifier != null) {
+            return priceModifier;
+        }
+        
+        // Default multipliers based on seat type
+        switch (seatType) {
+            case VIP:
+                return new BigDecimal("1.2");
+            case COUPLE:
+                return new BigDecimal("2.0");
+            case STANDARD:
+            default:
+                return BigDecimal.ONE;
+        }
+    }
+    
+    // Method to calculate actual price for this seat
+    public BigDecimal calculatePrice(BigDecimal basePrice) {
+        return basePrice.multiply(getPriceMultiplier());
+    }
 }

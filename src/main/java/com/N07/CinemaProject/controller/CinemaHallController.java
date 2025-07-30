@@ -243,4 +243,28 @@ public class CinemaHallController {
         
         return ResponseEntity.ok(response);
     }
+    
+    /**
+     * Endpoint để cập nhật mapping ghế theo yêu cầu mới:
+     * A,B → STANDARD (x1.0)
+     * C,D,E → VIP (x1.2)  
+     * F → COUPLE (x2.0)
+     */
+    @PostMapping("/update-seat-mappings")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> updateSeatMappings() {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            auditoriumService.updateExistingSeatMappings();
+            response.put("success", true);
+            response.put("message", "Đã cập nhật mapping ghế thành công!\n" +
+                    "A,B → Ghế thường (x1.0)\n" +
+                    "C,D,E → Ghế VIP (x1.2)\n" +
+                    "F → Ghế đôi (x2.0)");
+        } catch (Exception e) {
+            response.put("success", false);
+            response.put("message", "Lỗi khi cập nhật mapping ghế: " + e.getMessage());
+        }
+        return ResponseEntity.ok(response);
+    }
 }

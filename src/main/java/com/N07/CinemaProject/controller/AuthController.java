@@ -19,14 +19,46 @@ public class AuthController {
     
     @GetMapping("/login")
     public String loginPage(@RequestParam(value = "error", required = false) String error,
+                           @RequestParam(value = "message", required = false) String message,
+                           @RequestParam(value = "code", required = false) String code,
                            @RequestParam(value = "logout", required = false) String logout,
                            Model model) {
         if (error != null) {
-            model.addAttribute("error", "Tên đăng nhập hoặc mật khẩu không đúng!");
+            if (message != null && !message.trim().isEmpty()) {
+                // Sử dụng message cụ thể từ CustomAuthenticationFailureHandler
+                model.addAttribute("error", message);
+                
+                // Thêm error code để có thể xử lý UI khác nhau
+                if (code != null) {
+                    model.addAttribute("errorCode", code);
+                    
+                    // Thêm class CSS tương ứng với loại lỗi
+                    switch (code) {
+                        case "account_disabled":
+                        case "account_locked":
+                        case "account_status_error":
+                            model.addAttribute("errorClass", "alert-warning");
+                            break;
+                        case "user_not_found":
+                        case "wrong_password":
+                        case "invalid_credentials":
+                            model.addAttribute("errorClass", "alert-danger");
+                            break;
+                        default:
+                            model.addAttribute("errorClass", "alert-danger");
+                    }
+                }
+            } else {
+                // Fallback message
+                model.addAttribute("error", "Đăng nhập thất bại. Vui lòng thử lại.");
+                model.addAttribute("errorClass", "alert-danger");
+            }
         }
+        
         if (logout != null) {
             model.addAttribute("logout", true);
         }
+        
         return "auth/login";
     }
     

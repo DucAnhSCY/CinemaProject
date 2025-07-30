@@ -7,6 +7,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link th:href="@{/css/admin.css}" rel="stylesheet">
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
 </head>
 <body>
     <!-- Header -->
@@ -43,10 +45,77 @@
                 <div class="d-flex justify-content-between align-items-center">
                     <h2><i class="fas fa-ticket-alt me-3"></i>Quản Lý Đặt Vé</h2>
                     <div class="d-flex gap-2">
-                        <span class="badge bg-primary fs-6">Tổng: <span th:text="${totalBookings ?: 0}">0</span> đặt vé</span>
+                        <span class="badge bg-primary fs-6">Tổng: <span th:text="${totalBookings ?: bookings?.totalElements ?: #lists.size(bookings ?: {})}">0</span> đặt vé</span>
+                        <button class="btn btn-outline-success" onclick="exportBookings()">
+                            <i class="fas fa-download me-2"></i>Xuất Excel
+                        </button>
                         <button class="btn btn-outline-primary" onclick="refreshBookings()">
                             <i class="fas fa-sync-alt me-2"></i>Làm mới
                         </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Search and Filter Section -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0"><i class="fas fa-search me-2"></i>Tìm kiếm & Lọc</h5>
+                    </div>
+                    <div class="card-body">
+                        <form id="searchForm" th:action="@{/admin/bookings/search}" method="get">
+                            <div class="row g-3">
+                                <div class="col-md-3">
+                                    <label for="keyword" class="form-label">Từ khóa</label>
+                                    <input type="text" class="form-control" id="keyword" name="keyword" 
+                                           th:value="${keyword}" placeholder="Tên khách hàng, email, tên phim...">
+                                </div>
+                                <div class="col-md-2">
+                                    <label for="status" class="form-label">Trạng thái</label>
+                                    <select class="form-select" id="status" name="status">
+                                        <option value="ALL" th:selected="${status == 'ALL' or status == null}">Tất cả</option>
+                                        <option value="RESERVED" th:selected="${status == 'RESERVED'}">Chờ xác nhận</option>
+                                        <option value="CONFIRMED" th:selected="${status == 'CONFIRMED'}">Đã xác nhận</option>
+                                        <option value="CANCELLED" th:selected="${status == 'CANCELLED'}">Đã hủy</option>
+                                        <option value="EXPIRED" th:selected="${status == 'EXPIRED'}">Hết hạn</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-2">
+                                    <label for="theater" class="form-label">Rạp</label>
+                                    <select class="form-select" id="theater" name="theater">
+                                        <option value="ALL" th:selected="${theater == 'ALL' or theater == null}">Tất cả rạp</option>
+                                        <!-- TODO: Load theaters from database -->
+                                        <option value="1" th:selected="${theater == '1'}">CGV Vincom</option>
+                                        <option value="2" th:selected="${theater == '2'}">Lotte Cinema</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-2">
+                                    <label for="startDate" class="form-label">Từ ngày</label>
+                                    <input type="date" class="form-control" id="startDate" name="startDate" th:value="${startDate}">
+                                </div>
+                                <div class="col-md-2">
+                                    <label for="endDate" class="form-label">Đến ngày</label>
+                                    <input type="date" class="form-control" id="endDate" name="endDate" th:value="${endDate}">
+                                </div>
+                                <div class="col-md-1">
+                                    <label class="form-label">&nbsp;</label>
+                                    <div class="d-grid">
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="fas fa-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-12">
+                                    <button type="button" class="btn btn-outline-secondary btn-sm" onclick="clearFilters()">
+                                        <i class="fas fa-times me-1"></i>Xóa bộ lọc
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -59,7 +128,7 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between">
                             <div>
-                                <h4 th:text="${#lists.size(bookings.?[bookingStatus == T(com.N07.CinemaProject.entity.Booking.BookingStatus).RESERVED])}">0</h4>
+                                <h4 th:text="${reservedCount ?: 0}">0</h4>
                                 <small>Chờ xác nhận</small>
                             </div>
                             <i class="fas fa-clock fa-2x"></i>
@@ -72,7 +141,7 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between">
                             <div>
-                                <h4 th:text="${#lists.size(bookings.?[bookingStatus == T(com.N07.CinemaProject.entity.Booking.BookingStatus).CONFIRMED])}">0</h4>
+                                <h4 th:text="${confirmedCount ?: 0}">0</h4>
                                 <small>Đã xác nhận</small>
                             </div>
                             <i class="fas fa-check-circle fa-2x"></i>
@@ -85,7 +154,7 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between">
                             <div>
-                                <h4 th:text="${#lists.size(bookings.?[bookingStatus == T(com.N07.CinemaProject.entity.Booking.BookingStatus).CANCELLED])}">0</h4>
+                                <h4 th:text="${cancelledCount ?: 0}">0</h4>
                                 <small>Đã hủy</small>
                             </div>
                             <i class="fas fa-times-circle fa-2x"></i>
@@ -98,7 +167,7 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between">
                             <div>
-                                <h4 th:text="${#lists.size(bookings.?[bookingStatus == T(com.N07.CinemaProject.entity.Booking.BookingStatus).EXPIRED])}">0</h4>
+                                <h4 th:text="${expiredCount ?: 0}">0</h4>
                                 <small>Hết hạn</small>
                             </div>
                             <i class="fas fa-flag-checkered fa-2x"></i>
@@ -116,13 +185,13 @@
                         <h5 class="mb-0"><i class="fas fa-list me-2"></i>Danh Sách Đặt Vé</h5>
                     </div>
                     <div class="card-body">
-                        <div th:if="${#lists.isEmpty(bookings)}" class="text-center py-5">
+                        <div th:if="${bookings == null or (bookings.hasContent != null and !bookings.hasContent) or (bookings.hasContent == null and #lists.isEmpty(bookings))}" class="text-center py-5">
                             <i class="fas fa-ticket-alt fa-3x text-muted mb-3"></i>
                             <h5 class="text-muted">Chưa có đặt vé nào</h5>
                             <p class="text-muted">Các đặt vé từ khách hàng sẽ hiển thị ở đây</p>
                         </div>
 
-                        <div th:if="${!#lists.isEmpty(bookings)}" class="table-responsive">
+                        <div th:if="${bookings != null and ((bookings.hasContent != null and bookings.hasContent) or (bookings.hasContent == null and !#lists.isEmpty(bookings)))}" class="table-responsive">
                             <table class="table table-hover">
                                 <thead class="table-dark">
                                     <tr>
@@ -139,7 +208,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr th:each="booking, iterStat : ${bookings}">
+                                    <tr th:each="booking, iterStat : ${bookings.hasContent != null ? bookings.content : bookings}">
                                         <td th:text="${iterStat.count}">1</td>
                                         <td>
                                             <div th:if="${booking.user}">
@@ -171,7 +240,7 @@
                                             <div th:if="${booking.bookedSeats == null}" class="text-muted">-</div>
                                         </td>
                                         <td>
-                                            <strong th:text="${#numbers.formatDecimal(booking.totalAmount, 0, 'COMMA', 0, 'POINT') + ' VNĐ'}">150,000 VNĐ</strong>
+                                            <strong th:text="${#numbers.formatDecimal(booking.totalAmount / 1000, 0, 'COMMA', 3, 'POINT') + ' VNĐ'}">150 VNĐ</strong>
                                         </td>
                                         <td>
                                             <span th:switch="${booking.bookingStatus?.name()}">
@@ -209,6 +278,26 @@
                                 </tbody>
                             </table>
                         </div>
+
+                        <!-- Pagination for Page objects -->
+                        <div th:if="${bookings != null and bookings.hasContent != null and bookings.totalPages > 1}" class="d-flex justify-content-center mt-4">
+                            <nav aria-label="Booking pagination">
+                                <ul class="pagination">
+                                    <li class="page-item" th:classappend="${bookings.first} ? 'disabled'">
+                                        <a class="page-link" th:href="@{/admin/bookings/search(page=${bookings.number - 1}, keyword=${keyword}, status=${status}, theater=${theater}, startDate=${startDate}, endDate=${endDate})}">Trước</a>
+                                    </li>
+                                    
+                                    <li th:each="pageNum : ${#numbers.sequence(0, bookings.totalPages - 1)}" 
+                                        class="page-item" th:classappend="${pageNum == bookings.number} ? 'active'">
+                                        <a class="page-link" th:href="@{/admin/bookings/search(page=${pageNum}, keyword=${keyword}, status=${status}, theater=${theater}, startDate=${startDate}, endDate=${endDate})}" th:text="${pageNum + 1}">1</a>
+                                    </li>
+                                    
+                                    <li class="page-item" th:classappend="${bookings.last} ? 'disabled'">
+                                        <a class="page-link" th:href="@{/admin/bookings/search(page=${bookings.number + 1}, keyword=${keyword}, status=${status}, theater=${theater}, startDate=${startDate}, endDate=${endDate})}">Sau</a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -219,6 +308,9 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     
     <script>
+        const token = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+        const header = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
+
         // Refresh bookings
         function refreshBookings() {
             window.location.reload();
@@ -232,7 +324,12 @@
 
             try {
                 const response = await fetch(`/admin/bookings/${bookingId}/confirm`, {
-                    method: 'POST'
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest',
+                        [header]: token
+                    }
                 });
 
                 const result = await response.text();
@@ -256,7 +353,12 @@
 
             try {
                 const response = await fetch(`/admin/bookings/${bookingId}/cancel`, {
-                    method: 'POST'
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest',
+                        [header]: token
+                    }
                 });
 
                 const result = await response.text();
@@ -271,6 +373,64 @@
                 alert('Lỗi khi hủy đặt vé: ' + error.message);
             }
         }
+
+        // Export bookings
+        function exportBookings() {
+            const form = document.getElementById('searchForm');
+            const formData = new FormData(form);
+            
+            // Build export URL with current filters
+            const params = new URLSearchParams();
+            for (const [key, value] of formData.entries()) {
+                if (value && value !== 'ALL') {
+                    params.append(key, value);
+                }
+            }
+            params.append('format', 'csv');
+            
+            const exportUrl = '/admin/bookings/export?' + params.toString();
+            
+            // Download file
+            const link = document.createElement('a');
+            link.href = exportUrl;
+            link.download = 'bookings_export.csv';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        // Clear filters
+        function clearFilters() {
+            document.getElementById('keyword').value = '';
+            document.getElementById('status').value = 'ALL';
+            document.getElementById('theater').value = 'ALL';
+            document.getElementById('startDate').value = '';
+            document.getElementById('endDate').value = '';
+            
+            // Submit form to reload with no filters
+            window.location.href = '/admin/bookings';
+        }
+
+        // Auto-submit search form on enter key
+        document.getElementById('keyword').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                document.getElementById('searchForm').submit();
+            }
+        });
+
+        // Show loading indicator when searching
+        document.getElementById('searchForm').addEventListener('submit', function() {
+            const submitButton = this.querySelector('button[type="submit"]');
+            const originalContent = submitButton.innerHTML;
+            submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+            submitButton.disabled = true;
+            
+            // Re-enable after a delay (in case of errors)
+            setTimeout(() => {
+                submitButton.innerHTML = originalContent;
+                submitButton.disabled = false;
+            }, 5000);
+        });
     </script>
 </body>
 </html>

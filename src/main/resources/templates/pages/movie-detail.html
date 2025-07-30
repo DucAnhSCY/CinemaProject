@@ -16,6 +16,8 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <!-- Cinema Theme CSS -->
     <link th:href="@{/css/cinema-theme.css}" href="/css/cinema-theme.css" rel="stylesheet">
+    <!-- Language Switcher JS -->
+    <script th:src="@{/js/language-switcher.js}"></script>
 </head>
 <body>
     <!-- Navigation -->
@@ -85,7 +87,7 @@
                         <!-- Description -->
                         <div class="movie-description mb-4" th:if="${movie.overview}">
                             <h5 class="text-primary mb-2">
-                                <i class="fas fa-align-left me-2"></i>Tóm Tắt
+                                <i class="fas fa-align-left me-2"></i><span data-translate="overview">Tóm Tắt</span>
                             </h5>
                             <p class="text-light fs-6 lh-lg" th:text="${movie.overview}" style="max-width: 600px;">
                                 Mô tả phim sẽ được hiển thị ở đây...
@@ -98,7 +100,7 @@
                                 <button onclick="scrollToScreenings()" 
                                    class="btn btn-primary btn-lg px-5 py-3" 
                                    style="border-radius: 50px; background: linear-gradient(135deg, #e50914 0%, #b81d24 100%); border: none; box-shadow: 0 8px 25px rgba(229, 9, 20, 0.4); font-weight: 600;">
-                                    <i class="fas fa-ticket-alt me-2"></i>Đặt Vé Ngay
+                                    <i class="fas fa-ticket-alt me-2"></i><span data-translate="bookTicket">Đặt Vé Ngay</span>
                                 </button>
                                 <button class="btn btn-outline-light btn-lg px-5 py-3" 
                                         style="border-radius: 50px; border: 2px solid rgba(255, 255, 255, 0.3); backdrop-filter: blur(10px); font-weight: 600;"
@@ -205,7 +207,7 @@
                                         <div class="date small text-muted mb-1" 
                                              th:text="${#temporals.format(screening.startTime, 'dd/MM')}">30/07</div>
                                         <div class="price small text-warning" 
-                                             th:text="${#numbers.formatCurrency(screening.ticketPrice)}">150,000đ</div>
+                                             th:text="${#numbers.formatDecimal(screening.ticketPrice / 1000, 0, 'COMMA', 3, 'POINT')} + ' VNĐ'">150 VNĐ</div>
                                     </div>
                                 </a>
                             </div>
@@ -222,12 +224,12 @@
                             <table class="table table-dark table-striped">
                                 <thead>
                                     <tr>
-                                        <th><i class="fas fa-building me-2"></i>Rạp</th>
-                                        <th><i class="fas fa-door-open me-2"></i>Phòng</th>
-                                        <th><i class="fas fa-clock me-2"></i>Giờ chiếu</th>
-                                        <th><i class="fas fa-calendar me-2"></i>Ngày</th>
-                                        <th><i class="fas fa-money-bill me-2"></i>Giá vé</th>
-                                        <th>Đặt vé</th>
+                                        <th><i class="fas fa-building me-2"></i><span data-translate="theater">Rạp</span></th>
+                                        <th><i class="fas fa-door-open me-2"></i><span data-translate="hall">Phòng</span></th>
+                                        <th><i class="fas fa-clock me-2"></i><span data-translate="time">Giờ chiếu</span></th>
+                                        <th><i class="fas fa-calendar me-2"></i><span data-translate="date">Ngày</span></th>
+                                        <th><i class="fas fa-money-bill me-2"></i><span data-translate="price">Giá vé</span></th>
+                                        <th><span data-translate="bookTicket">Đặt vé</span></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -236,11 +238,11 @@
                                         <td th:text="${screening.auditorium?.name ?: 'Chưa có thông tin'}">Phòng</td>
                                         <td th:text="${screening.startTime != null ? #temporals.format(screening.startTime, 'HH:mm') : '--:--'}">19:30</td>
                                         <td th:text="${screening.startTime != null ? #temporals.format(screening.startTime, 'dd/MM/yyyy') : '--/--/----'}">30/07/2025</td>
-                                        <td th:text="${screening.ticketPrice != null ? #numbers.formatCurrency(screening.ticketPrice) : 'Liên hệ'}">150,000đ</td>
+                                        <td th:text="${screening.ticketPrice != null ? #numbers.formatDecimal(screening.ticketPrice / 1000, 0, 'COMMA', 3, 'POINT') + ' VNĐ' : 'Liên hệ'}">150 VNĐ</td>
                                         <td>
                                             <a th:href="@{'/booking/screening/' + ${screening.id}}" 
                                                class="btn btn-primary btn-sm">
-                                                <i class="fas fa-ticket-alt me-1"></i>Đặt vé
+                                                <i class="fas fa-ticket-alt me-1"></i><span data-translate="bookTicket">Đặt vé</span>
                                             </a>
                                         </td>
                                     </tr>

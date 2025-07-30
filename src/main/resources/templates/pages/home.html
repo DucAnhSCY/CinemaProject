@@ -126,7 +126,7 @@
                                                                 </div>
                                                             </div>
                                                             <div class="price-booking text-end">
-                                                                <div class="price text-warning fw-bold mb-1" th:text="${#numbers.formatCurrency(screening.ticketPrice)}">240,000 VNĐ</div>
+                                                                <div class="price text-warning fw-bold mb-1" th:text="${#numbers.formatDecimal(screening.ticketPrice / 1000, 0, 'COMMA', 3, 'POINT')} + ' VNĐ'">240 VNĐ</div>
                                                                 <a th:href="@{'/booking/screening/' + ${screening.id}}" 
                                                                    class="btn btn-primary btn-sm px-3" 
                                                                    style="border-radius: 20px; font-size: 0.75rem;">

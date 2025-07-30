@@ -217,10 +217,10 @@
                                 </td>
                                 <td>
                                     <div class="btn-group" role="group">
-                                        <a th:href="@{'/admin/movies/' + ${movie.id} + '/screenings'}" 
+                                        <a th:href="@{'/admin/screenings?movieId=' + ${movie.id}}" 
                                            class="btn btn-primary btn-sm" 
                                            th:classappend="${!@securityUtils.isAdmin()} ? 'security-disabled unauthorized-overlay'"
-                                           title="Quản lý lịch chiếu" aria-label="Quản lý lịch chiếu">
+                                           title="Xem lịch chiếu phim này" aria-label="Xem lịch chiếu phim này">
                                             <i class="fas fa-calendar"></i>
                                         </a>
                                         <a th:href="@{'/admin/movies/' + ${movie.id} + '/edit'}" 

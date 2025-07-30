@@ -14,6 +14,62 @@
             width: 40px;
             height: 60px;
             object-fit: cover;
+            border-radius: 4px;
+            min-width: 40px;
+            min-height: 60px;
+        }
+        
+        .screening-card {
+            transition: transform 0.2s;
+        }
+        
+        .screening-card:hover {
+            transform: translateY(-2px);
+        }
+        
+        .status-badge {
+            font-size: 0.75rem;
+        }
+        
+        .price-badge {
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        
+        .theater-info {
+            font-size: 0.9rem;
+        }
+        
+        .movie-title {
+            font-weight: 600;
+            color: #000;
+        }
+        
+        .time-info {
+            font-size: 0.85rem;
+            color: #000;
+        }
+        
+        .theater-info {
+            font-size: 0.9rem;
+            color: #000;
+        }
+        
+        .table tbody tr td {
+            color: #000 !important;
+        }
+        
+        .table tbody tr td .text-muted {
+            color: #6c757d !important;
+        }
+        
+        .table tbody tr td .text-primary {
+            color: #0d6efd !important;
+        }
+        
+        .btn-action {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.75rem;
         }
     </style>
 </head>
@@ -63,9 +119,53 @@
             <div class="col-12">
                 <div class="d-flex justify-content-between align-items-center">
                     <h2><i class="fas fa-calendar-alt me-3"></i>Quản Lý Lịch Chiếu</h2>
-                    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addScreeningModal">
-                        <i class="fas fa-plus me-2"></i>Thêm Lịch Chiếu
-                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filter and Sort Controls -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">
+                            <i class="fas fa-filter me-2"></i>Lọc và Sắp Xếp
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <form method="get" class="row g-3">
+                            <div class="col-md-4">
+                                <label for="movieFilter" class="form-label">Lọc theo phim:</label>
+                                <select class="form-select" id="movieFilter" name="movieId">
+                                    <option value="">Tất cả phim</option>
+                                    <option th:each="movie : ${movies}" 
+                                            th:value="${movie.id}" 
+                                            th:text="${movie.title}"
+                                            th:selected="${movie.id == selectedMovieId}">Movie</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="sortBy" class="form-label">Sắp xếp theo:</label>
+                                <select class="form-select" id="sortBy" name="sortBy">
+                                    <option value="startTime" th:selected="${currentSort == 'startTime'}">Thời gian chiếu</option>
+                                    <option value="movie" th:selected="${currentSort == 'movie'}">Tên phim</option>
+                                    <option value="theater" th:selected="${currentSort == 'theater'}">Rạp chiếu</option>
+                                    <option value="price" th:selected="${currentSort == 'price'}">Giá vé</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4 d-flex align-items-end">
+                                <button type="submit" class="btn btn-primary me-2">
+                                    <i class="fas fa-search me-2"></i>Áp dụng
+                                </button>
+                                <a href="/admin/screenings" class="btn btn-outline-secondary me-2">
+                                    <i class="fas fa-redo me-2"></i>Reset
+                                </a>
+                                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addScreeningModal">
+                                    <i class="fas fa-plus me-2"></i>Thêm Lịch Chiếu
+                                </button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
@@ -111,6 +211,19 @@
                     </div>
                 </div>
             </div>
+            <div class="col-md-3">
+                <div class="card text-white bg-warning">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h4 class="card-title" th:text="${todayScreenings ?: 0}">0</h4>
+                                <p class="card-text">Chiếu Hôm Nay</p>
+                            </div>
+                            <i class="fas fa-clock fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- Screenings List -->
@@ -119,75 +232,113 @@
                 <h5 class="mb-0">
                     <i class="fas fa-calendar me-2"></i>Danh Sách Lịch Chiếu
                     <span class="badge bg-primary ms-2" th:text="${#lists.size(screenings)}">0</span>
+                    <span th:if="${selectedMovieId != null}" class="badge bg-info ms-1">
+                        Đã lọc theo phim
+                    </span>
+                    <span th:if="${currentSort != 'startTime'}" class="badge bg-secondary ms-1" 
+                          th:text="'Sắp xếp: ' + ${currentSort == 'movie' ? 'Phim' : currentSort == 'theater' ? 'Rạp' : currentSort == 'price' ? 'Giá' : 'Thời gian'}">
+                    </span>
                 </h5>
             </div>
             <div class="card-body">
                 <div th:if="${#lists.isEmpty(screenings)}" class="text-center py-5">
                     <i class="fas fa-calendar fa-3x text-muted mb-3"></i>
-                    <h5 class="text-muted">Chưa có lịch chiếu nào</h5>
-                    <p class="text-muted">Thêm lịch chiếu đầu tiên cho hệ thống</p>
+                    <h5 class="text-muted" th:if="${selectedMovieId == null}">Chưa có lịch chiếu nào</h5>
+                    <h5 class="text-muted" th:if="${selectedMovieId != null}">Không tìm thấy lịch chiếu cho phim đã chọn</h5>
+                    <p class="text-muted" th:if="${selectedMovieId == null}">Thêm lịch chiếu đầu tiên cho hệ thống</p>
+                    <p class="text-muted" th:if="${selectedMovieId != null}">Hãy thử chọn phim khác hoặc thêm lịch chiếu mới</p>
                 </div>
 
                 <div th:if="${!#lists.isEmpty(screenings)}" class="table-responsive">
-                    <table class="table table-striped table-hover">
+                    <table class="table table-striped table-hover align-middle">
                         <thead class="table-dark">
                             <tr>
-                                <th>Phim</th>
-                                <th>Rạp Chiếu</th>
+                                <th>
+                                    <a href="?sortBy=movie" class="text-white text-decoration-none">
+                                        Phim 
+                                        <i th:if="${currentSort == 'movie'}" class="fas fa-sort-alpha-down ms-1"></i>
+                                        <i th:unless="${currentSort == 'movie'}" class="fas fa-sort ms-1 text-muted"></i>
+                                    </a>
+                                </th>
+                                <th>
+                                    <a href="?sortBy=theater" class="text-white text-decoration-none">
+                                        Rạp Chiếu 
+                                        <i th:if="${currentSort == 'theater'}" class="fas fa-sort-alpha-down ms-1"></i>
+                                        <i th:unless="${currentSort == 'theater'}" class="fas fa-sort ms-1 text-muted"></i>
+                                    </a>
+                                </th>
                                 <th>Phòng Chiếu</th>
-                                <th>Thời Gian</th>
-                                <th>Giá Vé</th>
+                                <th>
+                                    <a href="?sortBy=startTime" class="text-white text-decoration-none">
+                                        Thời Gian 
+                                        <i th:if="${currentSort == 'startTime'}" class="fas fa-sort-numeric-down ms-1"></i>
+                                        <i th:unless="${currentSort == 'startTime'}" class="fas fa-sort ms-1 text-muted"></i>
+                                    </a>
+                                </th>
+                                <th>
+                                    <a href="?sortBy=price" class="text-white text-decoration-none">
+                                        Giá Vé 
+                                        <i th:if="${currentSort == 'price'}" class="fas fa-sort-numeric-down ms-1"></i>
+                                        <i th:unless="${currentSort == 'price'}" class="fas fa-sort ms-1 text-muted"></i>
+                                    </a>
+                                </th>
                                 <th>Trạng Thái</th>
                                 <th>Hành Động</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr th:each="screening : ${screenings}">
+                            <tr th:each="screening : ${screenings}" class="screening-card">
                                 <td>
                                     <div class="d-flex align-items-center">
-                                        <img th:src="${screening.movie.posterUrl ?: '/images/no-poster.jpg'}" 
+                                        <!-- Movie Poster -->
+                                        <img th:src="${screening.movie.posterUrl ?: (screening.movie.imageUrl ?: '/images/no-poster.svg')}" 
                                              th:alt="${screening.movie.title}"
                                              th:title="${screening.movie.title}"
-                                             alt="Movie Poster"
-                                             title="Movie Poster"
-                                             class="me-2 rounded screening-poster">
+                                             class="me-3 rounded screening-poster"
+                                             onerror="this.src='/images/no-poster.svg'"
+                                             loading="lazy">
+                                        <!-- Movie Info -->
                                         <div>
-                                            <strong th:text="${screening.movie.title}">Movie Title</strong>
-                                            <br>
+                                            <div class="movie-title" th:text="${screening.movie.title}">Movie Title</div>
                                             <small class="text-muted" th:text="${screening.movie.genre ?: 'Chưa xác định'}">Genre</small>
                                         </div>
                                     </div>
                                 </td>
-                                <td>
-                                    <strong th:text="${screening.auditorium.theater.name}">Theater Name</strong>
-                                    <br>
+                                <td class="theater-info">
+                                    <div class="fw-bold" th:text="${screening.auditorium.theater.name}">Theater Name</div>
                                     <small class="text-muted" th:text="${screening.auditorium.theater.city}">City</small>
                                 </td>
-                                <td th:text="${screening.auditorium.name}">Auditorium</td>
                                 <td>
-                                    <div th:text="${#temporals.format(screening.startTime, 'dd/MM/yyyy')}">Date</div>
+                                    <span class="badge bg-info" th:text="${screening.auditorium.name}">Auditorium</span>
+                                    <br>
+                                    <small class="text-muted" th:text="${screening.auditorium.totalSeats} + ' ghế'">Seats</small>
+                                </td>
+                                <td class="time-info">
+                                    <div class="fw-bold" th:text="${#temporals.format(screening.startTime, 'dd/MM/yyyy')}">Date</div>
                                     <div class="text-primary" th:text="${#temporals.format(screening.startTime, 'HH:mm')}">Time</div>
                                 </td>
                                 <td>
-                                    <span class="badge bg-success" th:text="${#numbers.formatDecimal(screening.ticketPrice, 0, 0)} + ' VNĐ'">Price</span>
+                                    <span class="badge bg-success price-badge" th:text="${#numbers.formatDecimal(screening.ticketPrice / 1000, 0, 'COMMA', 3, 'POINT')} + ' VNĐ'">Price</span>
                                 </td>
                                 <td>
                                     <span th:if="${screening.startTime.isAfter(T(java.time.LocalDateTime).now())}" 
-                                          class="badge bg-primary">Sắp chiếu</span>
+                                          class="badge bg-primary status-badge">Sắp chiếu</span>
                                     <span th:if="${screening.startTime.isBefore(T(java.time.LocalDateTime).now())}" 
-                                          class="badge bg-secondary">Đã chiếu</span>
+                                          class="badge bg-secondary status-badge">Đã chiếu</span>
                                 </td>
                                 <td>
-                                    <button type="button" class="btn btn-primary btn-sm me-1" 
-                                            th:onclick="'editScreening(' + ${screening.id} + ')'" 
-                                            title="Chỉnh sửa">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                    <button type="button" class="btn btn-danger btn-sm" 
-                                            th:onclick="'deleteScreening(' + ${screening.id} + ')'" 
-                                            title="Xóa lịch chiếu">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
+                                    <div class="btn-group" role="group">
+                                        <button type="button" class="btn btn-primary btn-action" 
+                                                th:onclick="'editScreening(' + ${screening.id} + ')'" 
+                                                title="Chỉnh sửa">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-danger btn-action" 
+                                                th:onclick="'deleteScreening(' + ${screening.id} + ')'" 
+                                                title="Xóa lịch chiếu">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
                                 </td>
                             </tr>
                         </tbody>
@@ -208,7 +359,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
                 </div>
                 <form method="post" th:action="@{/admin/screenings/add}" id="addScreeningForm">
-                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                    <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-md-6">
@@ -244,7 +395,8 @@
                             <div class="col-md-6">
                                 <label for="ticketPrice" class="form-label">Giá Vé (VNĐ):</label>
                                 <input type="number" class="form-control" id="ticketPrice" name="ticketPrice" 
-                                       min="0" step="1000" placeholder="100000" required>
+                                       min="0" placeholder="VD: 100000" required 
+                                       title="Nhập giá vé (VNĐ)">
                             </div>
                         </div>
                     </div>
@@ -259,22 +411,242 @@
         </div>
     </div>
 
+    <!-- Edit Screening Modal -->
+    <div class="modal fade" id="editScreeningModal" tabindex="-1" aria-labelledby="editScreeningModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editScreeningModalLabel">
+                        <i class="fas fa-edit me-2"></i>Chỉnh Sửa Lịch Chiếu
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
+                </div>
+                <form method="post" id="editScreeningForm">
+                    <input type="hidden" id="csrfToken" name="_csrf" th:value="${_csrf.token}"/>
+                    <input type="hidden" id="editScreeningId" name="id"/>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="editMovieId" class="form-label">Phim:</label>
+                                <select class="form-select" id="editMovieId" name="movieId" required>
+                                    <option value="">Chọn phim</option>
+                                    <option th:each="movie : ${movies}" 
+                                            th:value="${movie.id}" 
+                                            th:text="${movie.title}">Movie</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="editTheaterId" class="form-label">Rạp Chiếu:</label>
+                                <select class="form-select" id="editTheaterId" name="theaterId" required>
+                                    <option value="">Chọn rạp chiếu</option>
+                                    <option th:each="theater : ${theaters}" 
+                                            th:value="${theater.id}" 
+                                            th:text="${theater.name + ' - ' + theater.city}">Theater</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="editAuditoriumId" class="form-label">Phòng Chiếu:</label>
+                                <select class="form-select" id="editAuditoriumId" name="auditoriumId" required>
+                                    <option value="">Chọn phòng chiếu</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-md-6">
+                                <label for="editStartTime" class="form-label">Thời Gian Chiếu:</label>
+                                <input type="datetime-local" class="form-control" id="editStartTime" name="startTime" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="editTicketPrice" class="form-label">Giá Vé (VNĐ):</label>
+                                <input type="number" class="form-control" id="editTicketPrice" name="ticketPrice" 
+                                       min="0" placeholder="VD: 100000" required 
+                                       title="Nhập giá vé (VNĐ)">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save me-2"></i>Cập Nhật
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         function editScreening(screeningId) {
-            // TODO: Implement edit functionality
-            alert('Tính năng chỉnh sửa đang được phát triển');
+            console.log('Editing screening ID:', screeningId);
+            
+            // Validate screening ID
+            if (!screeningId || isNaN(screeningId)) {
+                console.error('Invalid screening ID:', screeningId);
+                alert('ID lịch chiếu không hợp lệ');
+                return;
+            }
+            
+            // Fetch screening data
+            fetch(`/admin/screenings/api/${screeningId}`)
+                .then(response => {
+                    console.log('Response status:', response.status);
+                    console.log('Response headers:', response.headers);
+                    
+                    if (response.status === 404) {
+                        throw new Error('Lịch chiếu không tồn tại');
+                    }
+                    if (response.status === 403) {
+                        throw new Error('Không có quyền truy cập');
+                    }
+                    if (!response.ok) {
+                        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                    }
+                    return response.json();
+                })
+                .then(screening => {
+                    console.log('Full screening data received:', JSON.stringify(screening, null, 2));
+                    
+                    // Check if movie exists
+                    if (!screening.movie) {
+                        console.error('Movie data is missing for screening:', screening.id);
+                        alert('Lỗi: Thông tin phim không tồn tại cho lịch chiếu này');
+                        return;
+                    }
+                    
+                    console.log('Movie data:', JSON.stringify(screening.movie, null, 2));
+                    console.log('Movie poster URL:', screening.movie.posterUrl);
+                    console.log('Movie image URL:', screening.movie.imageUrl);
+                    
+                    // Populate the edit modal with screening data
+                    document.getElementById('editScreeningId').value = screening.id;
+                    document.getElementById('editMovieId').value = screening.movie.id;
+                    document.getElementById('editTicketPrice').value = screening.ticketPrice;
+                    
+                    // Format the start time for datetime-local input
+                    const startTime = new Date(screening.startTime);
+                    const year = startTime.getFullYear();
+                    const month = String(startTime.getMonth() + 1).padStart(2, '0');
+                    const day = String(startTime.getDate()).padStart(2, '0');
+                    const hours = String(startTime.getHours()).padStart(2, '0');
+                    const minutes = String(startTime.getMinutes()).padStart(2, '0');
+                    const formattedTime = `${year}-${month}-${day}T${hours}:${minutes}`;
+                    document.getElementById('editStartTime').value = formattedTime;
+                    
+                    // Check if auditorium and theater exist
+                    if (!screening.auditorium || !screening.auditorium.theater) {
+                        console.error('Auditorium or theater data is missing for screening:', screening.id);
+                        alert('Lỗi: Thông tin phòng chiếu hoặc rạp không tồn tại');
+                        return;
+                    }
+                    
+                    console.log('Auditorium data:', JSON.stringify(screening.auditorium, null, 2));
+                    
+                    // Set theater first
+                    document.getElementById('editTheaterId').value = screening.auditorium.theater.id;
+                    
+                    // Load auditoriums for the selected theater and then select the current one
+                    loadAuditoriums('editTheaterId', 'editAuditoriumId', screening.auditorium.id);
+                    
+                    // Set the form action
+                    const formAction = `/admin/screenings/update/${screeningId}`;
+                    console.log('Setting form action to:', formAction);
+                    document.getElementById('editScreeningForm').action = formAction;
+                    
+                    // Debug form data
+                    const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+                    const csrfHeader = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
+                    
+                    console.log('CSRF Token from meta:', csrfToken);
+                    console.log('CSRF Header from meta:', csrfHeader);
+                    
+                    // Update CSRF token in form
+                    document.getElementById('csrfToken').value = csrfToken;
+                    
+                    console.log('Form CSRF token:', document.getElementById('csrfToken').value);
+                    console.log('Form method:', document.getElementById('editScreeningForm').method);
+                    
+                    // Show the modal
+                    new bootstrap.Modal(document.getElementById('editScreeningModal')).show();
+                })
+                .catch(error => {
+                    console.error('Error loading screening:', error);
+                    alert('Lỗi khi tải thông tin lịch chiếu: ' + error.message);
+                });
         }
+
+        // Add form submit debugging
+        document.addEventListener('DOMContentLoaded', function() {
+            // Debug ticket price inputs
+            const ticketPriceInputs = document.querySelectorAll('input[name="ticketPrice"]');
+            ticketPriceInputs.forEach(input => {
+                console.log('Found ticket price input:', input.id);
+                
+                // Add event listeners for debugging
+                input.addEventListener('focus', function() {
+                    console.log('Ticket price input focused:', this.id);
+                });
+                
+                input.addEventListener('input', function() {
+                    console.log('Ticket price input value changed:', this.id, this.value);
+                });
+                
+                input.addEventListener('keypress', function(e) {
+                    console.log('Key pressed on ticket price input:', e.key);
+                });
+                
+                // Check if input is disabled or readonly
+                console.log('Input disabled:', input.disabled);
+                console.log('Input readonly:', input.readOnly);
+                console.log('Input type:', input.type);
+                console.log('Input min:', input.min);
+                console.log('Input step:', input.step);
+            });
+            
+            const editForm = document.getElementById('editScreeningForm');
+            if (editForm) {
+                editForm.addEventListener('submit', function(e) {
+                    console.log('Form submit triggered');
+                    console.log('Form action:', this.action);
+                    console.log('Form method:', this.method);
+                    
+                    // Ensure CSRF token is present
+                    const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+                    document.getElementById('csrfToken').value = csrfToken;
+                    
+                    // Get form data
+                    const formData = new FormData(this);
+                    console.log('Form data:');
+                    for (let [key, value] of formData.entries()) {
+                        console.log(`${key}: ${value}`);
+                    }
+                    
+                    // Check if all required fields are filled
+                    const requiredFields = ['movieId', 'auditoriumId', 'startTime', 'ticketPrice'];
+                    for (let field of requiredFields) {
+                        const value = formData.get(field);
+                        if (!value) {
+                            alert(`Vui lòng điền ${field}`);
+                            e.preventDefault();
+                            return false;
+                        }
+                    }
+                });
+            }
+        });
 
         function deleteScreening(screeningId) {
             if (confirm('Bạn có chắc chắn muốn xóa lịch chiếu này?')) {
+                const token = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+                const header = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
+                
                 fetch(`/admin/screenings/${screeningId}`, {
                     method: 'DELETE',
                     headers: {
                         'Content-Type': 'application/json',
                         'X-Requested-With': 'XMLHttpRequest',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="_csrf"]').getAttribute('content')
+                        [header]: token
                     }
                 })
                 .then(response => response.text())
@@ -282,7 +654,7 @@
                     if (result === 'success') {
                         location.reload();
                     } else {
-                        alert('Có lỗi xảy ra khi xóa lịch chiếu');
+                        alert('Có lỗi xảy ra khi xóa lịch chiếu: ' + result);
                     }
                 })
                 .catch(error => {
@@ -292,36 +664,55 @@
             }
         }
 
+        function loadAuditoriums(theaterSelectId, auditoriumSelectId, selectedAuditoriumId = null) {
+            const theaterId = document.getElementById(theaterSelectId).value;
+            const auditoriumSelect = document.getElementById(auditoriumSelectId);
+            
+            // Clear auditorium options
+            auditoriumSelect.innerHTML = '<option value="">Chọn phòng chiếu</option>';
+            
+            if (theaterId) {
+                // Load auditoriums for selected theater
+                fetch(`/admin/screenings/api/theaters/${theaterId}/auditoriums`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(auditoriums => {
+                        auditoriums.forEach(auditorium => {
+                            const option = document.createElement('option');
+                            option.value = auditorium.id;
+                            option.textContent = auditorium.name + ' (' + auditorium.totalSeats + ' ghế)';
+                            if (selectedAuditoriumId && auditorium.id == selectedAuditoriumId) {
+                                option.selected = true;
+                            }
+                            auditoriumSelect.appendChild(option);
+                        });
+                    })
+                    .catch(error => {
+                        console.error('Error loading auditoriums:', error);
+                        alert('Lỗi khi tải danh sách phòng chiếu: ' + error.message);
+                    });
+            }
+        }
+
         // Set minimum datetime to current time
         document.addEventListener('DOMContentLoaded', function() {
             const now = new Date();
             now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
-            document.getElementById('startTime').min = now.toISOString().slice(0, 16);
+            const minTime = now.toISOString().slice(0, 16);
+            document.getElementById('startTime').min = minTime;
+            document.getElementById('editStartTime').min = minTime;
             
-            // Theater selection change handler
+            // Theater selection change handlers
             document.getElementById('theaterId').addEventListener('change', function() {
-                const theaterId = this.value;
-                const auditoriumSelect = document.getElementById('auditoriumId');
-                
-                // Clear auditorium options
-                auditoriumSelect.innerHTML = '<option value="">Chọn phòng chiếu</option>';
-                
-                if (theaterId) {
-                    // Load auditoriums for selected theater
-                    fetch(`/admin/theaters/${theaterId}/auditoriums`)
-                        .then(response => response.json())
-                        .then(auditoriums => {
-                            auditoriums.forEach(auditorium => {
-                                const option = document.createElement('option');
-                                option.value = auditorium.id;
-                                option.textContent = auditorium.name + ' (' + auditorium.totalSeats + ' ghế)';
-                                auditoriumSelect.appendChild(option);
-                            });
-                        })
-                        .catch(error => {
-                            console.error('Error loading auditoriums:', error);
-                        });
-                }
+                loadAuditoriums('theaterId', 'auditoriumId');
+            });
+            
+            document.getElementById('editTheaterId').addEventListener('change', function() {
+                loadAuditoriums('editTheaterId', 'editAuditoriumId');
             });
         });
     </script>

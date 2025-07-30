@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Đăng Nhập - CinemaBooking</title>
-    
+
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
@@ -27,8 +27,57 @@
                     </div>
 
                     <!-- Error/Success Messages -->
-                    <div th:if="${error}" class="auth-message error" th:text="${error}"></div>
-                    <div th:if="${logout}" class="auth-message success">Bạn đã đăng xuất thành công!</div>
+                    <div th:if="${error}" 
+                         th:class="'alert ' + (${errorClass} ?: 'alert-danger') + ' alert-dismissible fade show'" 
+                         role="alert">
+                        <div th:switch="${errorCode}">
+                            <!-- Account Status Errors -->
+                            <div th:case="'account_disabled'">
+                                <i class="fas fa-user-lock me-2"></i>
+                                <strong>Tài khoản bị vô hiệu hóa</strong><br>
+                                <span th:text="${error}"></span>
+                            </div>
+                            <div th:case="'account_locked'">
+                                <i class="fas fa-lock me-2"></i>
+                                <strong>Tài khoản bị khóa</strong><br>
+                                <span th:text="${error}"></span>
+                            </div>
+                            <div th:case="'account_status_error'">
+                                <i class="fas fa-exclamation-triangle me-2"></i>
+                                <strong>Lỗi tài khoản</strong><br>
+                                <span th:text="${error}"></span>
+                            </div>
+                            
+                            <!-- Authentication Errors -->
+                            <div th:case="'user_not_found'">
+                                <i class="fas fa-user-times me-2"></i>
+                                <strong>Không tìm thấy tài khoản</strong><br>
+                                <span th:text="${error}"></span>
+                            </div>
+                            <div th:case="'wrong_password'">
+                                <i class="fas fa-key me-2"></i>
+                                <strong>Mật khẩu sai</strong><br>
+                                <span th:text="${error}"></span>
+                            </div>
+                            <div th:case="'invalid_credentials'">
+                                <i class="fas fa-times-circle me-2"></i>
+                                <strong>Thông tin đăng nhập không hợp lệ</strong><br>
+                                <span th:text="${error}"></span>
+                            </div>
+                            
+                            <!-- Default case -->
+                            <div th:case="*">
+                                <i class="fas fa-exclamation-circle me-2"></i>
+                                <span th:text="${error}"></span>
+                            </div>
+                        </div>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    
+                    <div th:if="${logout}" class="alert alert-success alert-dismissible fade show" role="alert">
+                        <i class="fas fa-check-circle me-2"></i>Bạn đã đăng xuất thành công!
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
 
                     <!-- Login Form -->
                     <form class="auth-form" th:action="@{/auth/login}" method="post">
@@ -81,5 +130,33 @@
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Auto-dismiss alerts after 8 seconds for account status errors -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Auto dismiss success alerts after 5 seconds
+            const successAlerts = document.querySelectorAll('.alert-success');
+            successAlerts.forEach(alert => {
+                setTimeout(() => {
+                    const bsAlert = new bootstrap.Alert(alert);
+                    bsAlert.close();
+                }, 5000);
+            });
+
+            // Auto dismiss account status error alerts after 8 seconds (longer for important info)
+            const accountStatusCodes = ['account_disabled', 'account_locked', 'account_status_error'];
+            const errorCodeElement = document.querySelector('[th\\:case]');
+
+            if (errorCodeElement) {
+                const alerts = document.querySelectorAll('.alert-warning');
+                alerts.forEach(alert => {
+                    setTimeout(() => {
+                        const bsAlert = new bootstrap.Alert(alert);
+                        bsAlert.close();
+                    }, 8000);
+                });
+            }
+        });
+    </script>
 </body>
 </html>

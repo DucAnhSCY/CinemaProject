@@ -2,9 +2,11 @@ package com.N07.CinemaProject.controller;
 
 import com.N07.CinemaProject.entity.Booking;
 import com.N07.CinemaProject.entity.Screening;
+import com.N07.CinemaProject.entity.User;
 import com.N07.CinemaProject.dto.SeatDTO;
 import com.N07.CinemaProject.service.BookingService;
 import com.N07.CinemaProject.service.ScreeningService;
+import com.N07.CinemaProject.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -24,10 +26,22 @@ public class BookingController {
     private BookingService bookingService;
     @Autowired
     private ScreeningService screeningService;
+    @Autowired
+    private UserService userService;
     @GetMapping("/screening/{screeningId}")
     public String selectSeats(@PathVariable Long screeningId, Model model) {
         try {
             System.out.println("🎬 Loading seat selection for screening ID: " + screeningId);
+            
+            // Get current authenticated user
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            String username = authentication.getName();
+            User currentUser = userService.findByUsername(username).orElse(null);
+            
+            if (currentUser == null) {
+                System.err.println("❌ Current user not found: " + username);
+                return "redirect:/auth/login";
+            }
             
             Screening screening = screeningService.getScreeningById(screeningId).orElse(null);
             if (screening == null) {
@@ -45,6 +59,7 @@ public class BookingController {
             
             model.addAttribute("screening", screening);
             model.addAttribute("availableSeats", availableSeats);
+            model.addAttribute("currentUser", currentUser);
             
             return "pages/seat-selection";
         } catch (Exception e) {
@@ -106,8 +121,14 @@ public class BookingController {
                 // Get current authenticated user's bookings
                 Authentication auth = SecurityContextHolder.getContext().getAuthentication();
                 if (auth != null && auth.isAuthenticated() && !"anonymousUser".equals(auth.getName())) {
-                    // Try to find user and get their bookings
-                    bookings = bookingService.getBookingsByUser(1L); // Fallback for demo
+                    // Find current user by username and get their bookings
+                    String username = auth.getName();
+                    User currentUser = userService.findByUsername(username).orElse(null);
+                    if (currentUser != null) {
+                        bookings = bookingService.getBookingsByUser(currentUser.getId());
+                    } else {
+                        bookings = List.of();
+                    }
                 } else {
                     bookings = List.of();
                 }

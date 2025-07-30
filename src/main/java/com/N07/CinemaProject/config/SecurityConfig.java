@@ -1,8 +1,11 @@
 package com.N07.CinemaProject.config;
 
+import com.N07.CinemaProject.security.CustomAuthenticationFailureHandler;
 import com.N07.CinemaProject.service.CustomOAuth2UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -14,6 +17,10 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 @EnableMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
+    
+    @Autowired
+    @Lazy
+    private CustomAuthenticationFailureHandler authenticationFailureHandler;
     
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -49,7 +56,7 @@ public class SecurityConfig {
                 .loginPage("/auth/login")
                 .loginProcessingUrl("/auth/login")
                 .defaultSuccessUrl("/", true)
-                .failureUrl("/auth/login?error=true")
+                .failureHandler(authenticationFailureHandler)
                 .permitAll()
             )
             .oauth2Login(oauth2 -> oauth2

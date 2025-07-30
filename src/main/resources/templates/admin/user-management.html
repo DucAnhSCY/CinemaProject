@@ -55,6 +55,14 @@
                         <i class="fas fa-plus me-2"></i>Thêm Người Dùng
                     </a>
                 </div>
+                
+                <!-- Security Notice -->
+                <div class="alert alert-info mt-3" role="alert">
+                    <i class="fas fa-shield-alt me-2"></i>
+                    <strong>Bảo mật:</strong> Tài khoản Administrator 
+                    <span class="badge bg-danger mx-1"><i class="fas fa-crown"></i> Administrator</span> 
+                    được bảo vệ đặc biệt và không thể bị chỉnh sửa, vô hiệu hóa hoặc xóa bởi bất kỳ ai.
+                </div>
             </div>
         </div>
 
@@ -105,8 +113,14 @@
                                 <td th:text="${user.email}">Email</td>
                                 <td>
                                     <span class="badge" 
-                                          th:classappend="${user.role.name() == 'ADMIN'} ? 'bg-danger' : (${user.role.name() == 'THEATER_MANAGER'} ? 'bg-warning' : 'bg-secondary')"
-                                          th:text="${user.role.name()}">Role</span>
+                                          th:classappend="${user.role.name() == 'ADMIN'} ? 'bg-danger' : (${user.role.name() == 'THEATER_MANAGER'} ? 'bg-warning' : 'bg-secondary')">
+                                        <i th:if="${user.role.name() == 'ADMIN'}" class="fas fa-crown me-1"></i>
+                                        <i th:if="${user.role.name() == 'THEATER_MANAGER'}" class="fas fa-user-tie me-1"></i>
+                                        <i th:if="${user.role.name() == 'CUSTOMER'}" class="fas fa-user me-1"></i>
+                                        <span th:if="${user.role.name() == 'ADMIN'}">Administrator</span>
+                                        <span th:if="${user.role.name() == 'THEATER_MANAGER'}">Quản Lý Rạp</span>
+                                        <span th:if="${user.role.name() == 'CUSTOMER'}">Khách Hàng</span>
+                                    </span>
                                 </td>
                                 <td>
                                     <span th:if="${user.isEnabled}" class="badge bg-success">Hoạt động</span>
@@ -119,20 +133,20 @@
                                 <td>
                                     <div class="btn-group" role="group">
                                         <a th:href="@{/admin/users/{id}/edit(id=${user.id})}" 
-                                           class="btn btn-outline-primary btn-sm" title="Chỉnh sửa"
+                                           class="btn btn-outline-primary btn-sm" 
+                                           th:title="${user.role.name() == 'ADMIN'} ? 'Không thể chỉnh sửa tài khoản Administrator' : 'Chỉnh sửa'"
                                            th:disabled="${user.role.name() == 'ADMIN'}">
                                             <i class="fas fa-edit"></i>
                                         </a>
                                         <button type="button" class="btn btn-outline-warning btn-sm" 
                                                 th:onclick="'toggleUserStatus(' + ${user.id} + ')'"
-                                                th:title="${user.isEnabled} ? 'Vô hiệu hóa' : 'Kích hoạt'"
-                                                title="Toggle Status"
+                                                th:title="${user.role.name() == 'ADMIN'} ? 'Không thể thay đổi trạng thái Administrator' : (${user.isEnabled} ? 'Vô hiệu hóa' : 'Kích hoạt')"
                                                 th:disabled="${user.role.name() == 'ADMIN'}">
                                             <i th:class="${user.isEnabled} ? 'fas fa-ban' : 'fas fa-check'"></i>
                                         </button>
                                         <button type="button" class="btn btn-outline-danger btn-sm" 
                                                 th:onclick="'deleteUser(' + ${user.id} + ')'" 
-                                                title="Xóa người dùng" aria-label="Xóa người dùng"
+                                                th:title="${user.role.name() == 'ADMIN'} ? 'Không thể xóa tài khoản Administrator' : 'Xóa người dùng'"
                                                 th:disabled="${user.role.name() == 'ADMIN'}">
                                             <i class="fas fa-trash"></i>
                                         </button>
@@ -166,6 +180,8 @@
             .then(result => {
                 if (result === 'success') {
                     location.reload();
+                } else if (result === 'admin_protected') {
+                    alert('Không thể thay đổi trạng thái của tài khoản Administrator!');
                 } else {
                     alert('Có lỗi xảy ra khi thay đổi trạng thái người dùng');
                 }
@@ -190,6 +206,8 @@
                 .then(result => {
                     if (result === 'success') {
                         location.reload();
+                    } else if (result === 'admin_protected') {
+                        alert('Không thể xóa tài khoản Administrator!');
                     } else {
                         alert('Có lỗi xảy ra khi xóa người dùng');
                     }

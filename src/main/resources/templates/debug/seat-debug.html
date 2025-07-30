@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Debug Seat Data</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1>Debug Seat Data</h1>
+        
+        <div class="card">
+            <div class="card-header">
+                <h3>Screening Information</h3>
+            </div>
+            <div class="card-body">
+                <p><strong>Screening ID:</strong> <span th:text="${screeningId}">N/A</span></p>
+                <p><strong>Available Seats Count:</strong> <span th:text="${#lists.size(availableSeats)}">0</span></p>
+            </div>
+        </div>
+
+        <div class="card mt-4" th:if="${availableSeats != null and !#lists.isEmpty(availableSeats)}">
+            <div class="card-header">
+                <h3>Seat Details</h3>
+            </div>
+            <div class="card-body">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Row</th>
+                            <th>Position</th>
+                            <th>Type</th>
+                            <th>Booked</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="seat : ${availableSeats}">
+                            <td th:text="${seat.id}">-</td>
+                            <td th:text="${seat.rowNumber}">-</td>
+                            <td th:text="${seat.seatPosition}">-</td>
+                            <td th:text="${seat.seatType}">-</td>
+                            <td th:text="${seat.booked}">-</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="alert alert-warning mt-4" th:if="${availableSeats == null or #lists.isEmpty(availableSeats)}">
+            <strong>Warning:</strong> No seat data available!
+        </div>
+
+        <div class="mt-4">
+            <a href="/demo/seat-selection" class="btn btn-primary">Back to Seat Selection</a>
+        </div>
+    </div>
+</body>
+</html>

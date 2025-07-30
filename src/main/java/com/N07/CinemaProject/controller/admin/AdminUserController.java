@@ -46,6 +46,12 @@ public class AdminUserController {
                          @RequestParam(required = false, defaultValue = "false") boolean isEnabled,
                          RedirectAttributes redirectAttributes) {
         try {
+            // Bảo vệ: Không cho phép tạo tài khoản ADMIN thông qua form
+            if (role == User.Role.ADMIN) {
+                redirectAttributes.addFlashAttribute("error", "Không thể tạo tài khoản Administrator thông qua form này!");
+                return "redirect:/admin/users/add";
+            }
+            
             if (userService.usernameExists(username)) {
                 redirectAttributes.addFlashAttribute("error", "Tên đăng nhập đã tồn tại!");
                 return "redirect:/admin/users/add";
@@ -72,6 +78,12 @@ public class AdminUserController {
             Optional<User> userOpt = userRepository.findById(id);
             if (userOpt.isPresent()) {
                 User user = userOpt.get();
+                
+                // Bảo vệ tài khoản ADMIN khỏi bị thay đổi trạng thái
+                if (userService.isAdministrator(user)) {
+                    return "admin_protected";
+                }
+                
                 user.setIsEnabled(!user.getIsEnabled());
                 userRepository.save(user);
                 return "success";
@@ -86,6 +98,16 @@ public class AdminUserController {
     @ResponseBody
     public String deleteUser(@PathVariable Long id) {
         try {
+            Optional<User> userOpt = userRepository.findById(id);
+            if (userOpt.isPresent()) {
+                User user = userOpt.get();
+                
+                // Bảo vệ tài khoản ADMIN khỏi bị xóa
+                if (userService.isAdministrator(user)) {
+                    return "admin_protected";
+                }
+            }
+            
             userRepository.deleteById(id);
             return "success";
         } catch (Exception e) {
@@ -98,7 +120,15 @@ public class AdminUserController {
         try {
             Optional<User> userOpt = userRepository.findById(id);
             if (userOpt.isPresent()) {
-                model.addAttribute("user", userOpt.get());
+                User user = userOpt.get();
+                
+                // Bảo vệ tài khoản ADMIN khỏi bị chỉnh sửa
+                if (userService.isAdministrator(user)) {
+                    redirectAttributes.addFlashAttribute("error", "Không thể chỉnh sửa tài khoản Administrator!");
+                    return "redirect:/admin/users";
+                }
+                
+                model.addAttribute("user", user);
                 model.addAttribute("roles", User.Role.values());
                 return "admin/user-edit-form";
             } else {
@@ -122,6 +152,18 @@ public class AdminUserController {
             Optional<User> userOpt = userRepository.findById(id);
             if (userOpt.isPresent()) {
                 User user = userOpt.get();
+                
+                // Bảo vệ tài khoản ADMIN khỏi bị chỉnh sửa
+                if (userService.isAdministrator(user)) {
+                    redirectAttributes.addFlashAttribute("error", "Không thể chỉnh sửa tài khoản Administrator!");
+                    return "redirect:/admin/users";
+                }
+                
+                // Bảo vệ: Không cho phép thay đổi vai trò thành ADMIN
+                if (role == User.Role.ADMIN) {
+                    redirectAttributes.addFlashAttribute("error", "Không thể thay đổi vai trò thành Administrator!");
+                    return "redirect:/admin/users/" + id + "/edit";
+                }
                 
                 // Check if username is already taken by another user
                 if (!user.getUsername().equals(username) && userService.usernameExists(username)) {

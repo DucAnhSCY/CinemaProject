@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CinemaBooking - Navigation</title>
     <!-- This file is a fragment, head content is managed by main layout -->
+    <!-- Language Switcher JS -->
+    <script th:src="@{/js/language-switcher.js}"></script>
 </head>
 <body>
     <!-- Navigation Fragment -->
@@ -35,20 +37,42 @@
                     <li class="nav-item">
                         <a class="nav-link" th:href="@{/movies}"
                            th:classappend="${currentPath != null and #strings.startsWith(currentPath, '/movies') ? 'active' : ''}">
-                            <i class="fas fa-film me-1"></i>Phim
+                            <i class="fas fa-film me-1"></i><span data-translate="movies">Phim</span>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" th:href="@{/theaters}"
                            th:classappend="${currentPath != null and #strings.startsWith(currentPath, '/theaters') ? 'active' : ''}">
-                            <i class="fas fa-building me-1"></i>Rạp Chiếu
+                            <i class="fas fa-building me-1"></i><span data-translate="theaters">Rạp Chiếu</span>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" th:href="@{/promotions}"
                            th:classappend="${currentPath != null and #strings.startsWith(currentPath, '/promotions') ? 'active' : ''}">
-                            <i class="fas fa-gift me-1"></i>Khuyến Mãi
+                            <i class="fas fa-gift me-1"></i><span data-translate="promotions">Khuyến Mãi</span>
                         </a>
+                    </li>
+                </ul>
+                
+                <!-- Language Toggle -->
+                <ul class="navbar-nav me-3">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="languageDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-globe me-1"></i>
+                            <span id="currentLanguage">Tiếng Việt</span>
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="languageDropdown">
+                            <li>
+                                <a class="dropdown-item" href="#" onclick="changeLanguage('vi')">
+                                    <i class="fas fa-flag me-2"></i>Tiếng Việt
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="#" onclick="changeLanguage('en')">
+                                    <i class="fas fa-flag me-2"></i>English
+                                </a>
+                            </li>
+                        </ul>
                     </li>
                 </ul>
                 
@@ -76,12 +100,12 @@
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                             <li>
                                 <a class="dropdown-item" th:href="@{/profile}">
-                                    <i class="fas fa-user-circle me-2"></i>Hồ Sơ Cá Nhân
+                                    <i class="fas fa-user-circle me-2"></i><span data-translate="profile">Hồ Sơ Cá Nhân</span>
                                 </a>
                             </li>
                             <li>
                                 <a class="dropdown-item" th:href="@{/my-bookings}">
-                                    <i class="fas fa-ticket-alt me-2"></i>Vé Đã Đặt
+                                    <i class="fas fa-ticket-alt me-2"></i><span data-translate="myBookings">Vé Đã Đặt</span>
                                 </a>
                             </li>
                             <li sec:authorize="hasRole('ADMIN') or hasRole('THEATER_MANAGER')">
@@ -89,13 +113,13 @@
                             </li>
                             <li sec:authorize="hasRole('ADMIN') or hasRole('THEATER_MANAGER')">
                                 <a class="dropdown-item" th:href="@{/admin}">
-                                    <i class="fas fa-tachometer-alt me-2"></i>Quản Trị
+                                    <i class="fas fa-tachometer-alt me-2"></i><span data-translate="admin">Quản Trị</span>
                                 </a>
                             </li>
                             <!-- Admin Only Options -->
                             <li sec:authorize="hasRole('ADMIN')">
                                 <a class="dropdown-item" th:href="@{/admin/users}">
-                                    <i class="fas fa-users me-2"></i>Quản Lý Người Dùng
+                                    <i class="fas fa-users me-2"></i><span data-translate="userManagement">Quản Lý Người Dùng</span>
                                 </a>
                             </li>
                             <!-- Shared Admin & Theater Manager Options -->
@@ -125,7 +149,7 @@
                             <li>
                                 <form th:action="@{/auth/logout}" method="post" class="d-inline">
                                     <button type="submit" class="dropdown-item text-danger">
-                                        <i class="fas fa-sign-out-alt me-2"></i>Đăng Xuất
+                                        <i class="fas fa-sign-out-alt me-2"></i><span data-translate="logout">Đăng Xuất</span>
                                     </button>
                                 </form>
                             </li>
@@ -135,12 +159,12 @@
                     <!-- Guest User Menu -->
                     <li class="nav-item" sec:authorize="!isAuthenticated()">
                         <a class="nav-link" th:href="@{/auth/login}">
-                            <i class="fas fa-sign-in-alt me-1"></i>Đăng Nhập
+                            <i class="fas fa-sign-in-alt me-1"></i><span data-translate="login">Đăng Nhập</span>
                         </a>
                     </li>
                     <li class="nav-item" sec:authorize="!isAuthenticated()">
                         <a class="nav-link btn btn-primary text-white ms-2" th:href="@{/auth/register}">
-                            <i class="fas fa-user-plus me-1"></i>Đăng Ký
+                            <i class="fas fa-user-plus me-1"></i><span data-translate="register">Đăng Ký</span>
                         </a>
                     </li>
                 </ul>

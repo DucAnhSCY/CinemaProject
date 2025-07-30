@@ -51,12 +51,33 @@ public class AdminMovieController {
     }
 
     @PostMapping("/new")
-    public String addMovie(@ModelAttribute Movie movie, RedirectAttributes redirectAttributes) {
+    public String addMovie(@ModelAttribute Movie movie, RedirectAttributes redirectAttributes, Model model) {
         try {
+            // Validate required fields
+            if (movie.getTitle() == null || movie.getTitle().trim().isEmpty()) {
+                model.addAttribute("error", "Tên phim là bắt buộc!");
+                model.addAttribute("movie", movie);
+                return "admin/movie-form";
+            }
+            
+            if (movie.getGenre() == null || movie.getGenre().trim().isEmpty()) {
+                model.addAttribute("error", "Thể loại phim là bắt buộc!");
+                model.addAttribute("movie", movie);
+                return "admin/movie-form";
+            }
+            
+            // Set default values if null
+            if (movie.getDurationMin() == null) {
+                movie.setDurationMin(120); // Default duration
+            }
+            
             movieService.saveMovie(movie);
             redirectAttributes.addFlashAttribute("success", "Đã thêm phim thành công!");
         } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("error", "Lỗi khi thêm phim: " + e.getMessage());
+            e.printStackTrace(); // For debugging
+            model.addAttribute("error", "Lỗi khi thêm phim: " + e.getMessage());
+            model.addAttribute("movie", movie);
+            return "admin/movie-form";
         }
         return "redirect:/admin/movies";
     }
@@ -79,13 +100,32 @@ public class AdminMovieController {
     }
 
     @PostMapping("/{id}/edit")
-    public String updateMovie(@PathVariable Long id, @ModelAttribute Movie movie, RedirectAttributes redirectAttributes) {
+    public String updateMovie(@PathVariable Long id, @ModelAttribute Movie movie, RedirectAttributes redirectAttributes, Model model) {
         try {
+            // Validate required fields
+            if (movie.getTitle() == null || movie.getTitle().trim().isEmpty()) {
+                model.addAttribute("error", "Tên phim là bắt buộc!");
+                movie.setId(id);
+                model.addAttribute("movie", movie);
+                return "admin/movie-form";
+            }
+            
+            if (movie.getGenre() == null || movie.getGenre().trim().isEmpty()) {
+                model.addAttribute("error", "Thể loại phim là bắt buộc!");
+                movie.setId(id);
+                model.addAttribute("movie", movie);
+                return "admin/movie-form";
+            }
+            
             movie.setId(id);
             movieService.saveMovie(movie);
             redirectAttributes.addFlashAttribute("success", "Đã cập nhật phim thành công!");
         } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("error", "Lỗi khi cập nhật phim: " + e.getMessage());
+            e.printStackTrace(); // For debugging
+            model.addAttribute("error", "Lỗi khi cập nhật phim: " + e.getMessage());
+            movie.setId(id);
+            model.addAttribute("movie", movie);
+            return "admin/movie-form";
         }
         return "redirect:/admin/movies";
     }

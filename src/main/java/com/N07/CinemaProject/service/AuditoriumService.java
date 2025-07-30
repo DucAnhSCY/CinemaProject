@@ -121,7 +121,7 @@ public class AuditoriumService {
         
         int seatCount = 0;
         
-        // Hàng A, B: VIP (20 ghế)
+        // Hàng A, B: STANDARD (20 ghế)
         for (int row = 0; row < 2; row++) {
             String rowNumber = String.valueOf((char) ('A' + row));
             for (int position = 1; position <= 10; position++) {
@@ -129,14 +129,14 @@ public class AuditoriumService {
                 seat.setAuditorium(auditorium);
                 seat.setRowNumber(rowNumber);
                 seat.setSeatPosition(position);
-                seat.setSeatType(Seat.SeatType.VIP);
-                seat.setPriceModifier(new BigDecimal("1.50")); // VIP có hệ số nhân 1.5
+                seat.setSeatType(Seat.SeatType.STANDARD);
+                seat.setPriceModifier(new BigDecimal("1.00")); // Standard có hệ số nhân 1.0
                 seatRepository.save(seat);
                 seatCount++;
             }
         }
         
-        // Hàng C, D, E: STANDARD (21 ghế)
+        // Hàng C, D, E: VIP (21 ghế)
         for (int row = 2; row < 5; row++) {
             String rowNumber = String.valueOf((char) ('A' + row));
             for (int position = 1; position <= 7; position++) {
@@ -144,8 +144,8 @@ public class AuditoriumService {
                 seat.setAuditorium(auditorium);
                 seat.setRowNumber(rowNumber);
                 seat.setSeatPosition(position);
-                seat.setSeatType(Seat.SeatType.STANDARD);
-                seat.setPriceModifier(new BigDecimal("1.00")); // Standard có hệ số nhân 1.0
+                seat.setSeatType(Seat.SeatType.VIP);
+                seat.setPriceModifier(new BigDecimal("1.20")); // VIP có hệ số nhân 1.2
                 seatRepository.save(seat);
                 seatCount++;
             }
@@ -159,7 +159,7 @@ public class AuditoriumService {
             seat.setRowNumber(rowNumber);
             seat.setSeatPosition(position);
             seat.setSeatType(Seat.SeatType.COUPLE);
-            seat.setPriceModifier(new BigDecimal("1.30")); // Couple có hệ số nhân 1.3
+            seat.setPriceModifier(new BigDecimal("2.00")); // Couple có hệ số nhân 2.0
             seatRepository.save(seat);
             seatCount++;
         }
@@ -214,5 +214,34 @@ public class AuditoriumService {
         
         // Tạo lại 50 ghế theo layout mới
         createSeatsForAuditorium(auditorium, 6, 10); // 6 hàng, 10 ghế mỗi hàng = 60 ghế, nhưng hàng F chỉ có 6 ghế
+    }
+    
+    /**
+     * Cập nhật mapping ghế cho tất cả auditorium hiện có
+     */
+    public void updateExistingSeatMappings() {
+        List<Seat> allSeats = seatRepository.findAll();
+        
+        for (Seat seat : allSeats) {
+            String rowNumber = seat.getRowNumber();
+            
+            // Mapping mới theo yêu cầu:
+            // A,B → STANDARD (ghế thường x1.0)
+            // C,D,E → VIP (ghế VIP x1.2) 
+            // F → COUPLE (ghế đôi x2.0)
+            
+            if ("A".equals(rowNumber) || "B".equals(rowNumber)) {
+                seat.setSeatType(Seat.SeatType.STANDARD);
+                seat.setPriceModifier(new BigDecimal("1.00"));
+            } else if ("C".equals(rowNumber) || "D".equals(rowNumber) || "E".equals(rowNumber)) {
+                seat.setSeatType(Seat.SeatType.VIP);
+                seat.setPriceModifier(new BigDecimal("1.20"));
+            } else if ("F".equals(rowNumber)) {
+                seat.setSeatType(Seat.SeatType.COUPLE);
+                seat.setPriceModifier(new BigDecimal("2.00"));
+            }
+            
+            seatRepository.save(seat);
+        }
     }
 }

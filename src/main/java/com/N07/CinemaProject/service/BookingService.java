@@ -4,12 +4,20 @@ import com.N07.CinemaProject.entity.*;
 import com.N07.CinemaProject.repository.*;
 import com.N07.CinemaProject.dto.SeatDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import jakarta.persistence.criteria.Join;
+import jakarta.persistence.criteria.Predicate;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -43,8 +51,29 @@ public class BookingService {
         return getBookingsByUser(userId);
     }
     
+    @Transactional(readOnly = true)
     public Optional<Booking> getBookingById(Long id) {
-        return bookingRepository.findById(id);
+        // Load main booking with most relationships
+        Optional<Booking> bookingOpt = bookingRepository.findByIdWithAllRelationships(id);
+        
+        if (bookingOpt.isPresent()) {
+            Booking booking = bookingOpt.get();
+            
+            // Load booked seats separately to avoid DISTINCT issue
+            List<BookedSeat> bookedSeats = bookingRepository.findBookedSeatsByBookingId(id);
+            booking.setBookedSeats(bookedSeats);
+            
+            // Debug: Print booking seats info
+            System.out.println("🔍 Debug - Booking ID: " + id);
+            System.out.println("🔍 BookedSeats count: " + (booking.getBookedSeats() != null ? booking.getBookedSeats().size() : "null"));
+            if (booking.getBookedSeats() != null) {
+                for (BookedSeat bs : booking.getBookedSeats()) {
+                    System.out.println("🔍 Seat: " + (bs.getSeat() != null ? bs.getSeat().getName() : "null seat"));
+                }
+            }
+        }
+        
+        return bookingOpt;
     }
     
     @Transactional
@@ -80,11 +109,20 @@ public class BookingService {
         booking.setScreening(screening);
         booking.setBookingTime(LocalDateTime.now());
         booking.setBookingStatus(Booking.BookingStatus.RESERVED);
-        // Sử dụng setScale để đảm bảo precision chính xác
-        BigDecimal totalAmount = screening.getTicketPrice()
-            .multiply(BigDecimal.valueOf(seatIds.size()))
-            .setScale(2, RoundingMode.HALF_UP);
-        booking.setTotalAmount(totalAmount);
+        
+        // Tính tổng tiền dựa trên loại ghế
+        BigDecimal totalAmount = BigDecimal.ZERO;
+        BigDecimal basePrice = screening.getTicketPrice();
+        
+        for (Long seatId : seatIds) {
+            Seat seat = seatRepository.findById(seatId)
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy ghế"));
+            
+            BigDecimal seatPrice = seat.calculatePrice(basePrice);
+            totalAmount = totalAmount.add(seatPrice);
+        }
+        
+        booking.setTotalAmount(totalAmount.setScale(2, RoundingMode.HALF_UP));
         
         booking = bookingRepository.save(booking);
         
@@ -174,14 +212,21 @@ public class BookingService {
                     seat.getRowNumber(),
                     seat.getSeatPosition(),
                     seat.getSeatType(),
-                    isBooked || isHeld // Ghế không available nếu đã book hoặc đang hold
+                    isBooked || isHeld, // Ghế không available nếu đã book hoặc đang hold
+                    seat.getPriceMultiplier() // Thêm hệ số nhân giá
                 );
             })
             .collect(Collectors.toList());
     }
     
+    @Transactional(readOnly = true)
     public List<Booking> getAllBookings() {
-        return bookingRepository.findAll();
+        List<Booking> bookings = bookingRepository.findAll();
+        // Force initialize lazy loaded relationships
+        for (Booking booking : bookings) {
+            initializeBookingRelationships(booking);
+        }
+        return bookings;
     }
     
     public List<Booking> getBookingsByScreening(Long screeningId) {
@@ -194,5 +239,114 @@ public class BookingService {
     
     public void deleteBooking(Long id) {
         bookingRepository.deleteById(id);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<Booking> searchBookings(String keyword, String status, String theater, 
+                                      String startDate, String endDate, Pageable pageable) {
+        Specification<Booking> spec = createBookingSpecification(keyword, status, theater, startDate, endDate);
+        Page<Booking> bookings = bookingRepository.findAll(spec, pageable);
+        
+        // Force initialize lazy loaded relationships
+        for (Booking booking : bookings.getContent()) {
+            initializeBookingRelationships(booking);
+        }
+        
+        return bookings;
+    }
+
+    public List<Booking> searchBookingsForExport(String keyword, String status, String theater, 
+                                                String startDate, String endDate) {
+        Specification<Booking> spec = createBookingSpecification(keyword, status, theater, startDate, endDate);
+        List<Booking> bookings = bookingRepository.findAll(spec);
+        
+        // Force initialize lazy loaded relationships
+        for (Booking booking : bookings) {
+            initializeBookingRelationships(booking);
+        }
+        
+        return bookings;
+    }
+
+    private void initializeBookingRelationships(Booking booking) {
+        if (booking.getUser() != null) {
+            booking.getUser().getUsername(); // Force load user
+        }
+        if (booking.getScreening() != null) {
+            booking.getScreening().getMovie().getTitle(); // Force load screening and movie
+            booking.getScreening().getAuditorium().getName(); // Force load auditorium
+            booking.getScreening().getAuditorium().getTheater().getName(); // Force load theater
+        }
+        if (booking.getBookedSeats() != null) {
+            booking.getBookedSeats().size(); // Force load booked seats
+            for (BookedSeat bookedSeat : booking.getBookedSeats()) {
+                bookedSeat.getSeat().getName(); // Force load seat
+            }
+        }
+    }
+
+    private Specification<Booking> createBookingSpecification(String keyword, String status, 
+                                                            String theater, String startDate, String endDate) {
+        return (root, query, criteriaBuilder) -> {
+            List<Predicate> predicates = new ArrayList<>();
+
+            // Search by keyword (customer name, email, movie title)
+            if (keyword != null && !keyword.trim().isEmpty()) {
+                String searchPattern = "%" + keyword.toLowerCase() + "%";
+                
+                Join<Booking, User> userJoin = root.join("user");
+                Join<Booking, Screening> screeningJoin = root.join("screening");
+                Join<Screening, Movie> movieJoin = screeningJoin.join("movie");
+                
+                Predicate keywordPredicate = criteriaBuilder.or(
+                    criteriaBuilder.like(criteriaBuilder.lower(userJoin.get("fullName")), searchPattern),
+                    criteriaBuilder.like(criteriaBuilder.lower(userJoin.get("email")), searchPattern),
+                    criteriaBuilder.like(criteriaBuilder.lower(movieJoin.get("title")), searchPattern)
+                );
+                predicates.add(keywordPredicate);
+            }
+
+            // Filter by status
+            if (status != null && !status.trim().isEmpty() && !"ALL".equals(status)) {
+                try {
+                    Booking.BookingStatus bookingStatus = Booking.BookingStatus.valueOf(status);
+                    predicates.add(criteriaBuilder.equal(root.get("bookingStatus"), bookingStatus));
+                } catch (IllegalArgumentException e) {
+                    // Invalid status, ignore filter
+                }
+            }
+
+            // Filter by theater
+            if (theater != null && !theater.trim().isEmpty() && !"ALL".equals(theater)) {
+                Join<Booking, Screening> screeningJoin = root.join("screening");
+                Join<Screening, Auditorium> auditoriumJoin = screeningJoin.join("auditorium");
+                Join<Auditorium, Theater> theaterJoin = auditoriumJoin.join("theater");
+                
+                predicates.add(criteriaBuilder.equal(theaterJoin.get("id"), Long.parseLong(theater)));
+            }
+
+            // Filter by date range
+            if (startDate != null && !startDate.trim().isEmpty()) {
+                try {
+                    LocalDate start = LocalDate.parse(startDate, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                    LocalDateTime startDateTime = start.atStartOfDay();
+                    predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("bookingTime"), startDateTime));
+                } catch (Exception e) {
+                    // Invalid date format, ignore filter
+                }
+            }
+
+            if (endDate != null && !endDate.trim().isEmpty()) {
+                try {
+                    LocalDate end = LocalDate.parse(endDate, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                    LocalDateTime endDateTime = end.atTime(23, 59, 59);
+                    predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("bookingTime"), endDateTime));
+                } catch (Exception e) {
+                    // Invalid date format, ignore filter
+                }
+            }
+
+            return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
+        };
     }
 }

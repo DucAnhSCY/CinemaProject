@@ -1,6 +1,7 @@
 package com.N07.CinemaProject.dto;
 
 import com.N07.CinemaProject.entity.Seat;
+import java.math.BigDecimal;
 
 public class SeatDTO {
     private Long id;
@@ -8,6 +9,7 @@ public class SeatDTO {
     private Integer seatPosition;
     private String seatType;
     private boolean isBooked;
+    private BigDecimal priceModifier;
     
     public SeatDTO() {}
     
@@ -17,6 +19,15 @@ public class SeatDTO {
         this.seatPosition = seatPosition;
         this.seatType = seatType.name();
         this.isBooked = isBooked;
+    }
+    
+    public SeatDTO(Long id, String rowNumber, Integer seatPosition, Seat.SeatType seatType, boolean isBooked, BigDecimal priceModifier) {
+        this.id = id;
+        this.rowNumber = rowNumber;
+        this.seatPosition = seatPosition;
+        this.seatType = seatType.name();
+        this.isBooked = isBooked;
+        this.priceModifier = priceModifier;
     }
     
     // Getters and Setters
@@ -58,5 +69,13 @@ public class SeatDTO {
     
     public void setBooked(boolean booked) {
         isBooked = booked;
+    }
+    
+    public BigDecimal getPriceModifier() {
+        return priceModifier;
+    }
+    
+    public void setPriceModifier(BigDecimal priceModifier) {
+        this.priceModifier = priceModifier;
     }
 }

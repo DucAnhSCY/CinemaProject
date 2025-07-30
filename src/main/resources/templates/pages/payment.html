@@ -229,7 +229,7 @@
                                                 <div class="breakdown-item">
                                                     <div class="d-flex justify-content-between mb-2">
                                                         <span class="text-muted">Giá vé:</span>
-                                                        <span class="text-white" th:text="${#numbers.formatCurrency(booking.screening.ticketPrice)}">120,000 VND</span>
+                                                        <span class="text-white" th:text="${#numbers.formatDecimal(booking.screening.ticketPrice / 1000, 0, 'COMMA', 3, 'POINT')} + ' VNĐ'">120 VNĐ</span>
                                                     </div>
                                                     <div class="d-flex justify-content-between mb-3">
                                                         <span class="text-muted">Số lượng:</span>
@@ -239,7 +239,7 @@
                                                     <div class="total-amount p-3 mt-3" style="background: rgba(255, 193, 7, 0.1); border-radius: 8px; border: 1px solid rgba(255, 193, 7, 0.3);">
                                                         <div class="d-flex justify-content-between align-items-center">
                                                             <span class="text-warning fs-5 fw-bold">Tổng cộng:</span>
-                                                            <span class="text-warning fs-4 fw-bold" th:text="${#numbers.formatCurrency(booking.totalAmount)}">240,000 VND</span>
+                                                            <span class="text-warning fs-4 fw-bold" th:text="${#numbers.formatDecimal(booking.totalAmount / 1000, 0, 'COMMA', 3, 'POINT')} + ' VNĐ'">240 VNĐ</span>
                                                         </div>
                                                     </div>
                                                 </div>

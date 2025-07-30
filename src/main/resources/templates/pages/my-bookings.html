@@ -11,6 +11,8 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <!-- Cinema Theme CSS -->
     <link th:href="@{/css/cinema-theme.css}" href="/css/cinema-theme.css" rel="stylesheet">
+    <!-- Language Switcher JS -->
+    <script th:src="@{/js/language-switcher.js}"></script>
     
     <!-- Custom Booking Cards Styles -->
     <style>
@@ -146,7 +148,7 @@
                 <div class="col-12 text-center">
                     <div class="page-header">
                         <h1 class="display-4 text-white mb-3 fw-bold">
-                            <i class="fas fa-ticket-alt me-3 text-primary"></i>Vé Của Tôi
+                            <i class="fas fa-ticket-alt me-3 text-primary"></i><span data-translate="myBookings">Vé Của Tôi</span>
                         </h1>
                         <p class="lead text-light opacity-90">
                             Quản lý và theo dõi tất cả các vé đã đặt
@@ -269,9 +271,9 @@
                                         </span>
                                     </div>
                                     <div class="price-highlight text-center">
-                                        <small class="text-warning d-block">Tổng tiền</small>
-                                        <h5 class="text-warning mb-0 fw-bold" th:text="${#numbers.formatCurrency(booking.totalAmount)}">
-                                            240,000 VNĐ
+                                        <small class="text-warning d-block"><span data-translate="totalAmount">Tổng tiền</span></small>
+                                        <h5 class="text-warning mb-0 fw-bold" th:text="${#numbers.formatDecimal(booking.totalAmount / 1000, 0, 'COMMA', 3, 'POINT')} + ' VNĐ'">
+                                            240 VNĐ
                                         </h5>
                                     </div>
                                 </div>

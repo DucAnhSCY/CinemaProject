@@ -136,6 +136,22 @@ public class UserService implements UserDetailsService {
     }
     
     /**
+     * Check if a user is an administrator
+     */
+    public boolean isAdministrator(User user) {
+        return user != null && user.getRole() == User.Role.ADMIN;
+    }
+    
+    /**
+     * Check if a user by ID is an administrator
+     */
+    public boolean isAdministrator(Long userId) {
+        return userRepository.findById(userId)
+                .map(this::isAdministrator)
+                .orElse(false);
+    }
+    
+    /**
      * Get current logged in user from Security Context
      */
     public Optional<User> getCurrentUser() {
