@@ -27,18 +27,29 @@ public class BookingController {
     @GetMapping("/screening/{screeningId}")
     public String selectSeats(@PathVariable Long screeningId, Model model) {
         try {
+            System.out.println("🎬 Loading seat selection for screening ID: " + screeningId);
+            
             Screening screening = screeningService.getScreeningById(screeningId).orElse(null);
             if (screening == null) {
+                System.err.println("❌ Screening not found with ID: " + screeningId);
                 return "redirect:/movies";
             }
             
             List<SeatDTO> availableSeats = bookingService.getSeatsWithStatus(screeningId);
+            System.out.println("💺 Found " + availableSeats.size() + " seats for screening " + screeningId);
+            
+            if (availableSeats.isEmpty()) {
+                System.err.println("⚠️ No seats found for screening " + screeningId + " in auditorium " + 
+                    (screening.getAuditorium() != null ? screening.getAuditorium().getId() : "null"));
+            }
             
             model.addAttribute("screening", screening);
             model.addAttribute("availableSeats", availableSeats);
             
             return "pages/seat-selection";
         } catch (Exception e) {
+            System.err.println("❌ Error loading seat selection: " + e.getMessage());
+            e.printStackTrace();
             return "redirect:/movies";
         }
     }

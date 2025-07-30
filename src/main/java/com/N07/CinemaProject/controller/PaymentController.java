@@ -23,19 +23,28 @@ public class PaymentController {
     @GetMapping("/booking/{bookingId}")
     public String showPaymentPage(@PathVariable Long bookingId, Model model) {
         try {
+            System.out.println("🔥 Loading payment page for booking ID: " + bookingId);
+            
             Booking booking = bookingService.getBookingById(bookingId)
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy booking"));
             
+            System.out.println("✅ Found booking: " + booking.getId());
+            
             // Kiểm tra xem booking đã được thanh toán chưa
             if (booking.getBookingStatus() == Booking.BookingStatus.CONFIRMED) {
+                System.out.println("⚠️ Booking already confirmed, redirecting...");
                 return "redirect:/booking/confirmation/" + bookingId;
             }
             
             model.addAttribute("booking", booking);
-            model.addAttribute("paymentMethods", Payment.PaymentMethod.values());
+            // Provide all payment methods except CASH
+            model.addAttribute("paymentMethods", "available");
             
+            System.out.println("✅ Payment page setup complete");
             return "pages/payment";
         } catch (Exception e) {
+            System.err.println("❌ Error loading payment page: " + e.getMessage());
+            e.printStackTrace();
             return "redirect:/movies";
         }
     }

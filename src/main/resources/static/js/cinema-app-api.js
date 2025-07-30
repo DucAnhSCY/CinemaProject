@@ -26,7 +26,7 @@ class CinemaApp {
 
     async loadCurrentUser() {
         try {
-            const response = await fetch(`${API_BASE_URL}/auth/current-user`);
+            const response = await fetch(`/auth/current-user`);
             if (response.ok) {
                 this.currentUser = await response.json();
             }

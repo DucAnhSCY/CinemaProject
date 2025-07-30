@@ -22,10 +22,12 @@ public class Booking {
     
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
+    @JsonIgnore
     private User user;
     
     @ManyToOne
     @JoinColumn(name = "screening_id", nullable = false)
+    @JsonIgnore
     private Screening screening;
     
     @Column(name = "booking_time", nullable = false)

@@ -1215,6 +1215,728 @@ body {
     font-size: 4rem;
 }
 
+/* ===== PAYMENT SUCCESS PAGE ===== */
+.success-icon {
+    animation: successPulse 2s ease-in-out infinite alternate;
+}
+
+@keyframes successPulse {
+    0% {
+        transform: scale(1);
+    }
+    100% {
+        transform: scale(1.1);
+    }
+}
+
+/* ===== BOOKING CONFIRMATION PAGE ===== */
+.confirmation-icon {
+    animation: confirmationBounce 2s ease-in-out infinite;
+}
+
+@keyframes confirmationBounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(-10px);
+    }
+    60% {
+        transform: translateY(-5px);
+    }
+}
+
+.seat-badge {
+    background: linear-gradient(135deg, #e50914 0%, #b81d24 100%);
+    color: white;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 8px rgba(229, 9, 20, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+}
+
+.seat-badge:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(229, 9, 20, 0.4);
+}
+
+.ticket-header {
+    position: relative;
+    overflow: hidden;
+}
+
+.ticket-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    animation: ticketShimmer 4s infinite;
+}
+
+@keyframes ticketShimmer {
+    0% {
+        left: -100%;
+    }
+    50% {
+        left: 100%;
+    }
+    100% {
+        left: 100%;
+    }
+}
+
+.perforation-line {
+    background-image: radial-gradient(circle at 10px center, transparent 3px, rgba(255,255,255,0.1) 3px);
+    background-size: 20px 100%;
+    background-repeat: repeat-x;
+}
+
+.qr-container {
+    transition: all 0.3s ease;
+}
+
+.qr-container:hover {
+    background: rgba(255, 255, 255, 0.08) !important;
+    transform: scale(1.02);
+}
+
+.movie-title {
+    position: relative;
+}
+
+.movie-details .badge {
+    font-size: 0.75rem;
+    padding: 6px 10px;
+}
+
+.total-display {
+    position: relative;
+    overflow: hidden;
+}
+
+.total-display::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 193, 7, 0.2), transparent);
+    animation: totalShimmer 3s infinite;
+}
+
+@keyframes totalShimmer {
+    0% {
+        left: -100%;
+    }
+    50% {
+        left: 100%;
+    }
+    100% {
+        left: 100%;
+    }
+}
+
+/* ===== PAYMENT PAGE ===== */
+.payment-header-icon {
+    animation: paymentFloat 3s ease-in-out infinite;
+}
+
+@keyframes paymentFloat {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+.payment-container {
+    position: relative;
+}
+
+.booking-summary-card,
+.payment-methods-card {
+    transition: all 0.3s ease;
+}
+
+.booking-summary-card:hover,
+.payment-methods-card:hover {
+    transform: translateY(-2px);
+}
+
+.payment-method-option {
+    margin-bottom: 1rem;
+}
+
+.payment-method-label {
+    cursor: pointer;
+    display: block;
+    transition: all 0.3s ease;
+}
+
+.payment-card {
+    background: rgba(64, 64, 64, 0.3);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 1.5rem;
+    text-align: center;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.payment-card:hover {
+    border-color: rgba(13, 110, 253, 0.5);
+    background: rgba(64, 64, 64, 0.4);
+}
+
+.payment-card.active {
+    border-color: #28a745 !important;
+    background: rgba(40, 167, 69, 0.1) !important;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(40, 167, 69, 0.3);
+}
+
+.payment-card.active::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(40, 167, 69, 0.2), transparent);
+    animation: activeShimmer 2s infinite;
+}
+
+@keyframes activeShimmer {
+    0% {
+        left: -100%;
+    }
+    50% {
+        left: 100%;
+    }
+    100% {
+        left: 100%;
+    }
+}
+
+.payment-icon {
+    transition: all 0.3s ease;
+}
+
+.payment-card:hover .payment-icon i {
+    transform: scale(1.1);
+    color: var(--primary-color);
+}
+
+.payment-card.active .payment-icon i {
+    color: #28a745;
+    transform: scale(1.15);
+}
+
+.payment-title {
+    color: #fff;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.payment-card.active .payment-title {
+    color: #28a745;
+}
+
+.payment-check {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    opacity: 0;
+    transform: scale(0);
+    transition: all 0.3s ease;
+}
+
+.payment-card.active .payment-check {
+    opacity: 1;
+    transform: scale(1);
+    color: #28a745;
+}
+
+.payment-check i {
+    font-size: 1.2rem;
+}
+
+.security-notice {
+    transition: all 0.3s ease;
+}
+
+.security-notice:hover {
+    background: rgba(40, 167, 69, 0.15) !important;
+    transform: translateY(-1px);
+}
+
+.payment-actions .btn {
+    transition: all 0.3s ease;
+    font-weight: 600;
+}
+
+.payment-actions .btn:hover {
+    transform: translateY(-2px);
+}
+
+.payment-actions .btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none !important;
+}
+
+.info-row {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.2s ease;
+}
+
+.info-row:last-child {
+    border-bottom: none;
+}
+
+.info-row:hover {
+    background: rgba(255, 255, 255, 0.05);
+    margin: 0 -1rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    border-radius: 6px;
+}
+
+.breakdown-item {
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 8px;
+    padding: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Payment method icons colors */
+.payment-card .fa-credit-card {
+    color: #007bff;
+}
+
+.payment-card .fa-university {
+    color: #6f42c1;
+}
+
+.payment-card .fa-wallet {
+    color: #fd7e14;
+}
+
+.payment-card .fa-money-bill {
+    color: #28a745;
+}
+
+/* ===== GLOBAL IMPROVEMENTS ===== */
+.page-header {
+    position: relative;
+    z-index: 2;
+}
+
+.floating-elements {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.floating-icon {
+    position: absolute;
+    animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-20px);
+    }
+}
+
+/* ===== HOME PAGE ===== */
+.hero-section {
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-particles {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="60" cy="40" r="1.5" fill="rgba(255,255,255,0.08)"/><circle cx="80" cy="70" r="0.8" fill="rgba(255,255,255,0.06)"/></svg>');
+    animation: particleFloat 20s linear infinite;
+}
+
+@keyframes particleFloat {
+    0% {
+        transform: translateY(0) rotate(0deg);
+    }
+    100% {
+        transform: translateY(-100vh) rotate(360deg);
+    }
+}
+
+.hero-title {
+    position: relative;
+    background: linear-gradient(45deg, #fff, #e50914, #fff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: titleGlow 3s ease-in-out infinite alternate;
+}
+
+@keyframes titleGlow {
+    0% {
+        filter: drop-shadow(0 0 10px rgba(229, 9, 20, 0.3));
+    }
+    100% {
+        filter: drop-shadow(0 0 20px rgba(229, 9, 20, 0.6));
+    }
+}
+
+.hero-actions .btn {
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-actions .btn:hover {
+    transform: translateY(-3px);
+}
+
+.hero-actions .btn-primary:hover {
+    box-shadow: 0 12px 35px rgba(229, 9, 20, 0.6) !important;
+}
+
+.hero-actions .btn-outline-light:hover {
+    background: rgba(255, 255, 255, 0.1) !important;
+    transform: translateY(-3px);
+}
+
+.hero-stats {
+    display: flex;
+    gap: 2rem;
+}
+
+.stat-item {
+    text-align: center;
+}
+
+.stat-item h3 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+.cinema-showcase {
+    position: relative;
+    height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.showcase-card {
+    position: relative;
+    z-index: 2;
+}
+
+.floating {
+    animation: float 6s ease-in-out infinite;
+}
+
+.scroll-indicator {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateX(-50%) translateY(0);
+    }
+    40% {
+        transform: translateX(-50%) translateY(-10px);
+    }
+    60% {
+        transform: translateX(-50%) translateY(-5px);
+    }
+}
+
+.search-input:focus,
+.search-select:focus {
+    background: rgba(255, 255, 255, 0.15) !important;
+    border-color: var(--primary-color) !important;
+    box-shadow: 0 0 0 0.2rem rgba(229, 9, 20, 0.25) !important;
+    color: #fff !important;
+}
+
+.search-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(229, 9, 20, 0.4) !important;
+}
+
+.search-tag:hover {
+    background: var(--primary-color) !important;
+    transform: translateY(-2px);
+    cursor: pointer;
+}
+
+.movie-card {
+    background: rgba(42, 42, 42, 0.9);
+    border-radius: 16px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    position: relative;
+}
+
+.movie-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+    border-color: rgba(229, 9, 20, 0.3);
+}
+
+.movie-image {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 2/3;
+}
+
+.movie-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.movie-card:hover .movie-image img {
+    transform: scale(1.05);
+}
+
+.movie-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+.movie-card:hover .movie-overlay {
+    opacity: 1;
+}
+
+.movie-actions {
+    display: flex;
+    gap: 0.5rem;
+    flex-direction: column;
+}
+
+.movie-info {
+    padding: 1.5rem;
+}
+
+.movie-title {
+    color: #fff;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    font-size: 1.1rem;
+}
+
+.movie-meta {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 0.75rem;
+    font-size: 0.9rem;
+    color: #ccc;
+}
+
+.movie-genres .badge {
+    font-size: 0.75rem;
+    padding: 4px 8px;
+}
+
+/* ===== MOVIES PAGE ===== */
+.movies-header {
+    position: relative;
+    overflow: hidden;
+}
+
+.page-title-wrapper {
+    position: relative;
+    z-index: 2;
+}
+
+.stats-row {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.stat-badge .badge {
+    transition: all 0.3s ease;
+}
+
+.stat-badge .badge:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* ===== MOVIE DETAIL PAGE ===== */
+.movie-hero {
+    position: relative;
+    overflow: hidden;
+}
+
+.movie-poster-container {
+    position: relative;
+}
+
+.movie-details {
+    position: relative;
+    z-index: 2;
+}
+
+.rating-container {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 1rem;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.rating-stars .star {
+    margin-right: 0.25rem;
+    transition: all 0.3s ease;
+}
+
+.rating-stars .star:hover {
+    transform: scale(1.2);
+}
+
+/* ===== MY BOOKINGS PAGE ===== */
+.my-bookings-header {
+    position: relative;
+    overflow: hidden;
+}
+
+.booking-summary h3 {
+    background: linear-gradient(45deg, #fff, #e50914);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* ===== RESPONSIVE IMPROVEMENTS ===== */
+
+.info-section {
+    background: rgba(64, 64, 64, 0.3);
+    border-radius: 12px;
+    padding: 1.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+}
+
+.info-section:hover {
+    background: rgba(64, 64, 64, 0.4);
+    border-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+}
+
+.section-header {
+    border-bottom: 2px solid rgba(13, 110, 253, 0.3);
+    padding-bottom: 0.75rem;
+}
+
+.info-item {
+    padding: 0.75rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.2s ease;
+}
+
+.info-item:last-child {
+    border-bottom: none;
+}
+
+.info-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+    margin: 0 -1rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    border-radius: 6px;
+}
+
+.total-amount {
+    position: relative;
+    overflow: hidden;
+}
+
+.total-amount::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 193, 7, 0.1), transparent);
+    animation: shimmer 3s infinite;
+}
+
+@keyframes shimmer {
+    0% {
+        left: -100%;
+    }
+    50% {
+        left: 100%;
+    }
+    100% {
+        left: 100%;
+    }
+}
+
+.selected-seats .badge {
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(229, 9, 20, 0.4) !important;
+}
+
+.btn-outline-light:hover {
+    background: rgba(255, 255, 255, 0.1) !important;
+    border-color: rgba(255, 255, 255, 0.3) !important;
+    transform: translateY(-2px);
+}
+
+/* Responsive improvements */
+
 @media (max-width: 576px) {
     .search-container .col-md-4,
     .search-container .col-md-2 {
@@ -1238,4 +1960,693 @@ body {
     .legend-item {
         font-size: 0.8rem;
     }
+    
+    /* Payment success & confirmation mobile styles */
+    .success-icon i,
+    .confirmation-icon i,
+    .payment-header-icon i {
+        font-size: 3rem !important;
+    }
+    
+    .info-section {
+        padding: 1rem;
+        margin-bottom: 1rem;
+    }
+    
+    .info-item .row {
+        flex-direction: column;
+        gap: 0.25rem;
+    }
+    
+    .info-item .col-3,
+    .info-item .col-4,
+    .info-item .col-5 {
+        margin-bottom: 0.25rem;
+    }
+    
+    .btn-lg {
+        font-size: 1rem;
+        padding: 0.75rem 2rem;
+    }
+    
+    .total-amount .row,
+    .total-display .row {
+        flex-direction: row !important;
+    }
+    
+    /* Booking confirmation mobile styles */
+    .ticket-header h3 {
+        font-size: 1.5rem;
+    }
+    
+    .movie-title h4 {
+        font-size: 1.25rem;
+    }
+    
+    .seat-badge {
+        font-size: 0.8rem;
+        padding: 6px 10px;
+    }
+    
+    .qr-container {
+        margin-bottom: 2rem;
+    }
+    
+    .perforation-line {
+        margin: 1rem 0;
+    }
+    
+    /* Payment page mobile styles */
+    .payment-header-icon {
+        margin-bottom: 1rem;
+    }
+    
+    .payment-container .row {
+        margin: 0;
+    }
+    
+    .payment-card {
+        padding: 1rem;
+        margin-bottom: 0.75rem;
+    }
+    
+    .payment-icon i {
+        font-size: 2rem !important;
+    }
+    
+    .payment-title {
+        font-size: 1rem;
+    }
+    
+    .payment-desc {
+        font-size: 0.8rem;
+    }
+    
+    .security-notice {
+        flex-direction: column;
+        text-align: center;
+        gap: 0.5rem;
+    }
+    
+    .security-notice i {
+        font-size: 1.2rem !important;
+    }
+    
+    .payment-actions .btn {
+        font-size: 0.9rem;
+        padding: 0.75rem 1.5rem;
+    }
+    
+    .booking-summary-card,
+    .payment-methods-card {
+        margin-bottom: 1.5rem;
+    }
+    
+    .info-row {
+        flex-direction: column;
+        gap: 0.25rem;
+        padding: 0.75rem 0;
+    }
+    
+    .breakdown-item {
+        padding: 0.75rem;
+    }
+    
+    /* Home page mobile styles */
+    .hero-title {
+        font-size: 2.5rem !important;
+        text-align: center;
+    }
+    
+    .hero-subtitle {
+        font-size: 1.1rem !important;
+        text-align: center;
+    }
+    
+    .hero-stats {
+        justify-content: center;
+        gap: 1rem;
+        margin-top: 2rem;
+    }
+    
+    .stat-item h3 {
+        font-size: 1.5rem;
+    }
+    
+    .cinema-showcase {
+        height: 300px;
+        margin-top: 2rem;
+    }
+    
+    .stats-row {
+        gap: 0.5rem;
+    }
+    
+    .stat-badge .badge {
+        font-size: 0.9rem !important;
+        padding: 6px 12px !important;
+    }
+    
+    /* Movies page mobile styles */
+    .movies-header .display-4 {
+        font-size: 2.5rem;
+    }
+    
+    .search-filter-card .row {
+        gap: 1rem;
+    }
+    
+    .search-input {
+        font-size: 1rem;
+    }
+    
+    /* Movie detail mobile styles */
+    .movie-title {
+        font-size: 2rem !important;
+        text-align: center;
+    }
+    
+    .movie-meta {
+        justify-content: center;
+        text-align: center;
+    }
+    
+    .rating-container {
+        justify-content: center;
+        text-align: center;
+    }
+    
+    .movie-actions {
+        margin-top: 2rem;
+    }
+    
+    .movie-actions .btn {
+        width: 100%;
+        margin-bottom: 1rem;
+    }
+    
+    /* My bookings mobile styles */
+    .my-bookings-header .display-4 {
+        font-size: 2.5rem;
+    }
+    
+    .action-bar .d-flex {
+        flex-direction: column;
+        text-align: center;
+        gap: 1rem;
+    }
+    
+    .booking-actions .btn {
+        width: 100%;
+    }
+    
+    /* General mobile improvements */
+    .floating-elements {
+        display: none;
+    }
+    
+    .page-header {
+        padding: 1rem 0;
+    }
+    
+    .card-body {
+        padding: 1.5rem 1rem;
+    }
+    
+    .search-card .card-body {
+        padding: 2rem 1rem;
+    }
+}
+
+/* ===========================
+   MOVIES PAGE STYLES
+   =========================== */
+
+/* Movie Cards */
+.movie-card {
+    background: var(--bg-card);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: var(--shadow-md);
+}
+
+.movie-card:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-xl);
+    border-color: var(--primary-color);
+}
+
+.movie-poster {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 2/3;
+}
+
+.movie-poster img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.movie-card:hover .movie-poster img {
+    transform: scale(1.05);
+}
+
+.movie-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.movie-card:hover .movie-overlay {
+    opacity: 1;
+}
+
+.movie-content {
+    padding: 1.5rem;
+}
+
+.movie-title {
+    color: var(--text-light);
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    line-height: 1.3;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.movie-genre .badge {
+    font-size: 0.75rem;
+    padding: 0.5rem 1rem;
+    border-radius: 50px;
+}
+
+.movie-duration, .movie-rating {
+    color: var(--text-muted);
+    font-size: 0.875rem;
+}
+
+.movie-rating .fas {
+    color: var(--warning-color);
+}
+
+/* Search and Filter */
+.search-filter-card .card {
+    background: rgba(42, 42, 42, 0.95) !important;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.search-input {
+    background: rgba(255, 255, 255, 0.1) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    color: #fff !important;
+}
+
+.search-input::placeholder {
+    color: rgba(255, 255, 255, 0.5) !important;
+}
+
+.search-input:focus {
+    background: rgba(255, 255, 255, 0.15) !important;
+    border-color: var(--primary-color) !important;
+    box-shadow: 0 0 0 0.2rem rgba(229, 9, 20, 0.25) !important;
+    color: #fff !important;
+}
+
+.form-select {
+    background: rgba(255, 255, 255, 0.1) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    color: #fff !important;
+}
+
+.form-select:focus {
+    background: rgba(255, 255, 255, 0.15) !important;
+    border-color: var(--primary-color) !important;
+    box-shadow: 0 0 0 0.2rem rgba(229, 9, 20, 0.25) !important;
+    color: #fff !important;
+}
+
+.form-select option {
+    background: var(--bg-dark);
+    color: #fff;
+}
+
+.search-btn {
+    background: var(--gradient-primary) !important;
+    border: none !important;
+    box-shadow: 0 4px 15px rgba(229, 9, 20, 0.3);
+}
+
+.search-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(229, 9, 20, 0.4);
+}
+
+/* No Results */
+.no-results {
+    background: rgba(42, 42, 42, 0.3);
+    border-radius: var(--radius-xl);
+    padding: 3rem;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.no-results-icon {
+    opacity: 0.3;
+}
+
+/* ===========================
+   MOVIE DETAIL PAGE STYLES
+   =========================== */
+
+/* Movie Detail Enhancements */
+.date-navigator {
+    background: rgba(42, 42, 42, 0.5);
+    border-radius: 20px;
+    padding: 2rem;
+    backdrop-filter: blur(10px);
+}
+
+.date-tabs-container {
+    max-width: 100%;
+}
+
+.date-btn {
+    min-width: 80px;
+    height: 80px;
+    border-radius: 16px;
+    transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.date-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(229, 9, 20, 0.3);
+}
+
+.date-btn.active {
+    background: linear-gradient(135deg, #e50914 0%, #b81d24 100%);
+    border-color: #e50914;
+    box-shadow: 0 8px 25px rgba(229, 9, 20, 0.4);
+}
+
+.date-info {
+    line-height: 1.2;
+}
+
+.date-number {
+    font-size: 1.25rem;
+}
+
+.date-name, .date-month {
+    font-size: 0.75rem;
+    opacity: 0.8;
+}
+
+.format-filters .btn-group {
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    border-radius: 50px;
+    overflow: hidden;
+}
+
+.format-filters .btn {
+    border-radius: 0;
+    padding: 0.75rem 1.5rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.format-filters .btn:first-child {
+    border-top-left-radius: 50px;
+    border-bottom-left-radius: 50px;
+}
+
+.format-filters .btn:last-child {
+    border-top-right-radius: 50px;
+    border-bottom-right-radius: 50px;
+}
+
+.format-filters .btn-check:checked + .btn {
+    background: linear-gradient(135deg, #e50914 0%, #b81d24 100%);
+    border-color: #e50914;
+    color: white;
+}
+
+.theater-group {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+.theater-header .card {
+    background: rgba(42, 42, 42, 0.8) !important;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: 16px;
+}
+
+.auditorium-header {
+    padding-left: 1rem;
+    border-left: 3px solid var(--primary-color);
+}
+
+.showtimes-grid {
+    padding-left: 1rem;
+}
+
+.showtime-card {
+    margin-bottom: 0.5rem;
+}
+
+.showtime-btn {
+    height: 100px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.showtime-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(229, 9, 20, 0.1), transparent);
+    transition: left 0.5s ease;
+}
+
+.showtime-btn:hover::before {
+    left: 100%;
+}
+
+.showtime-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(229, 9, 20, 0.2);
+    border-color: var(--primary-color);
+    background: rgba(229, 9, 20, 0.05);
+}
+
+.showtime-info .time {
+    font-size: 1.1rem;
+    letter-spacing: 0.5px;
+}
+
+.showtime-info .format {
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.showtime-info .price {
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.no-screenings-message {
+    background: rgba(42, 42, 42, 0.3);
+    border-radius: 20px;
+    padding: 3rem;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.showtime-btn {
+    height: 100px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.showtime-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(229, 9, 20, 0.2);
+    border-color: var(--primary-color) !important;
+    background: rgba(229, 9, 20, 0.05) !important;
+    color: white !important;
+}
+
+.showtime-info .time {
+    font-size: 1.1rem;
+    letter-spacing: 0.5px;
+}
+
+.showtime-info .date {
+    font-size: 0.75rem;
+}
+
+.showtime-info .price {
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+/* Theater sections */
+.theater-section .card {
+    background: rgba(42, 42, 42, 0.8) !important;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: 16px;
+}
+
+.auditorium-header {
+    padding-left: 1rem;
+    border-left: 3px solid var(--primary-color);
+    margin-left: 1rem;
+}
+
+.screenings-container {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+.simple-screenings .table {
+    background: rgba(42, 42, 42, 0.8);
+    backdrop-filter: blur(10px);
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+.simple-screenings .table th {
+    background: rgba(229, 9, 20, 0.1);
+    border-color: rgba(255, 255, 255, 0.1);
+    color: var(--text-light);
+}
+
+.simple-screenings .table td {
+    border-color: rgba(255, 255, 255, 0.1);
+    color: var(--text-muted);
+}
+
+/* Responsive adjustments for movie detail */
+@media (max-width: 768px) {
+    .date-navigator {
+        padding: 1rem;
+    }
+    
+    .date-btn {
+        min-width: 70px;
+        height: 70px;
+    }
+    
+    .date-number {
+        font-size: 1.1rem;
+    }
+    
+    .format-filters .btn {
+        padding: 0.5rem 1rem;
+        font-size: 0.875rem;
+    }
+    
+    .showtime-btn {
+        height: 90px;
+    }
+    
+    .showtime-info .time {
+        font-size: 1rem;
+    }
+}
+
+/* ===========================
+   ERROR PAGES STYLES
+   =========================== */
+
+.error-section {
+    min-height: 70vh;
+    display: flex;
+    align-items: center;
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+}
+
+.error-content {
+    background: rgba(42, 42, 42, 0.8);
+    backdrop-filter: blur(10px);
+    border-radius: var(--radius-xl);
+    padding: 3rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: var(--shadow-xl);
+}
+
+.error-icon {
+    opacity: 0.7;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { opacity: 0.7; }
+    50% { opacity: 1; }
+    100% { opacity: 0.7; }
+}
+
+.error-content h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.error-content p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    max-width: 500px;
+    margin: 0 auto 2rem;
+}
+
+.error-content .btn {
+    min-width: 160px;
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+}
+
+.error-content .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(229, 9, 20, 0.3);
 }

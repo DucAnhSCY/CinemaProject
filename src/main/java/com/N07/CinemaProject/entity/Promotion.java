@@ -1,5 +1,6 @@
 package com.N07.CinemaProject.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -44,6 +45,7 @@ public class Promotion {
     private Boolean active = true;
     
     @OneToMany(mappedBy = "promotion", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<BookingPromotion> bookingPromotions;
     
     public enum DiscountType {

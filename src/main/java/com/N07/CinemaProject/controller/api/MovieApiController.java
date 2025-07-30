@@ -53,8 +53,18 @@ public class MovieApiController {
 
     @GetMapping("/{id}/screenings")
     public ResponseEntity<List<Screening>> getMovieScreenings(@PathVariable Long id) {
-        List<Screening> screenings = screeningRepository.findByMovieIdOrderByStartTime(id);
-        return ResponseEntity.ok(screenings);
+        try {
+            Optional<Movie> movieOpt = movieService.getMovieById(id);
+            if (movieOpt.isEmpty()) {
+                return ResponseEntity.notFound().build();
+            }
+            
+            // Use optimized query that avoids N+1 problem
+            List<Screening> screenings = screeningRepository.findByMovieIdOrderByStartTime(id);
+            return ResponseEntity.ok(screenings);
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().build();
+        }
     }
 
     @GetMapping("/theaters")

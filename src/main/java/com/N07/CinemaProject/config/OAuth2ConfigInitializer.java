@@ -45,20 +45,5 @@ public class OAuth2ConfigInitializer implements CommandLineRunner {
             );
             System.out.println("Google OAuth2 configuration initialized");
         }
-        
-        // Initialize GitHub OAuth2 config
-        if (!githubClientId.isEmpty() && !githubClientSecret.isEmpty()) {
-            oauth2ConfigService.createOrUpdate(
-                "github",
-                githubClientId,
-                githubClientSecret,
-                "https://github.com/login/oauth/authorize",
-                "https://github.com/login/oauth/access_token",
-                "https://api.github.com/user",
-                "http://localhost:8080/login/oauth2/code/github",
-                "user:email"
-            );
-            System.out.println("GitHub OAuth2 configuration initialized");
-        }
     }
 }

@@ -3,7 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Danh Sách Phim - CinemaBooking</title>
+    <title>Danh Sách Phim - Cinema Paradise</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" th:href="@{/favicon.svg}">
+    <link rel="icon" type="image/x-icon" th:href="@{/favicon.ico}">
+    <link rel="apple-touch-icon" th:href="@{/favicon.svg}">
     
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -17,40 +22,89 @@
     <nav th:replace="~{layout/fragments/navigation :: nav}"></nav>
 
     <!-- Page Header -->
-    <section class="py-5 bg-dark-secondary">
+    <section class="movies-header py-5" style="background: linear-gradient(135deg, rgba(10, 10, 10, 0.9), rgba(26, 26, 26, 0.9)), url('https://images.unsplash.com/photo-1489599440-66d19e84a253?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') center/cover; position: relative;">
         <div class="container">
             <div class="row">
-                <div class="col-12">
-                    <h1 class="text-center mb-4">Danh Sách Phim</h1>
-                    <p class="text-center text-muted">Khám phá những bộ phim hay nhất hiện có</p>
+                <div class="col-12 text-center">
+                    <div class="page-title-wrapper">
+                        <h1 class="display-4 text-white mb-3 fw-bold">
+                            <i class="fas fa-film me-3 text-primary"></i>Danh Sách Phim
+                        </h1>
+                        <p class="lead text-light mb-4 opacity-90">
+                            Khám phá những bộ phim đỉnh cao từ khắp nơi trên thế giới
+                        </p>
+                        <div class="stats-row d-flex justify-content-center gap-4 flex-wrap">
+                            <div class="stat-badge">
+                                <span class="badge bg-primary px-4 py-2" style="border-radius: 50px; font-size: 1rem;">
+                                    <i class="fas fa-star me-2"></i>Phim Hot Nhất
+                                </span>
+                            </div>
+                            <div class="stat-badge">
+                                <span class="badge bg-warning px-4 py-2" style="border-radius: 50px; font-size: 1rem;">
+                                    <i class="fas fa-crown me-2"></i>Chất Lượng 4K
+                                </span>
+                            </div>
+                            <div class="stat-badge">
+                                <span class="badge bg-success px-4 py-2" style="border-radius: 50px; font-size: 1rem;">
+                                    <i class="fas fa-ticket-alt me-2"></i>Đặt Vé Dễ Dàng
+                                </span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+            </div>
+        </div>
+        
+        <!-- Decorative Elements -->
+        <div class="floating-elements">
+            <div class="floating-icon" style="position: absolute; top: 20%; left: 10%; animation: float 6s ease-in-out infinite;">
+                <i class="fas fa-film text-primary opacity-25" style="font-size: 3rem;"></i>
+            </div>
+            <div class="floating-icon" style="position: absolute; top: 60%; right: 15%; animation: float 8s ease-in-out infinite reverse;">
+                <i class="fas fa-video text-warning opacity-25" style="font-size: 2.5rem;"></i>
             </div>
         </div>
     </section>
 
     <!-- Search and Filter Section -->
-    <section class="py-4">
+    <section class="py-4" style="background: rgba(26, 26, 26, 0.8);">
         <div class="container">
-            <div class="row">
-                <div class="col-md-8">
-                    <div class="input-group">
-                        <input type="text" class="form-control" id="searchInput" placeholder="Tìm kiếm phim...">
-                        <button class="btn btn-primary" type="button" id="searchBtn" aria-label="Tìm kiếm phim">
-                            <i class="fas fa-search"></i>
-                        </button>
+            <div class="search-filter-card">
+                <div class="card border-0 shadow-lg" style="background: rgba(42, 42, 42, 0.95); backdrop-filter: blur(10px); border-radius: 16px;">
+                    <div class="card-body p-4">
+                        <div class="row g-3 align-items-end">
+                            <div class="col-lg-6">
+                                <div class="search-box">
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-transparent border-end-0" style="border-color: rgba(255, 255, 255, 0.2); color: #ccc;">
+                                            <i class="fas fa-search"></i>
+                                        </span>
+                                        <input type="text" class="form-control search-input" id="searchInput" placeholder="Tìm kiếm phim yêu thích..." style="background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); border-left: none; color: #fff;">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="form-floating">
+                                    <select class="form-select" id="genreFilter" style="background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); color: #fff;">
+                                        <option value="">Tất cả thể loại</option>
+                                        <option value="Action">Hành động</option>
+                                        <option value="Comedy">Hài kịch</option>
+                                        <option value="Drama">Tâm lý</option>
+                                        <option value="Horror">Kinh dị</option>
+                                        <option value="Romance">Tình cảm</option>
+                                        <option value="Sci-Fi">Khoa học viễn tưởng</option>
+                                        <option value="Thriller">Giật gân</option>
+                                    </select>
+                                    <label for="genreFilter" class="text-muted">Thể loại</label>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <button class="btn btn-primary w-100 h-100 search-btn" id="searchBtn" style="border-radius: 12px; background: linear-gradient(135deg, #e50914 0%, #b81d24 100%); border: none; box-shadow: 0 4px 15px rgba(229, 9, 20, 0.3); min-height: 58px;">
+                                    <i class="fas fa-search me-2"></i>Tìm Kiếm
+                                </button>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div class="col-md-4">
-                    <select class="form-select" id="genreFilter" aria-label="Lọc theo thể loại">
-                        <option value="">Tất cả thể loại</option>
-                        <option value="Action">Hành động</option>
-                        <option value="Comedy">Hài</option>
-                        <option value="Drama">Tâm lý</option>
-                        <option value="Horror">Kinh dị</option>
-                        <option value="Romance">Tình cảm</option>
-                        <option value="Sci-Fi">Khoa học viễn tưởng</option>
-                        <option value="Thriller">Giật gân</option>
-                    </select>
                 </div>
             </div>
         </div>
@@ -90,15 +144,15 @@
                                 <i class="fas fa-clock text-muted me-1"></i>
                                 <span th:text="${movie.durationMin + ' phút'}">Thời lượng</span>
                             </div>
-                            <div class="movie-rating mb-3" th:if="${movie.rating}">
+                            <div class="movie-rating mb-3" th:if="${movie.voteAverage}">
                                 <i class="fas fa-star text-warning me-1"></i>
-                                <span th:text="${movie.rating}">Rating</span>
+                                <span th:text="${movie.voteAverage}">Rating</span>
                             </div>
                             <div class="d-flex gap-2">
                                 <a th:href="@{/movies/{id}(id=${movie.id})}" class="btn btn-outline-danger flex-fill">
                                     <i class="fas fa-info-circle me-1"></i>Chi Tiết
                                 </a>
-                                <a th:href="@{/booking/movie/{id}(id=${movie.id})}" class="btn btn-danger flex-fill">
+                                <a th:href="@{/movies/{id}(id=${movie.id})}" class="btn btn-danger flex-fill">
                                     <i class="fas fa-ticket-alt me-1"></i>Đặt Vé
                                 </a>
                             </div>

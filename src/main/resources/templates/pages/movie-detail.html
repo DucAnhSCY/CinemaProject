@@ -3,7 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title th:text="${movie.title + ' - CinemaBooking'}">Chi Tiết Phim - CinemaBooking</title>
+    <title th:text="${movie != null ? movie.title + ' - Cinema Paradise' : 'Chi Tiết Phim - Cinema Paradise'}">Chi Tiết Phim - Cinema Paradise</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" th:href="@{/favicon.svg}">
+    <link rel="icon" type="image/x-icon" th:href="@{/favicon.ico}">
+    <link rel="apple-touch-icon" th:href="@{/favicon.svg}">
     
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -16,98 +21,245 @@
     <!-- Navigation -->
     <nav th:replace="~{layout/fragments/navigation :: nav}"></nav>
 
-    <!-- Movie Detail Section -->
-    <section class="py-5">
-        <div class="container">
-            <div class="row">
-                <!-- Movie Poster -->
-                <div class="col-md-4 mb-4">
-                    <div class="card">
-                        <img th:src="${movie.posterUrl}" th:alt="${movie.title}" th:title="${movie.title}" alt="Movie Poster" title="Movie Poster" class="card-img-top movie-poster">
-                    </div>
-                </div>
-                
-                <!-- Movie Info -->
-                <div class="col-md-8">
-                    <h1 class="mb-3" th:text="${movie.title}">Tên Phim</h1>
-                    
-                    <div class="mb-3">
-                        <span class="badge bg-primary me-2" th:text="${movie.genre}">Thể loại</span>
-                        <span class="text-muted" th:text="${movie.durationMin + ' phút'}">Thời lượng</span>
-                    </div>
-                    
-                    <div class="mb-3">
-                        <div class="movie-rating">
-                            <div class="rating-stars">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="far fa-star"></i>
+    <!-- Movie Hero Section -->
+    <div th:if="${movie != null}">
+        <section class="movie-hero" 
+                 th:style="'background: linear-gradient(135deg, rgba(10, 10, 10, 0.8), rgba(26, 26, 26, 0.9)), url(' + ${movie.backdropUrl != null ? movie.backdropUrl : (movie.posterUrl != null ? movie.posterUrl : 'https://images.unsplash.com/photo-1594909122845-11baa439b7bf?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80')} + ') center/cover; min-height: 70vh; display: flex; align-items: center; position: relative;'">
+            <div class="container">
+                <div class="row align-items-center">
+                    <!-- Movie Poster -->
+                    <div class="col-lg-4 col-md-5 mb-4">
+                        <div class="movie-poster-container">
+                            <div class="poster-card">
+                                <img th:src="${movie.posterUrl != null ? movie.posterUrl : 'https://via.placeholder.com/300x450/333/fff?text=' + movie.title}" 
+                                     th:alt="${movie.title != null ? movie.title : 'Movie Poster'}" 
+                                     th:title="${movie.title != null ? movie.title : 'Movie Title'}" 
+                                     class="movie-poster-img" 
+                                     style="width: 100%; border-radius: 16px; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5); transition: transform 0.3s ease;"
+                                     onmouseover="this.style.transform='scale(1.05)'" 
+                                     onmouseout="this.style.transform='scale(1)'">
                             </div>
-                            <span class="ms-2" th:text="${movie.voteAverage + '/10'}">8.5/10</span>
                         </div>
                     </div>
                     
-                    <div class="mb-4">
-                        <h5>Mô tả</h5>
-                        <p th:text="${movie.description}">Mô tả phim sẽ được hiển thị ở đây...</p>
-                    </div>
-                    
-                    <div class="mb-4">
-                        <h5>Thông tin chi tiết</h5>
-                        <ul class="list-unstyled">
-                            <li><strong>Ngày phát hành:</strong> <span th:text="${#temporals.format(movie.releaseDate, 'dd/MM/yyyy')}">01/01/2024</span></li>
-                            <li><strong>Ngôn ngữ gốc:</strong> <span th:text="${movie.originalLanguage}">Tiếng Anh</span></li>
-                            <li><strong>Đánh giá:</strong> <span th:text="${movie.voteCount + ' lượt đánh giá'}">1000 lượt đánh giá</span></li>
-                        </ul>
-                    </div>
-                    
-                    <div class="d-grid gap-2 d-md-block">
-                        <button class="btn btn-primary btn-lg" onclick="showBookingModal()">
-                            <i class="fas fa-ticket-alt me-2"></i>Đặt Vé
-                        </button>
-                        <a th:href="@{/movies}" class="btn btn-outline-secondary btn-lg">
-                            <i class="fas fa-arrow-left me-2"></i>Quay Lại
-                        </a>
+                    <!-- Movie Info -->
+                    <div class="col-lg-8 col-md-7">
+                        <div class="movie-details">
+                            <!-- Title -->
+                            <h1 class="movie-title text-white mb-3" style="font-size: 3rem; font-weight: 700; line-height: 1.2;" th:text="${movie.title ?: 'Tên Phim'}">Tên Phim</h1>
+                            
+                            <!-- Meta Info -->
+                            <div class="movie-meta mb-4">
+                                <div class="d-flex flex-wrap gap-3 mb-3">
+                                    <span class="badge bg-primary px-3 py-2" style="border-radius: 20px; font-size: 1rem;" th:text="${movie.genre ?: 'Chưa phân loại'}">Thể loại</span>
+                                    <span class="meta-item text-light" th:if="${movie.durationMin != null and movie.durationMin > 0}">
+                                        <i class="fas fa-clock me-2 text-warning"></i>
+                                        <span th:text="${movie.durationMin + ' phút'}">120 phút</span>
+                                    </span>
+                                    <span class="meta-item text-light" th:if="${movie.releaseDate != null}">
+                                        <i class="fas fa-calendar me-2 text-info"></i>
+                                        <span th:text="${#temporals.format(movie.releaseDate, 'yyyy')}">2024</span>
+                                    </span>
+                                </div>
+                            </div>
+                            
+                            <!-- Rating -->
+                            <div class="movie-rating mb-4" th:if="${movie.voteAverage != null and movie.voteAverage > 0}">
+                                <div class="rating-container d-flex align-items-center">
+                                    <div class="rating-stars me-3">
+                                    <span th:each="star : ${#numbers.sequence(1, 5)}" 
+                                          class="star" 
+                                          th:classappend="${star <= (movie.voteAverage / 2) ? 'fas fa-star text-warning' : 'far fa-star text-muted'}"
+                                          style="font-size: 1.5rem;"></span>
+                                </div>
+                                <div class="rating-score">
+                                    <span class="rating-number text-warning fs-4 fw-bold" th:text="${movie.voteAverage}">8.5</span>
+                                    <span class="text-muted">/10</span>
+                                    <small class="text-muted ms-2" th:if="${movie.voteCount}">
+                                        (<span th:text="${movie.voteCount}">1,234</span> đánh giá)
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Description -->
+                        <div class="movie-description mb-4" th:if="${movie.overview}">
+                            <h5 class="text-primary mb-2">
+                                <i class="fas fa-align-left me-2"></i>Tóm Tắt
+                            </h5>
+                            <p class="text-light fs-6 lh-lg" th:text="${movie.overview}" style="max-width: 600px;">
+                                Mô tả phim sẽ được hiển thị ở đây...
+                            </p>
+                        </div>
+                        
+                        <!-- Action Buttons -->
+                        <div class="movie-actions">
+                            <div class="d-flex flex-column flex-sm-row gap-3">
+                                <button onclick="scrollToScreenings()" 
+                                   class="btn btn-primary btn-lg px-5 py-3" 
+                                   style="border-radius: 50px; background: linear-gradient(135deg, #e50914 0%, #b81d24 100%); border: none; box-shadow: 0 8px 25px rgba(229, 9, 20, 0.4); font-weight: 600;">
+                                    <i class="fas fa-ticket-alt me-2"></i>Đặt Vé Ngay
+                                </button>
+                                <button class="btn btn-outline-light btn-lg px-5 py-3" 
+                                        style="border-radius: 50px; border: 2px solid rgba(255, 255, 255, 0.3); backdrop-filter: blur(10px); font-weight: 600;"
+                                        data-bs-toggle="modal" data-bs-target="#trailerModal">
+                                    <i class="fas fa-play me-2"></i>Xem Trailer
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+        
+        <!-- Decorative Elements -->
+        <div class="floating-elements">
+            <div class="floating-icon" style="position: absolute; top: 10%; right: 5%; animation: float 8s ease-in-out infinite;">
+                <i class="fas fa-star text-warning opacity-25" style="font-size: 4rem;"></i>
+            </div>
+        </div>
     </section>
+    </div>
 
-    <!-- Screenings Section -->
-    <section class="py-5 bg-dark-secondary" th:if="${not #lists.isEmpty(screenings)}">
-        <div class="container">
-            <h2 class="text-center mb-5">Lịch Chiếu</h2>
-            <div class="row">
-                <div class="col-12">
-                    <div class="table-responsive">
-                        <table class="table table-dark">
-                            <thead>
-                                <tr>
-                                    <th>Rạp</th>
-                                    <th>Phòng chiếu</th>
-                                    <th>Thời gian</th>
-                                    <th>Giá vé</th>
-                                    <th>Hành động</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr th:each="screening : ${screenings}">
-                                    <td th:text="${screening.auditorium.theater.name}">Tên rạp</td>
-                                    <td th:text="${screening.auditorium.name}">Phòng chiếu</td>
-                                    <td th:text="${#temporals.format(screening.startTime, 'HH:mm dd/MM/yyyy')}">Thời gian</td>
-                                    <td th:text="${#numbers.formatDecimal(screening.ticketPrice, 0, 0) + ' VNĐ'}">Giá vé</td>
-                                    <td>
-                                        <a th:href="@{/booking/screening/{id}(id=${screening.id})}" class="btn btn-primary btn-sm">
-                                            <i class="fas fa-ticket-alt me-1"></i>Đặt vé
-                                        </a>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+    <!-- Movie Not Found Section -->
+    <div th:if="${movie == null}">
+        <section class="error-section py-5" style="background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%); min-height: 70vh; display: flex; align-items: center;">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-6 text-center">
+                        <div class="error-content">
+                            <div class="error-icon mb-4">
+                                <i class="fas fa-film text-muted" style="font-size: 5rem;"></i>
+                            </div>
+                            <h1 class="text-white mb-3">Phim Không Tồn Tại</h1>
+                            <p class="text-muted mb-4">
+                                Rất tiếc, chúng tôi không thể tìm thấy bộ phim mà bạn đang tìm kiếm. 
+                                Có thể phim đã bị xóa hoặc đường link không chính xác.
+                            </p>
+                            <div class="d-flex gap-3 justify-content-center">
+                                <a href="/movies" class="btn btn-primary btn-lg px-4">
+                                    <i class="fas fa-arrow-left me-2"></i>Xem Tất Cả Phim
+                                </a>
+                                <a href="/" class="btn btn-outline-light btn-lg px-4">
+                                    <i class="fas fa-home me-2"></i>Trang Chủ
+                                </a>
+                            </div>
+                        </div>
                     </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Movie Screenings Section -->
+    <section id="screenings-section" th:if="${movie != null}" class="py-5" style="background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);">
+        <div class="container">
+            <div class="row mb-5">
+                <div class="col-12 text-center">
+                    <h2 class="text-white mb-3">
+                        <i class="fas fa-calendar-alt me-2 text-primary"></i>Lịch Chiếu
+                    </h2>
+                    <p class="text-muted">Chọn suất chiếu phù hợp với bạn</p>
+                </div>
+            </div>
+
+            <!-- Screenings List -->
+            <div th:if="${groupedScreenings != null and not #maps.isEmpty(groupedScreenings)}" class="screenings-container">
+                <!-- Group by Theater -->
+                <div th:each="theaterEntry : ${groupedScreenings}" class="theater-section mb-5">
+                    <div class="theater-header mb-4">
+                        <div class="card bg-dark border-secondary">
+                            <div class="card-body py-3">
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-building text-primary me-3" style="font-size: 1.5rem;"></i>
+                                    <div>
+                                        <h4 class="text-white mb-1" th:text="${theaterEntry.key.name ?: 'Tên Rạp'}">Tên Rạp</h4>
+                                        <small class="text-muted">
+                                            <i class="fas fa-map-marker-alt me-1"></i>
+                                            <span th:text="${theaterEntry.key.address ?: 'Địa chỉ'}">Địa chỉ</span>
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Auditoriums -->
+                    <div th:each="auditoriumEntry : ${theaterEntry.value}" class="auditorium-section mb-4">
+                        <div class="auditorium-header mb-3">
+                            <h5 class="text-light">
+                                <i class="fas fa-door-open me-2 text-info"></i>
+                                <span th:text="${auditoriumEntry.key.name}">Phòng chiếu</span>
+                            </h5>
+                        </div>
+                        
+                        <!-- Showtimes -->
+                        <div class="row g-2">
+                            <div th:each="screening : ${auditoriumEntry.value}" class="col-6 col-sm-4 col-md-3 col-lg-2">
+                                <a th:href="@{'/booking/screening/' + ${screening.id}}" 
+                                   class="btn btn-outline-light showtime-btn w-100 p-3 text-decoration-none"
+                                   style="border-radius: 12px; transition: all 0.3s ease;">
+                                    <div class="text-center">
+                                        <div class="time fw-bold text-white mb-1" 
+                                             th:text="${#temporals.format(screening.startTime, 'HH:mm')}">19:30</div>
+                                        <div class="date small text-muted mb-1" 
+                                             th:text="${#temporals.format(screening.startTime, 'dd/MM')}">30/07</div>
+                                        <div class="price small text-warning" 
+                                             th:text="${#numbers.formatCurrency(screening.ticketPrice)}">150,000đ</div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Simple Screenings List (fallback) -->
+            <div th:if="${(groupedScreenings == null or #maps.isEmpty(groupedScreenings)) and screenings != null and not #lists.isEmpty(screenings)}" class="simple-screenings">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="table-responsive">
+                            <table class="table table-dark table-striped">
+                                <thead>
+                                    <tr>
+                                        <th><i class="fas fa-building me-2"></i>Rạp</th>
+                                        <th><i class="fas fa-door-open me-2"></i>Phòng</th>
+                                        <th><i class="fas fa-clock me-2"></i>Giờ chiếu</th>
+                                        <th><i class="fas fa-calendar me-2"></i>Ngày</th>
+                                        <th><i class="fas fa-money-bill me-2"></i>Giá vé</th>
+                                        <th>Đặt vé</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="screening : ${screenings}">
+                                        <td th:text="${screening.auditorium?.theater?.name ?: 'Chưa có thông tin'}">Rạp</td>
+                                        <td th:text="${screening.auditorium?.name ?: 'Chưa có thông tin'}">Phòng</td>
+                                        <td th:text="${screening.startTime != null ? #temporals.format(screening.startTime, 'HH:mm') : '--:--'}">19:30</td>
+                                        <td th:text="${screening.startTime != null ? #temporals.format(screening.startTime, 'dd/MM/yyyy') : '--/--/----'}">30/07/2025</td>
+                                        <td th:text="${screening.ticketPrice != null ? #numbers.formatCurrency(screening.ticketPrice) : 'Liên hệ'}">150,000đ</td>
+                                        <td>
+                                            <a th:href="@{'/booking/screening/' + ${screening.id}}" 
+                                               class="btn btn-primary btn-sm">
+                                                <i class="fas fa-ticket-alt me-1"></i>Đặt vé
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- No Screenings -->
+            <div th:if="${(screenings == null or #lists.isEmpty(screenings)) and (groupedScreenings == null or #maps.isEmpty(groupedScreenings))}" class="text-center py-5">
+                <div class="no-screenings-message">
+                    <i class="fas fa-calendar-times text-muted mb-3" style="font-size: 4rem;"></i>
+                    <h4 class="text-white mb-2">Chưa có lịch chiếu</h4>
+                    <p class="text-muted mb-4">Hiện tại chưa có suất chiếu nào cho bộ phim này</p>
+                    <a href="/movies" class="btn btn-primary">
+                        <i class="fas fa-arrow-left me-2"></i>Xem phim khác
+                    </a>
                 </div>
             </div>
         </div>
@@ -122,6 +274,27 @@
     <script th:src="@{/js/cinema-app-api.js}"></script>
     
     <script>
+        // Add hover effects to showtime buttons
+        document.addEventListener('DOMContentLoaded', function() {
+            const showtimeButtons = document.querySelectorAll('.showtime-btn');
+            
+            showtimeButtons.forEach(button => {
+                button.addEventListener('mouseenter', function() {
+                    this.style.background = 'rgba(229, 9, 20, 0.1)';
+                    this.style.borderColor = '#e50914';
+                    this.style.transform = 'translateY(-2px)';
+                    this.style.boxShadow = '0 8px 25px rgba(229, 9, 20, 0.3)';
+                });
+                
+                button.addEventListener('mouseleave', function() {
+                    this.style.background = 'rgba(255, 255, 255, 0.02)';
+                    this.style.borderColor = 'rgba(255, 255, 255, 0.1)';
+                    this.style.transform = 'translateY(0)';
+                    this.style.boxShadow = 'none';
+                });
+            });
+        });
+        
         function showBookingModal() {
             // This will be handled by the cinema app JavaScript
             if (typeof window.cinemaApp !== 'undefined') {
@@ -130,6 +303,19 @@
                     /* theaters data */
                     /* screenings data */
                 );
+            }
+        }
+        
+        function scrollToScreenings() {
+            const screeningsSection = document.getElementById('screenings-section');
+            if (screeningsSection) {
+                screeningsSection.scrollIntoView({ 
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            } else {
+                // If no screenings section, show alert
+                alert('Phim này hiện chưa có suất chiếu. Vui lòng quay lại sau!');
             }
         }
     </script>

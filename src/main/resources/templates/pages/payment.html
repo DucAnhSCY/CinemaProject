@@ -1,4 +1,134 @@
-<!DOCTYPE html>
+<!DOCTY    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Cinema Theme CSS -->
+    <link th:href="@{/css/cinema-theme.css}" href="/css/cinema-theme.css" rel="stylesheet">
+    
+    <!-- Custom Payment Styles -->
+    <style>
+        .payment-methods-grid {
+            margin-top: 1.5rem;
+        }
+        
+        .payment-method-option {
+            position: relative;
+            height: 100%;
+        }
+        
+        .payment-method-label {
+            display: block;
+            cursor: pointer;
+            height: 100%;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .payment-card {
+            background: rgba(255, 255, 255, 0.05) !important;
+            border: 2px solid rgba(255, 255, 255, 0.1) !important;
+            border-radius: 12px !important;
+            padding: 1.5rem !important;
+            text-align: center !important;
+            height: 140px !important;
+            display: flex !important;
+            flex-direction: column !important;
+            justify-content: center !important;
+            align-items: center !important;
+            transition: all 0.3s ease !important;
+            position: relative !important;
+            overflow: hidden !important;
+        }
+        
+        .payment-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(229, 9, 20, 0.5);
+            box-shadow: 0 10px 30px rgba(229, 9, 20, 0.2);
+            background: rgba(229, 9, 20, 0.1);
+        }
+        
+        .payment-radio:checked + .payment-method-label .payment-card {
+            border-color: #e50914;
+            background: rgba(229, 9, 20, 0.15);
+            box-shadow: 0 0 20px rgba(229, 9, 20, 0.3);
+        }
+        
+        .payment-icon {
+            color: #e50914;
+            margin-bottom: 0.5rem !important;
+        }
+        
+        .payment-title {
+            color: #fff;
+            font-weight: 600;
+            font-size: 1rem;
+            margin-bottom: 0.25rem !important;
+        }
+        
+        .payment-desc {
+            font-size: 0.75rem;
+            color: #999 !important;
+            line-height: 1.2;
+        }
+        
+        .payment-check {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            color: #e50914;
+            font-size: 1.2rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .payment-radio:checked + .payment-method-label .payment-check {
+            opacity: 1;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .payment-card {
+                height: 120px;
+                padding: 1rem;
+            }
+            
+            .payment-icon {
+                font-size: 2rem !important;
+            }
+            
+            .payment-title {
+                font-size: 0.9rem;
+            }
+            
+            .payment-desc {
+                font-size: 0.7rem;
+            }
+        }
+        
+        /* Grid layout optimization */
+        .payment-methods-grid .row {
+            row-gap: 1rem;
+        }
+        
+        .payment-methods-grid .col-md-6 {
+            display: flex;
+        }
+        
+        /* Specific payment method styles */
+        .credit-card, .debit-card, .bank-transfer, .e-wallet {
+            min-height: 140px !important;
+        }
+        
+        /* Ensure visibility */
+        .payment-method-option {
+            width: 100% !important;
+        }
+        
+        .payment-method-label {
+            width: 100% !important;
+            height: 100% !important;
+        }
+    </style>l>
 <html lang="vi" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
@@ -11,130 +141,265 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <!-- Cinema Theme CSS -->
     <link th:href="@{/css/cinema-theme.css}" href="/css/cinema-theme.css" rel="stylesheet">
-    <!-- Modern Cinema CSS -->
-    <link th:href="@{/css/modern-cinema.css}" href="/css/modern-cinema.css" rel="stylesheet">
 </head>
 <body>
     <!-- Navigation -->
     <nav th:replace="~{layout/fragments/navigation :: nav}"></nav>
 
     <!-- Payment Section -->
-    <section class="py-5 bg-dark-secondary">
+    <section class="py-5" style="background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%); min-height: 100vh;">
         <div class="container">
+            <!-- Page Header -->
+            <div class="text-center mb-5">
+                <div class="payment-header-icon mb-3">
+                    <i class="fas fa-credit-card text-primary" style="font-size: 3.5rem; filter: drop-shadow(0 0 20px rgba(13, 110, 253, 0.5));"></i>
+                </div>
+                <h2 class="text-white mb-2">Thanh Toán An Toàn</h2>
+                <p class="text-muted">Hoàn tất đặt vé của bạn với các phương thức thanh toán đa dạng</p>
+            </div>
+
             <div class="row justify-content-center">
-                <div class="col-lg-8">
-                    <div class="card bg-dark border-secondary">
-                        <div class="card-header bg-primary text-white">
-                            <h3 class="mb-0 text-center">
-                                <i class="fas fa-credit-card me-2"></i>Thanh Toán
-                            </h3>
-                        </div>
-                        <div class="card-body">
-                            <!-- Thông tin đặt vé -->
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <h5 class="text-primary mb-3">Thông Tin Đặt Vé</h5>
-                                    <div class="booking-info">
-                                        <div class="mb-2">
-                                            <strong>Phim:</strong>
-                                            <span th:text="${booking.screening.movie.title}">Tên phim</span>
+                <div class="col-xl-10">
+                    <div class="payment-container">
+                        <div class="row g-4">
+                            <!-- Booking Summary -->
+                            <div class="col-lg-5">
+                                <div class="booking-summary-card">
+                                    <div class="card border-0 shadow-lg h-100" style="background: rgba(42, 42, 42, 0.95); backdrop-filter: blur(10px); border-radius: 16px;">
+                                        <div class="card-header border-0 text-center py-4" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 16px 16px 0 0;">
+                                            <h5 class="text-white mb-0 fw-bold">
+                                                <i class="fas fa-ticket-alt me-2"></i>Chi Tiết Đặt Vé
+                                            </h5>
                                         </div>
-                                        <div class="mb-2">
-                                            <strong>Rạp:</strong>
-                                            <span th:text="${booking.screening.auditorium.theater.name}">Tên rạp</span>
-                                        </div>
-                                        <div class="mb-2">
-                                            <strong>Phòng chiếu:</strong>
-                                            <span th:text="${booking.screening.auditorium.name}">Phòng</span>
-                                        </div>
-                                        <div class="mb-2">
-                                            <strong>Suất chiếu:</strong>
-                                            <span th:text="${#temporals.format(booking.screening.startTime, 'HH:mm - dd/MM/yyyy')}">Thời gian</span>
-                                        </div>
-                                        <div class="mb-2">
-                                            <strong>Ghế đã chọn:</strong>
-                                            <div class="selected-seats">
-                                                <span th:each="bookedSeat, iterStat : ${booking.bookedSeats}" 
-                                                      class="badge bg-info me-1">
-                                                    <span th:text="${bookedSeat.seat.rowNumber}">A</span><span th:text="${bookedSeat.seat.seatPosition}">1</span>
-                                                </span>
+                                        <div class="card-body p-4">
+                                            <!-- Movie Info -->
+                                            <div class="booking-item mb-4">
+                                                <div class="movie-info">
+                                                    <h6 class="text-primary mb-2">
+                                                        <i class="fas fa-film me-2"></i>Thông Tin Phim
+                                                    </h6>
+                                                    <div class="movie-title mb-2">
+                                                        <h5 class="text-white fw-bold mb-1" th:text="${booking.screening.movie.title}">Tên phim</h5>
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="mb-3">
-                                            <strong>Số lượng ghế:</strong>
-                                            <span th:text="${#lists.size(booking.bookedSeats)}">2</span> ghế
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <div class="col-md-6">
-                                    <h5 class="text-primary mb-3">Chi Tiết Thanh Toán</h5>
-                                    <div class="payment-details">
-                                        <div class="d-flex justify-content-between mb-2">
-                                            <span>Giá vé:</span>
-                                            <span th:text="${#numbers.formatCurrency(booking.screening.ticketPrice)}">120,000 VND</span>
-                                        </div>
-                                        <div class="d-flex justify-content-between mb-2">
-                                            <span>Số lượng:</span>
-                                            <span>x<span th:text="${#lists.size(booking.bookedSeats)}">2</span></span>
-                                        </div>
-                                        <hr class="border-secondary">
-                                        <div class="d-flex justify-content-between mb-3 fs-5 fw-bold text-warning">
-                                            <span>Tổng cộng:</span>
-                                            <span th:text="${#numbers.formatCurrency(booking.totalAmount)}">240,000 VND</span>
+
+                                            <!-- Cinema & Time Info -->
+                                            <div class="booking-item mb-4">
+                                                <h6 class="text-primary mb-3">
+                                                    <i class="fas fa-map-marker-alt me-2"></i>Địa Điểm & Thời Gian
+                                                </h6>
+                                                <div class="cinema-details">
+                                                    <div class="info-row mb-2">
+                                                        <span class="text-muted">Rạp:</span>
+                                                        <span class="text-white fw-semibold ms-2" th:text="${booking.screening.auditorium.theater.name}">Tên rạp</span>
+                                                    </div>
+                                                    <div class="info-row mb-2">
+                                                        <span class="text-muted">Phòng:</span>
+                                                        <span class="text-white ms-2" th:text="${booking.screening.auditorium.name}">Phòng</span>
+                                                    </div>
+                                                    <div class="info-row">
+                                                        <span class="text-muted">Suất chiếu:</span>
+                                                        <span class="text-white ms-2" th:text="${#temporals.format(booking.screening.startTime, 'HH:mm - dd/MM/yyyy')}">Thời gian</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Seats Info -->
+                                            <div class="booking-item mb-4">
+                                                <h6 class="text-primary mb-3">
+                                                    <i class="fas fa-chair me-2"></i>Ghế Đã Chọn
+                                                </h6>
+                                                <div class="selected-seats mb-2">
+                                                    <span th:each="bookedSeat : ${booking.bookedSeats}" 
+                                                          class="seat-badge me-2 mb-2"
+                                                          th:text="${bookedSeat.seat.rowNumber + bookedSeat.seat.seatPosition}">A1</span>
+                                                </div>
+                                                <small class="text-muted">
+                                                    <i class="fas fa-users me-1"></i>
+                                                    Tổng: <span class="text-white fw-semibold" th:text="${#lists.size(booking.bookedSeats)}">2</span> ghế
+                                                </small>
+                                            </div>
+
+                                            <!-- Payment Breakdown -->
+                                            <div class="payment-breakdown">
+                                                <h6 class="text-primary mb-3">
+                                                    <i class="fas fa-calculator me-2"></i>Chi Tiết Giá
+                                                </h6>
+                                                <div class="breakdown-item">
+                                                    <div class="d-flex justify-content-between mb-2">
+                                                        <span class="text-muted">Giá vé:</span>
+                                                        <span class="text-white" th:text="${#numbers.formatCurrency(booking.screening.ticketPrice)}">120,000 VND</span>
+                                                    </div>
+                                                    <div class="d-flex justify-content-between mb-3">
+                                                        <span class="text-muted">Số lượng:</span>
+                                                        <span class="text-white">x<span th:text="${#lists.size(booking.bookedSeats)}">2</span></span>
+                                                    </div>
+                                                    <hr style="border-color: rgba(255, 255, 255, 0.2);">
+                                                    <div class="total-amount p-3 mt-3" style="background: rgba(255, 193, 7, 0.1); border-radius: 8px; border: 1px solid rgba(255, 193, 7, 0.3);">
+                                                        <div class="d-flex justify-content-between align-items-center">
+                                                            <span class="text-warning fs-5 fw-bold">Tổng cộng:</span>
+                                                            <span class="text-warning fs-4 fw-bold" th:text="${#numbers.formatCurrency(booking.totalAmount)}">240,000 VND</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             
-                            <hr class="border-secondary my-4">
-                            
-                            <!-- Form thanh toán -->
-                            <form th:action="@{/payment/process}" method="post" id="paymentForm">
-                                <input type="hidden" name="bookingId" th:value="${booking.id}">
-                                
-                                <h5 class="text-primary mb-3">Chọn Phương Thức Thanh Toán</h5>
-                                
-                                <div class="row">
-                                    <div class="col-md-6 mb-3" th:each="method : ${paymentMethods}">
-                                        <div class="payment-method-card">
-                                            <input type="radio" 
-                                                   name="paymentMethod" 
-                                                   th:value="${method}" 
-                                                   th:id="${'payment_' + method}"
-                                                   class="form-check-input me-2"
-                                                   required>
-                                            <label th:for="${'payment_' + method}" class="payment-method-label w-100">
-                                                <div class="card bg-secondary border-primary h-100">
-                                                    <div class="card-body text-center">
-                                                        <i th:class="${method.name() == 'CREDIT_CARD' ? 'fas fa-credit-card' : 
-                                                                     method.name() == 'DEBIT_CARD' ? 'fas fa-credit-card' :
-                                                                     method.name() == 'BANK_TRANSFER' ? 'fas fa-university' :
-                                                                     method.name() == 'E_WALLET' ? 'fas fa-wallet' : 'fas fa-money-bill'}"
-                                                           class="text-primary fs-2 mb-2"></i>
-                                                        <h6 th:text="${method.name() == 'CREDIT_CARD' ? 'Thẻ Tín Dụng' : 
-                                                                      method.name() == 'DEBIT_CARD' ? 'Thẻ Ghi Nợ' :
-                                                                      method.name() == 'BANK_TRANSFER' ? 'Chuyển Khoản' :
-                                                                      method.name() == 'E_WALLET' ? 'Ví Điện Tử' : 'Tiền Mặt'}">
-                                                            Phương thức
-                                                        </h6>
+                            <!-- Payment Methods -->
+                            <div class="col-lg-7">
+                                <div class="payment-methods-card">
+                                    <div class="card border-0 shadow-lg h-100" style="background: rgba(42, 42, 42, 0.95); backdrop-filter: blur(10px); border-radius: 16px;">
+                                        <div class="card-header border-0 text-center py-4" style="background: linear-gradient(135deg, #e50914 0%, #b81d24 100%); border-radius: 16px 16px 0 0;">
+                                            <h5 class="text-white mb-0 fw-bold">
+                                                <i class="fas fa-wallet me-2"></i>Phương Thức Thanh Toán
+                                            </h5>
+                                        </div>
+                                        <div class="card-body p-4">
+                                            <!-- Payment Form -->
+                                            <form th:action="@{/payment/process}" method="post" id="paymentForm">
+                                                <input type="hidden" name="bookingId" th:value="${booking.id}">
+                                                
+                                                <div class="payment-methods-grid">
+                                                    <div class="row g-3">
+                                                        <!-- Row 1: Credit Card and Debit Card -->
+                                                        <div class="col-md-6">
+                                                            <div class="payment-method-option">
+                                                                <input type="radio" 
+                                                                       name="paymentMethod" 
+                                                                       value="CREDIT_CARD" 
+                                                                       id="payment_CREDIT_CARD"
+                                                                       class="payment-radio d-none"
+                                                                       required>
+                                                                <label for="payment_CREDIT_CARD" class="payment-method-label">
+                                                                    <div class="payment-card credit-card">
+                                                                        <div class="payment-icon mb-2">
+                                                                            <i class="fas fa-credit-card" style="font-size: 2.2rem; color: #4285f4;"></i>
+                                                                        </div>
+                                                                        <h6 class="payment-title">Thẻ Tín Dụng</h6>
+                                                                        <small class="payment-desc">
+                                                                            Visa, Mastercard, JCB
+                                                                        </small>
+                                                                        <div class="payment-check">
+                                                                            <i class="fas fa-check-circle"></i>
+                                                                        </div>
+                                                                    </div>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                        
+                                                        <div class="col-md-6">
+                                                            <div class="payment-method-option">
+                                                                <input type="radio" 
+                                                                       name="paymentMethod" 
+                                                                       value="DEBIT_CARD" 
+                                                                       id="payment_DEBIT_CARD"
+                                                                       class="payment-radio d-none"
+                                                                       required>
+                                                                <label for="payment_DEBIT_CARD" class="payment-method-label">
+                                                                    <div class="payment-card debit-card">
+                                                                        <div class="payment-icon mb-2">
+                                                                            <i class="fas fa-credit-card" style="font-size: 2.2rem; color: #34a853;"></i>
+                                                                        </div>
+                                                                        <h6 class="payment-title">Thẻ Ghi Nợ</h6>
+                                                                        <small class="payment-desc">
+                                                                            Thẻ ATM nội địa
+                                                                        </small>
+                                                                        <div class="payment-check">
+                                                                            <i class="fas fa-check-circle"></i>
+                                                                        </div>
+                                                                    </div>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                        
+                                                        <!-- Row 2: Bank Transfer and E-Wallet -->
+                                                        <div class="col-md-6">
+                                                            <div class="payment-method-option">
+                                                                <input type="radio" 
+                                                                       name="paymentMethod" 
+                                                                       value="BANK_TRANSFER" 
+                                                                       id="payment_BANK_TRANSFER"
+                                                                       class="payment-radio d-none"
+                                                                       required>
+                                                                <label for="payment_BANK_TRANSFER" class="payment-method-label">
+                                                                    <div class="payment-card bank-transfer">
+                                                                        <div class="payment-icon mb-2">
+                                                                            <i class="fas fa-university" style="font-size: 2.2rem; color: #9c27b0;"></i>
+                                                                        </div>
+                                                                        <h6 class="payment-title">Chuyển Khoản</h6>
+                                                                        <small class="payment-desc">
+                                                                            Internet Banking
+                                                                        </small>
+                                                                        <div class="payment-check">
+                                                                            <i class="fas fa-check-circle"></i>
+                                                                        </div>
+                                                                    </div>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                        
+                                                        <div class="col-md-6">
+                                                            <div class="payment-method-option">
+                                                                <input type="radio" 
+                                                                       name="paymentMethod" 
+                                                                       value="E_WALLET" 
+                                                                       id="payment_E_WALLET"
+                                                                       class="payment-radio d-none"
+                                                                       required>
+                                                                <label for="payment_E_WALLET" class="payment-method-label">
+                                                                    <div class="payment-card e-wallet">
+                                                                        <div class="payment-icon mb-2">
+                                                                            <i class="fas fa-wallet" style="font-size: 2.2rem; color: #ff9800;"></i>
+                                                                        </div>
+                                                                        <h6 class="payment-title">Ví Điện Tử</h6>
+                                                                        <small class="payment-desc">
+                                                                            MoMo, ZaloPay, VNPay
+                                                                        </small>
+                                                                        <div class="payment-check">
+                                                                            <i class="fas fa-check-circle"></i>
+                                                                        </div>
+                                                                    </div>
+                                                                </label>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </label>
+                                                
+                                                <!-- Security Notice -->
+                                                <div class="security-notice mt-4 p-3" style="background: rgba(40, 167, 69, 0.1); border-radius: 8px; border: 1px solid rgba(40, 167, 69, 0.3);">
+                                                    <div class="d-flex align-items-center">
+                                                        <i class="fas fa-shield-alt text-success me-3" style="font-size: 1.5rem;"></i>
+                                                        <div>
+                                                            <h6 class="text-success mb-1">Thanh Toán An Toàn</h6>
+                                                            <small class="text-muted">
+                                                                Thông tin thanh toán được mã hóa SSL 256-bit và bảo mật tuyệt đối
+                                                            </small>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
+                                                <!-- Action Buttons -->
+                                                <div class="payment-actions mt-4">
+                                                    <div class="d-flex flex-column flex-md-row gap-3">
+                                                        <button type="submit" class="btn btn-primary btn-lg flex-fill py-3" id="paymentBtn" style="border-radius: 12px; background: linear-gradient(135deg, #e50914 0%, #b81d24 100%); border: none; box-shadow: 0 4px 15px rgba(229, 9, 20, 0.3);">
+                                                            <i class="fas fa-lock me-2"></i>
+                                                            <span class="btn-text">Thanh Toán Ngay</span>
+                                                        </button>
+                                                        <a th:href="@{'/booking/screening/' + ${booking.screening.id}}" 
+                                                           class="btn btn-outline-light btn-lg flex-fill py-3" style="border-radius: 12px; border: 2px solid rgba(255, 255, 255, 0.2);">
+                                                            <i class="fas fa-arrow-left me-2"></i>Quay Lại
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </form>
                                         </div>
                                     </div>
                                 </div>
-                                
-                                <div class="text-center mt-4">
-                                    <button type="submit" class="btn btn-primary btn-lg px-5" id="paymentBtn">
-                                        <i class="fas fa-lock me-2"></i>Thanh Toán Ngay
-                                    </button>
-                                    <a th:href="@{'/booking/screening/' + ${booking.screening.id}}" 
-                                       class="btn btn-outline-secondary btn-lg px-5 ms-3">
-                                        <i class="fas fa-arrow-left me-2"></i>Quay Lại
-                                    </a>
-                                </div>
-                            </form>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -152,27 +417,62 @@
         // Payment form handling
         document.getElementById('paymentForm').addEventListener('submit', function(e) {
             const paymentBtn = document.getElementById('paymentBtn');
-            paymentBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Đang xử lý...';
+            const btnText = paymentBtn.querySelector('.btn-text');
+            const icon = paymentBtn.querySelector('i');
+            
+            // Change button state
+            icon.className = 'fas fa-spinner fa-spin me-2';
+            btnText.textContent = 'Đang xử lý...';
             paymentBtn.disabled = true;
+            paymentBtn.style.background = 'linear-gradient(135deg, #6c757d 0%, #5a6268 100%)';
         });
         
-        // Style for payment method selection
+        // Enhanced payment method selection
         document.querySelectorAll('input[name="paymentMethod"]').forEach(radio => {
             radio.addEventListener('change', function() {
                 // Remove active class from all cards
-                document.querySelectorAll('.payment-method-card .card').forEach(card => {
-                    card.classList.remove('border-success');
-                    card.classList.add('border-primary');
+                document.querySelectorAll('.payment-card').forEach(card => {
+                    card.classList.remove('active');
                 });
                 
                 // Add active class to selected card
                 if (this.checked) {
-                    const card = this.closest('.payment-method-card').querySelector('.card');
-                    card.classList.remove('border-primary');
-                    card.classList.add('border-success');
+                    const card = this.closest('.payment-method-option').querySelector('.payment-card');
+                    card.classList.add('active');
+                    
+                    // Enable payment button
+                    const paymentBtn = document.getElementById('paymentBtn');
+                    paymentBtn.disabled = false;
                 }
             });
         });
+        
+        // Add hover effects
+        document.querySelectorAll('.payment-method-label').forEach(label => {
+            label.addEventListener('mouseenter', function() {
+                const card = this.querySelector('.payment-card');
+                if (!card.classList.contains('active')) {
+                    card.style.transform = 'translateY(-3px)';
+                    card.style.boxShadow = '0 8px 25px rgba(0, 0, 0, 0.3)';
+                }
+            });
+            
+            label.addEventListener('mouseleave', function() {
+                const card = this.querySelector('.payment-card');
+                if (!card.classList.contains('active')) {
+                    card.style.transform = 'translateY(0)';
+                    card.style.boxShadow = '0 4px 15px rgba(0, 0, 0, 0.2)';
+                }
+            });
+        });
+        
+        // Initially disable payment button
+        document.getElementById('paymentBtn').disabled = true;
+        
+        // Debug: Check if payment methods are rendered
+        console.log('Payment methods grid found:', document.querySelector('.payment-methods-grid'));
+        console.log('Payment method options count:', document.querySelectorAll('.payment-method-option').length);
+        console.log('Payment radio buttons:', document.querySelectorAll('.payment-radio').length);
     </script>
 </body>
 </html>

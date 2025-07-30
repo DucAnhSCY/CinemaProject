@@ -1,5 +1,6 @@
 package com.N07.CinemaProject.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,10 +21,12 @@ public class SeatHold {
     
     @ManyToOne
     @JoinColumn(name = "seat_id", nullable = false)
+    @JsonIgnore
     private Seat seat;
     
     @ManyToOne
     @JoinColumn(name = "screening_id", nullable = false)
+    @JsonIgnore
     private Screening screening;
     
     @Column(name = "user_session", nullable = false)
