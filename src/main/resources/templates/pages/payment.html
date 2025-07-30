@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thanh Toán - Cinema Paradise</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Cinema Theme CSS -->
+    <link th:href="@{/css/cinema-theme.css}" href="/css/cinema-theme.css" rel="stylesheet">
+    <!-- Modern Cinema CSS -->
+    <link th:href="@{/css/modern-cinema.css}" href="/css/modern-cinema.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav th:replace="~{layout/fragments/navigation :: nav}"></nav>
+
+    <!-- Payment Section -->
+    <section class="py-5 bg-dark-secondary">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="card bg-dark border-secondary">
+                        <div class="card-header bg-primary text-white">
+                            <h3 class="mb-0 text-center">
+                                <i class="fas fa-credit-card me-2"></i>Thanh Toán
+                            </h3>
+                        </div>
+                        <div class="card-body">
+                            <!-- Thông tin đặt vé -->
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h5 class="text-primary mb-3">Thông Tin Đặt Vé</h5>
+                                    <div class="booking-info">
+                                        <div class="mb-2">
+                                            <strong>Phim:</strong>
+                                            <span th:text="${booking.screening.movie.title}">Tên phim</span>
+                                        </div>
+                                        <div class="mb-2">
+                                            <strong>Rạp:</strong>
+                                            <span th:text="${booking.screening.auditorium.theater.name}">Tên rạp</span>
+                                        </div>
+                                        <div class="mb-2">
+                                            <strong>Phòng chiếu:</strong>
+                                            <span th:text="${booking.screening.auditorium.name}">Phòng</span>
+                                        </div>
+                                        <div class="mb-2">
+                                            <strong>Suất chiếu:</strong>
+                                            <span th:text="${#temporals.format(booking.screening.startTime, 'HH:mm - dd/MM/yyyy')}">Thời gian</span>
+                                        </div>
+                                        <div class="mb-2">
+                                            <strong>Ghế đã chọn:</strong>
+                                            <div class="selected-seats">
+                                                <span th:each="bookedSeat, iterStat : ${booking.bookedSeats}" 
+                                                      class="badge bg-info me-1">
+                                                    <span th:text="${bookedSeat.seat.rowNumber}">A</span><span th:text="${bookedSeat.seat.seatPosition}">1</span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <strong>Số lượng ghế:</strong>
+                                            <span th:text="${#lists.size(booking.bookedSeats)}">2</span> ghế
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-6">
+                                    <h5 class="text-primary mb-3">Chi Tiết Thanh Toán</h5>
+                                    <div class="payment-details">
+                                        <div class="d-flex justify-content-between mb-2">
+                                            <span>Giá vé:</span>
+                                            <span th:text="${#numbers.formatCurrency(booking.screening.ticketPrice)}">120,000 VND</span>
+                                        </div>
+                                        <div class="d-flex justify-content-between mb-2">
+                                            <span>Số lượng:</span>
+                                            <span>x<span th:text="${#lists.size(booking.bookedSeats)}">2</span></span>
+                                        </div>
+                                        <hr class="border-secondary">
+                                        <div class="d-flex justify-content-between mb-3 fs-5 fw-bold text-warning">
+                                            <span>Tổng cộng:</span>
+                                            <span th:text="${#numbers.formatCurrency(booking.totalAmount)}">240,000 VND</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <hr class="border-secondary my-4">
+                            
+                            <!-- Form thanh toán -->
+                            <form th:action="@{/payment/process}" method="post" id="paymentForm">
+                                <input type="hidden" name="bookingId" th:value="${booking.id}">
+                                
+                                <h5 class="text-primary mb-3">Chọn Phương Thức Thanh Toán</h5>
+                                
+                                <div class="row">
+                                    <div class="col-md-6 mb-3" th:each="method : ${paymentMethods}">
+                                        <div class="payment-method-card">
+                                            <input type="radio" 
+                                                   name="paymentMethod" 
+                                                   th:value="${method}" 
+                                                   th:id="${'payment_' + method}"
+                                                   class="form-check-input me-2"
+                                                   required>
+                                            <label th:for="${'payment_' + method}" class="payment-method-label w-100">
+                                                <div class="card bg-secondary border-primary h-100">
+                                                    <div class="card-body text-center">
+                                                        <i th:class="${method.name() == 'CREDIT_CARD' ? 'fas fa-credit-card' : 
+                                                                     method.name() == 'DEBIT_CARD' ? 'fas fa-credit-card' :
+                                                                     method.name() == 'BANK_TRANSFER' ? 'fas fa-university' :
+                                                                     method.name() == 'E_WALLET' ? 'fas fa-wallet' : 'fas fa-money-bill'}"
+                                                           class="text-primary fs-2 mb-2"></i>
+                                                        <h6 th:text="${method.name() == 'CREDIT_CARD' ? 'Thẻ Tín Dụng' : 
+                                                                      method.name() == 'DEBIT_CARD' ? 'Thẻ Ghi Nợ' :
+                                                                      method.name() == 'BANK_TRANSFER' ? 'Chuyển Khoản' :
+                                                                      method.name() == 'E_WALLET' ? 'Ví Điện Tử' : 'Tiền Mặt'}">
+                                                            Phương thức
+                                                        </h6>
+                                                    </div>
+                                                </div>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="text-center mt-4">
+                                    <button type="submit" class="btn btn-primary btn-lg px-5" id="paymentBtn">
+                                        <i class="fas fa-lock me-2"></i>Thanh Toán Ngay
+                                    </button>
+                                    <a th:href="@{'/booking/screening/' + ${booking.screening.id}}" 
+                                       class="btn btn-outline-secondary btn-lg px-5 ms-3">
+                                        <i class="fas fa-arrow-left me-2"></i>Quay Lại
+                                    </a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer th:replace="~{layout/fragments/footer :: footer}"></footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Payment form handling
+        document.getElementById('paymentForm').addEventListener('submit', function(e) {
+            const paymentBtn = document.getElementById('paymentBtn');
+            paymentBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Đang xử lý...';
+            paymentBtn.disabled = true;
+        });
+        
+        // Style for payment method selection
+        document.querySelectorAll('input[name="paymentMethod"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                // Remove active class from all cards
+                document.querySelectorAll('.payment-method-card .card').forEach(card => {
+                    card.classList.remove('border-success');
+                    card.classList.add('border-primary');
+                });
+                
+                // Add active class to selected card
+                if (this.checked) {
+                    const card = this.closest('.payment-method-card').querySelector('.card');
+                    card.classList.remove('border-primary');
+                    card.classList.add('border-success');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -11,6 +11,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
@@ -46,6 +47,7 @@ public class BookingController {
     public String createBooking(@RequestParam Long screeningId,
                                @RequestParam String seatIds,
                                @RequestParam Long userId,
+                               HttpSession session,
                                RedirectAttributes redirectAttributes) {
         try {
             // Parse seat IDs
@@ -55,11 +57,12 @@ public class BookingController {
                     .map(Long::parseLong)
                     .toList();
             
-            // Create booking
-            Booking booking = bookingService.createBooking(userId, screeningId, seatIdList);
+            // Create booking with session info
+            String sessionId = session.getId();
+            Booking booking = bookingService.createBooking(userId, screeningId, seatIdList, sessionId);
             
-            redirectAttributes.addFlashAttribute("success", "Đặt vé thành công!");
-            return "redirect:/booking/confirmation/" + booking.getId();
+            redirectAttributes.addFlashAttribute("success", "Đặt vé thành công! Vui lòng thanh toán để hoàn tất.");
+            return "redirect:/payment/booking/" + booking.getId();
             
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Đặt vé thất bại: " + e.getMessage());

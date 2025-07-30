@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thanh Toán Thất Bại - Cinema Paradise</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Cinema Theme CSS -->
+    <link th:href="@{/css/cinema-theme.css}" href="/css/cinema-theme.css" rel="stylesheet">
+    <!-- Modern Cinema CSS -->
+    <link th:href="@{/css/modern-cinema.css}" href="/css/modern-cinema.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav th:replace="~{layout/fragments/navigation :: nav}"></nav>
+
+    <!-- Failed Section -->
+    <section class="py-5 bg-dark-secondary">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="card bg-dark border-danger">
+                        <div class="card-header bg-danger text-white text-center">
+                            <i class="fas fa-times-circle fa-3x mb-3"></i>
+                            <h3 class="mb-0">Thanh Toán Thất Bại!</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="text-center mb-4">
+                                <h5 class="text-danger">Rất tiếc! Thanh toán của bạn không thành công.</h5>
+                                <p class="text-muted">Mã giao dịch: <strong th:text="${payment.transactionId}">TXN123456</strong></p>
+                            </div>
+                            
+                            <!-- Thông tin vé -->
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h6 class="text-primary mb-3">Thông Tin Đặt Vé</h6>
+                                    <div class="booking-info">
+                                        <div class="mb-2">
+                                            <strong>Mã đặt vé:</strong>
+                                            <span class="badge bg-secondary" th:text="${booking.id}">123</span>
+                                        </div>
+                                        <div class="mb-2">
+                                            <strong>Phim:</strong>
+                                            <span th:text="${booking.screening.movie.title}">Tên phim</span>
+                                        </div>
+                                        <div class="mb-2">
+                                            <strong>Rạp:</strong>
+                                            <span th:text="${booking.screening.auditorium.theater.name}">Tên rạp</span>
+                                        </div>
+                                        <div class="mb-2">
+                                            <strong>Phòng chiếu:</strong>
+                                            <span th:text="${booking.screening.auditorium.name}">Phòng</span>
+                                        </div>
+                                        <div class="mb-2">
+                                            <strong>Suất chiếu:</strong>
+                                            <span th:text="${#temporals.format(booking.screening.startTime, 'HH:mm - dd/MM/yyyy')}">Thời gian</span>
+                                        </div>
+                                        <div class="mb-2">
+                                            <strong>Ghế:</strong>
+                                            <div class="selected-seats">
+                                                <span th:each="bookedSeat : ${booking.bookedSeats}" 
+                                                      class="badge bg-info me-1">
+                                                    <span th:text="${bookedSeat.seat.rowNumber}">A</span><span th:text="${bookedSeat.seat.seatPosition}">1</span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-6">
+                                    <h6 class="text-primary mb-3">Thông Tin Thanh Toán</h6>
+                                    <div class="payment-info">
+                                        <div class="mb-2">
+                                            <strong>Phương thức:</strong>
+                                            <span th:text="${payment.paymentMethod.name() == 'CREDIT_CARD' ? 'Thẻ Tín Dụng' : 
+                                                            payment.paymentMethod.name() == 'DEBIT_CARD' ? 'Thẻ Ghi Nợ' :
+                                                            payment.paymentMethod.name() == 'BANK_TRANSFER' ? 'Chuyển Khoản' :
+                                                            payment.paymentMethod.name() == 'E_WALLET' ? 'Ví Điện Tử' : 'Tiền Mặt'}">
+                                                Phương thức
+                                            </span>
+                                        </div>
+                                        <div class="mb-2">
+                                            <strong>Thời gian:</strong>
+                                            <span th:text="${#temporals.format(payment.paymentTime, 'HH:mm - dd/MM/yyyy')}">Thời gian</span>
+                                        </div>
+                                        <div class="mb-2">
+                                            <strong>Trạng thái:</strong>
+                                            <span class="badge bg-danger">Thất bại</span>
+                                        </div>
+                                        <div class="mb-2">
+                                            <strong>Số tiền:</strong>
+                                            <span class="fs-5 fw-bold text-warning" th:text="${#numbers.formatCurrency(payment.amount)}">240,000 VND</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <hr class="border-secondary my-4">
+                            
+                            <!-- Thông báo -->
+                            <div class="alert alert-warning">
+                                <h6><i class="fas fa-exclamation-triangle me-2"></i>Lưu ý:</h6>
+                                <ul class="mb-0">
+                                    <li>Thanh toán của bạn đã thất bại</li>
+                                    <li>Ghế vẫn được giữ chỗ trong thời gian ngắn</li>
+                                    <li>Bạn có thể thử lại thanh toán hoặc chọn phương thức khác</li>
+                                    <li>Nếu gặp khó khăn, vui lòng liên hệ hotline hỗ trợ</li>
+                                </ul>
+                            </div>
+                            
+                            <!-- Actions -->
+                            <div class="text-center">
+                                <a th:href="@{'/payment/booking/' + ${booking.id}}" class="btn btn-primary btn-lg px-4 me-3">
+                                    <i class="fas fa-credit-card me-2"></i>Thử Lại Thanh Toán
+                                </a>
+                                <a th:href="@{'/booking/screening/' + ${booking.screening.id}}" class="btn btn-outline-warning btn-lg px-4 me-3">
+                                    <i class="fas fa-arrow-left me-2"></i>Chọn Lại Ghế
+                                </a>
+                                <a href="/movies" class="btn btn-outline-secondary btn-lg px-4">
+                                    <i class="fas fa-home me-2"></i>Về Trang Chủ
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer th:replace="~{layout/fragments/footer :: footer}"></footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

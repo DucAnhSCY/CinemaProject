@@ -98,11 +98,6 @@
                                     <i class="fas fa-users me-2"></i>Quản Lý Người Dùng
                                 </a>
                             </li>
-                            <li sec:authorize="hasRole('ADMIN')">
-                                <a class="dropdown-item" th:href="@{/admin/system}">
-                                    <i class="fas fa-cogs me-2"></i>Cấu Hình Hệ Thống
-                                </a>
-                            </li>
                             <!-- Shared Admin & Theater Manager Options -->
                             <li sec:authorize="hasRole('ADMIN') or hasRole('THEATER_MANAGER')">
                                 <a class="dropdown-item" th:href="@{/admin/movies}">

@@ -38,6 +38,12 @@ public class SingleCinemaDataLoader implements CommandLineRunner {
     @Autowired
     private UserRepository userRepository;
     
+    @Autowired
+    private BookingRepository bookingRepository;
+    
+    @Autowired
+    private BookedSeatRepository bookedSeatRepository;
+    
     @Override
     public void run(String... args) throws Exception {
         System.out.println("🎬 Initializing single cinema system with 4 auditoriums...");
@@ -60,11 +66,35 @@ public class SingleCinemaDataLoader implements CommandLineRunner {
     }
     
     private void cleanupExistingData() {
-        // Xóa tất cả dữ liệu cũ để tạo lại hệ thống mới
-        screeningRepository.deleteAll();
-        seatRepository.deleteAll();
-        auditoriumRepository.deleteAll();
-        theaterRepository.deleteAll();
+        // Xóa theo thứ tự để tránh constraint violations
+        try {
+            // Xóa BookedSeats trước
+            bookedSeatRepository.deleteAll();
+            System.out.println("🧹 Deleted booked seats");
+            
+            // Xóa Bookings 
+            bookingRepository.deleteAll();
+            System.out.println("🧹 Deleted bookings");
+            
+            // Xóa Screenings
+            screeningRepository.deleteAll();
+            System.out.println("🧹 Deleted screenings");
+            
+            // Xóa Seats
+            seatRepository.deleteAll();
+            System.out.println("🧹 Deleted seats");
+            
+            // Xóa Auditoriums
+            auditoriumRepository.deleteAll();
+            System.out.println("🧹 Deleted auditoriums");
+            
+            // Xóa Theaters cuối cùng
+            theaterRepository.deleteAll();
+            System.out.println("🧹 Deleted theaters");
+            
+        } catch (Exception e) {
+            System.out.println("⚠️ Error during cleanup (might be expected on first run): " + e.getMessage());
+        }
         
         System.out.println("🧹 Cleaned up existing data");
     }

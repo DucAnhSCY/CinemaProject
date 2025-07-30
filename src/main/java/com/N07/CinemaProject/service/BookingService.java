@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -31,6 +32,9 @@ public class BookingService {
     @Autowired
     private SeatRepository seatRepository;
     
+    @Autowired
+    private SeatHoldService seatHoldService;
+    
     public List<Booking> getBookingsByUser(Long userId) {
         return bookingRepository.findByUserIdOrderByBookingTimeDesc(userId);
     }
@@ -44,11 +48,23 @@ public class BookingService {
     }
     
     @Transactional
-    public Booking createBooking(Long userId, Long screeningId, List<Long> seatIds) {
-        // Kiểm tra ghế có bị đặt chưa
+    public Booking createBooking(Long userId, Long screeningId, List<Long> seatIds, String userSession) {
+        // Kiểm tra ghế có bị đặt chưa hoặc đang được hold bởi user khác
         for (Long seatId : seatIds) {
             if (bookedSeatRepository.existsBySeatIdAndScreeningId(seatId, screeningId)) {
                 throw new RuntimeException("Ghế đã được đặt");
+            }
+            if (seatHoldService.isSeatUnavailable(seatId, screeningId)) {
+                // Kiểm tra xem có phải hold của chính user này không
+                List<SeatHold> userHolds = seatHoldService.getUserHolds(userSession);
+                boolean isUserOwnHold = userHolds.stream()
+                    .anyMatch(hold -> hold.getSeat().getId().equals(seatId) && 
+                             hold.getScreening().getId().equals(screeningId) &&
+                             !hold.isExpired());
+                
+                if (!isUserOwnHold) {
+                    throw new RuntimeException("Ghế đang được giữ chỗ bởi người dùng khác");
+                }
             }
         }
         
@@ -64,13 +80,16 @@ public class BookingService {
         booking.setScreening(screening);
         booking.setBookingTime(LocalDateTime.now());
         booking.setBookingStatus(Booking.BookingStatus.RESERVED);
-        booking.setTotalAmount(screening.getTicketPrice().multiply(BigDecimal.valueOf(seatIds.size())));
+        // Sử dụng setScale để đảm bảo precision chính xác
+        BigDecimal totalAmount = screening.getTicketPrice()
+            .multiply(BigDecimal.valueOf(seatIds.size()))
+            .setScale(2, RoundingMode.HALF_UP);
+        booking.setTotalAmount(totalAmount);
         
         booking = bookingRepository.save(booking);
         
         // Tạo booked seats
         for (Long seatId : seatIds) {
-            // Get the actual seat from the database
             Seat seat = seatRepository.findById(seatId)
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy ghế với ID: " + seatId));
             
@@ -81,7 +100,16 @@ public class BookingService {
             bookedSeatRepository.save(bookedSeat);
         }
         
+        // Xóa hold sau khi tạo booking thành công
+        seatHoldService.releaseHoldsByUserSession(userSession);
+        
         return booking;
+    }
+    
+    // Overload method để tương thích với code cũ
+    @Transactional
+    public Booking createBooking(Long userId, Long screeningId, List<Long> seatIds) {
+        return createBooking(userId, screeningId, seatIds, "session-" + System.currentTimeMillis());
     }
     
     @Transactional
@@ -130,15 +158,25 @@ public class BookingService {
             .map(bs -> bs.getSeat().getId())
             .collect(Collectors.toList());
         
+        // Lấy danh sách ghế đang được hold
+        List<SeatHold> heldSeats = seatHoldService.getActiveHolds(screeningId);
+        List<Long> heldSeatIds = heldSeats.stream()
+            .map(hold -> hold.getSeat().getId())
+            .collect(Collectors.toList());
+        
         // Chuyển đổi sang DTO với thông tin trạng thái
         return allSeats.stream()
-            .map(seat -> new SeatDTO(
-                seat.getId(),
-                seat.getRowNumber(),
-                seat.getSeatPosition(),
-                seat.getSeatType(),
-                bookedSeatIds.contains(seat.getId())
-            ))
+            .map(seat -> {
+                boolean isBooked = bookedSeatIds.contains(seat.getId());
+                boolean isHeld = heldSeatIds.contains(seat.getId());
+                return new SeatDTO(
+                    seat.getId(),
+                    seat.getRowNumber(),
+                    seat.getSeatPosition(),
+                    seat.getSeatType(),
+                    isBooked || isHeld // Ghế không available nếu đã book hoặc đang hold
+                );
+            })
             .collect(Collectors.toList());
     }
     

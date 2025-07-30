@@ -40,4 +40,7 @@ public interface ScreeningRepository extends JpaRepository<Screening, Long> {
         List<Auditorium> auditoriums, LocalDateTime startTime, LocalDateTime endTime);
     
     List<Screening> findByMovieAndAuditoriumInOrderByStartTimeAsc(Movie movie, List<Auditorium> auditoriums);
+    
+    @Query("SELECT s FROM Screening s WHERE s.startTime < :cutoffTime")
+    List<Screening> findFinishedScreenings(@Param("cutoffTime") LocalDateTime cutoffTime);
 }

@@ -1667,3 +1667,50 @@ GO
 ALTER TABLE [dbo].[seats] ADD CONSTRAINT [FK_seats_auditoriums] FOREIGN KEY ([auditorium_id]) REFERENCES [dbo].[auditoriums] ([id]) ON DELETE NO ACTION ON UPDATE NO ACTION
 GO
 
+-- ----------------------------
+-- Table structure for seat_holds
+-- ----------------------------
+IF EXISTS (SELECT * FROM sys.all_objects WHERE object_id = OBJECT_ID(N'[dbo].[seat_holds]') AND type IN ('U'))
+	DROP TABLE [dbo].[seat_holds]
+GO
+
+CREATE TABLE [dbo].[seat_holds] (
+  [id] bigint  IDENTITY(1,1) NOT NULL,
+  [seat_id] bigint  NOT NULL,
+  [screening_id] bigint  NOT NULL,
+  [user_session] nvarchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS  NOT NULL,
+  [hold_time] datetime2(6)  NOT NULL,
+  [expires_at] datetime2(6)  NOT NULL,
+  CONSTRAINT [PK__seat_hol__3213E83F123456789] PRIMARY KEY CLUSTERED ([id])
+WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON)  
+ON [PRIMARY],
+  CONSTRAINT [UK_seat_screening_hold] UNIQUE NONCLUSTERED ([seat_id], [screening_id])
+WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON)  
+ON [PRIMARY]
+) 
+ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[seat_holds] SET (LOCK_ESCALATION = TABLE)
+GO
+
+-- ----------------------------
+-- Indexes structure for table seat_holds
+-- ----------------------------
+CREATE NONCLUSTERED INDEX [idx_seat_holds_expires_at] ON [dbo].[seat_holds]
+([expires_at] ASC)
+GO
+
+CREATE NONCLUSTERED INDEX [idx_seat_holds_user_session] ON [dbo].[seat_holds]
+([user_session] ASC)
+GO
+
+-- ----------------------------
+-- Foreign Keys structure for table seat_holds
+-- ----------------------------
+ALTER TABLE [dbo].[seat_holds] ADD CONSTRAINT [FK__seat_hold__seat_id] FOREIGN KEY ([seat_id]) REFERENCES [dbo].[seats] ([id])
+GO
+
+ALTER TABLE [dbo].[seat_holds] ADD CONSTRAINT [FK__seat_hold__screening_id] FOREIGN KEY ([screening_id]) REFERENCES [dbo].[screenings] ([id])
+GO
+
