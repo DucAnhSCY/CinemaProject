@@ -1,6 +1,4 @@
 package com.N07.CinemaProject.service;
-
-import com.N07.CinemaProject.entity.OAuth2UserProfile;
 import com.N07.CinemaProject.entity.User;
 import com.N07.CinemaProject.security.CustomOAuth2User;
 import org.springframework.beans.factory.annotation.Autowired;

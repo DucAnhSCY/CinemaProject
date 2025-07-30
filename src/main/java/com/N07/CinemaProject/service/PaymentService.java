@@ -7,8 +7,6 @@ import com.N07.CinemaProject.repository.PaymentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
@@ -21,9 +19,6 @@ public class PaymentService {
     
     @Autowired
     private BookingRepository bookingRepository;
-    
-    @Autowired
-    private BookingService bookingService;
     
     @Transactional
     public Payment createPayment(Long bookingId, Payment.PaymentMethod paymentMethod) {
