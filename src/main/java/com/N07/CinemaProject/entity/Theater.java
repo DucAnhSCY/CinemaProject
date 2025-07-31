@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.BatchSize;
 
 import java.util.List;
 
@@ -38,7 +39,8 @@ public class Theater {
     @Column(name = "opening_hours")
     private String openingHours;
     
-    @OneToMany(mappedBy = "theater", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "theater", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore
+    @BatchSize(size = 10)
     private List<Auditorium> auditoriums;
 }

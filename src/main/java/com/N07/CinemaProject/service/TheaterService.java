@@ -5,6 +5,7 @@ import com.N07.CinemaProject.entity.Auditorium;
 import com.N07.CinemaProject.repository.TheaterRepository;
 import com.N07.CinemaProject.repository.AuditoriumRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,10 +20,12 @@ public class TheaterService {
     @Autowired
     private AuditoriumRepository auditoriumRepository;
     
+    @Cacheable("theaters")
     public List<Theater> getAllTheaters() {
         return theaterRepository.findAll();
     }
     
+    @Cacheable(value = "theaters", key = "#id")
     public Optional<Theater> getTheaterById(Long id) {
         return theaterRepository.findById(id);
     }

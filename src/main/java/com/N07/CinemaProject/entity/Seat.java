@@ -60,12 +60,12 @@ public class Seat {
         // Default multipliers based on seat type
         switch (seatType) {
             case VIP:
-                return new BigDecimal("1.2");
+                return new BigDecimal("1.20"); // Ghế VIP x1.2
             case COUPLE:
-                return new BigDecimal("2.0");
+                return new BigDecimal("1.70"); // Ghế Couple x1.7
             case STANDARD:
             default:
-                return BigDecimal.ONE;
+                return BigDecimal.ONE; // Ghế thường x1.0
         }
     }
     

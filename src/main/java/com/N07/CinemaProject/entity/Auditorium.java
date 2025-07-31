@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.hibernate.annotations.BatchSize;
 
 import java.util.List;
 
@@ -38,11 +39,13 @@ public class Auditorium {
     @Column(name = "sound_system")
     private String soundSystem; // Dolby Atmos, DTS, THX
     
-    @OneToMany(mappedBy = "auditorium", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "auditorium", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore
+    @BatchSize(size = 20)
     private List<Seat> seats;
     
-    @OneToMany(mappedBy = "auditorium", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "auditorium", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore
+    @BatchSize(size = 10)
     private List<Screening> screenings;
 }

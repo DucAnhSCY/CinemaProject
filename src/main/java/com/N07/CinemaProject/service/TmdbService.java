@@ -174,7 +174,9 @@ public class TmdbService {
             movie.setTmdbId(movieNode.get("id").asLong());
             movie.setTitle(movieNode.has("title") ? movieNode.get("title").asText() : "");
             movie.setOriginalTitle(movieNode.has("original_title") ? movieNode.get("original_title").asText() : "");
-            movie.setDescription(movieNode.has("overview") ? movieNode.get("overview").asText() : "");
+            String overview = movieNode.has("overview") ? movieNode.get("overview").asText() : "";
+            movie.setDescription(overview);  // Cho backward compatibility
+            movie.setOverview(overview);     // Cho template mới
             movie.setOriginalLanguage(movieNode.has("original_language") ? movieNode.get("original_language").asText() : "");
             
             // Ratings and Popularity

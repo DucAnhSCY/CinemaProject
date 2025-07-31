@@ -844,9 +844,10 @@ function updateBookingsTable(bookings) {
 // Utility functions
 function formatCurrency(amount) {
     return new Intl.NumberFormat('vi-VN', {
-        style: 'currency',
-        currency: 'VND'
-    }).format(amount);
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0,
+        useGrouping: true
+    }).format(amount).replace(/\./g, ',') + ' VND';
 }
 
 function formatDate(dateString) {

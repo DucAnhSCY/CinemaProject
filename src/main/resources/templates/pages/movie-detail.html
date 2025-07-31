@@ -85,11 +85,11 @@
                         </div>
                         
                         <!-- Description -->
-                        <div class="movie-description mb-4" th:if="${movie.overview}">
+                        <div class="movie-description mb-4" th:if="${movie.overview != null and !movie.overview.isEmpty()} or ${movie.description != null and !movie.description.isEmpty()}">
                             <h5 class="text-primary mb-2">
                                 <i class="fas fa-align-left me-2"></i><span data-translate="overview">Tóm Tắt</span>
                             </h5>
-                            <p class="text-light fs-6 lh-lg" th:text="${movie.overview}" style="max-width: 600px;">
+                            <p class="text-light fs-6 lh-lg" th:text="${movie.overview != null and !movie.overview.isEmpty() ? movie.overview : movie.description}" style="max-width: 600px;">
                                 Mô tả phim sẽ được hiển thị ở đây...
                             </p>
                         </div>

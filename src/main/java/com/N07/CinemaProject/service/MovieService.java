@@ -3,6 +3,8 @@ package com.N07.CinemaProject.service;
 import com.N07.CinemaProject.entity.Movie;
 import com.N07.CinemaProject.repository.MovieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,15 +22,18 @@ public class MovieService {
     @Autowired
     private TmdbService tmdbService;
     
+    @Cacheable("movies")
     public List<Movie> getAllMovies() {
         return movieRepository.findAll();
     }
     
+    @Cacheable(value = "movies", key = "#id")
     public Optional<Movie> getMovieById(Long id) {
         return movieRepository.findById(id);
     }
     
     @Transactional
+    @Cacheable(value = "movies", key = "'currently-showing'")
     public List<Movie> getCurrentlyShowingMovies() {
         // First, try to get movies from database
         List<Movie> dbMovies = movieRepository.findCurrentlyShowingMovies(LocalDate.now());
@@ -51,7 +56,24 @@ public class MovieService {
     }
     
     @Transactional
+    @Cacheable(value = "popularMovies", key = "'all'")
     public List<Movie> getPopularMovies() {
+        // Kiểm tra database trước, nếu đã có đủ phim thì không cần gọi TMDB
+        List<Movie> existingMovies = movieRepository.findAll();
+        if (!existingMovies.isEmpty() && existingMovies.size() >= 20) {
+            System.out.println("Using existing movies from database (" + existingMovies.size() + " movies)");
+            return existingMovies.stream()
+                    .limit(20)
+                    .collect(Collectors.toList());
+        }
+        
+        return forceRefreshMovies();
+    }
+    
+    @Transactional
+    @CacheEvict(value = {"popularMovies", "movies"}, allEntries = true)
+    public List<Movie> forceRefreshMovies() {
+        System.out.println("Fetching movies from TMDB API...");
         List<Movie> tmdbMovies = tmdbService.fetchPopularMovies();
         
         // Save or update movies in database
@@ -155,6 +177,7 @@ public class MovieService {
     private void updateMovieFromTmdb(Movie existing, Movie tmdbMovie) {
         existing.setTitle(tmdbMovie.getTitle());
         existing.setDescription(tmdbMovie.getDescription());
+        existing.setOverview(tmdbMovie.getOverview());  // Thêm overview
         existing.setPosterUrl(tmdbMovie.getPosterUrl());
         existing.setBackdropUrl(tmdbMovie.getBackdropUrl());
         existing.setVoteAverage(tmdbMovie.getVoteAverage());

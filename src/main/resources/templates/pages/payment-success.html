@@ -175,7 +175,7 @@
                                                             <span class="text-warning fs-6 fw-semibold">Tổng tiền:</span>
                                                         </div>
                                                         <div class="col-6 text-end">
-                                                            <span class="fs-4 fw-bold text-warning" th:text="${#numbers.formatCurrency(payment.amount)}">240,000 VND</span>
+                                                            <span class="fs-4 fw-bold text-warning" th:text="${#numbers.formatDecimal(payment.amount, 0, 'COMMA', 0, 'POINT')} + ' VND'">240,000 VND</span>
                                                         </div>
                                                     </div>
                                                 </div>

@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.hibernate.annotations.BatchSize;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -38,11 +39,13 @@ public class Screening {
     @Column(name = "ticket_price", precision = 10, scale = 2)
     private BigDecimal ticketPrice;
     
-    @OneToMany(mappedBy = "screening", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "screening", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore
+    @BatchSize(size = 10)
     private List<Booking> bookings;
     
-    @OneToMany(mappedBy = "screening", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "screening", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore
+    @BatchSize(size = 20)
     private List<BookedSeat> bookedSeats;
 }

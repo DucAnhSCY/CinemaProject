@@ -82,4 +82,23 @@ public interface ScreeningRepository extends JpaRepository<Screening, Long> {
     
     @Query("SELECT s FROM Screening s WHERE s.startTime < :cutoffTime")
     List<Screening> findFinishedScreenings(@Param("cutoffTime") LocalDateTime cutoffTime);
+    
+    // Optimized query for home page - get today's screenings with all related data
+    @Query("SELECT s FROM Screening s " +
+           "JOIN FETCH s.movie m " +
+           "JOIN FETCH s.auditorium a " +
+           "JOIN FETCH a.theater t " +
+           "WHERE s.startTime >= :startOfDay AND s.startTime <= :endOfDay " +
+           "ORDER BY s.startTime ASC")
+    List<Screening> findTodayScreeningsWithRelatedData(
+        @Param("startOfDay") LocalDateTime startOfDay, 
+        @Param("endOfDay") LocalDateTime endOfDay);
+    
+    // Get all screenings with full fetch joins
+    @Query("SELECT s FROM Screening s " +
+           "JOIN FETCH s.movie m " +
+           "JOIN FETCH s.auditorium a " +
+           "JOIN FETCH a.theater t " +
+           "ORDER BY s.startTime ASC")
+    List<Screening> findAllWithRelatedData();
 }

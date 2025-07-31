@@ -272,9 +272,10 @@ class CinemaSeatSelection {
 
     formatCurrency(amount) {
         return new Intl.NumberFormat('vi-VN', {
-            style: 'currency',
-            currency: 'VND'
-        }).format(amount);
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0,
+            useGrouping: true
+        }).format(amount).replace(/\./g, ',') + ' VND';
     }
 
     updateBookingButton() {
