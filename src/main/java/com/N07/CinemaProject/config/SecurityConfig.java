@@ -1,6 +1,7 @@
 package com.N07.CinemaProject.config;
 
 import com.N07.CinemaProject.security.CustomAuthenticationFailureHandler;
+import com.N07.CinemaProject.security.OAuth2AuthenticationSuccessHandler;
 import com.N07.CinemaProject.service.CustomOAuth2UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -21,6 +22,10 @@ public class SecurityConfig {
     @Autowired
     @Lazy
     private CustomAuthenticationFailureHandler authenticationFailureHandler;
+    
+    @Autowired
+    @Lazy
+    private OAuth2AuthenticationSuccessHandler oauth2AuthenticationSuccessHandler;
     
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -64,7 +69,7 @@ public class SecurityConfig {
                 .userInfoEndpoint(userInfo -> userInfo
                     .userService(oAuth2UserService)
                 )
-                .defaultSuccessUrl("/", true)
+                .successHandler(oauth2AuthenticationSuccessHandler)
                 .failureUrl("/auth/login?error=true")
             )
             .logout(logout -> logout

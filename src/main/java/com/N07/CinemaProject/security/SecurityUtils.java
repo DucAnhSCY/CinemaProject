@@ -63,10 +63,10 @@ public class SecurityUtils {
         }
         
         // If it's an OAuth2 user, try to get the full name
-        if (auth.getPrincipal() instanceof com.N07.CinemaProject.security.CustomOAuth2User) {
-            com.N07.CinemaProject.security.CustomOAuth2User customUser = 
-                (com.N07.CinemaProject.security.CustomOAuth2User) auth.getPrincipal();
-            return customUser.getFullName() != null ? customUser.getFullName() : customUser.getUsername();
+        if (auth.getPrincipal() instanceof com.N07.CinemaProject.service.CustomOAuth2User) {
+            com.N07.CinemaProject.service.CustomOAuth2User customUser = 
+                (com.N07.CinemaProject.service.CustomOAuth2User) auth.getPrincipal();
+            return customUser.getUser().getFullName() != null ? customUser.getUser().getFullName() : customUser.getUser().getUsername();
         }
         
         return auth.getName();
@@ -81,10 +81,10 @@ public class SecurityUtils {
             return null;
         }
         
-        if (auth.getPrincipal() instanceof com.N07.CinemaProject.security.CustomOAuth2User) {
-            com.N07.CinemaProject.security.CustomOAuth2User customUser = 
-                (com.N07.CinemaProject.security.CustomOAuth2User) auth.getPrincipal();
-            return customUser.getUsername();
+        if (auth.getPrincipal() instanceof com.N07.CinemaProject.service.CustomOAuth2User) {
+            com.N07.CinemaProject.service.CustomOAuth2User customUser = 
+                (com.N07.CinemaProject.service.CustomOAuth2User) auth.getPrincipal();
+            return customUser.getUser().getUsername();
         }
         
         return auth.getName();

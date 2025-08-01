@@ -7,30 +7,34 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
 
 @Repository
 public interface OAuth2UserProfileRepository extends JpaRepository<OAuth2UserProfile, Long> {
     
+    /**
+     * Find OAuth2 profile by provider and provider ID
+     */
+    Optional<OAuth2UserProfile> findByProviderAndProviderId(User.AuthProvider provider, String providerId);
+    
+    /**
+     * Find OAuth2 profile by user
+     */
     Optional<OAuth2UserProfile> findByUser(User user);
     
-    Optional<OAuth2UserProfile> findByProviderNameAndProviderUserId(String providerName, String providerUserId);
-    
-    Optional<OAuth2UserProfile> findByProviderNameAndProviderEmail(String providerName, String providerEmail);
-    
-    @Query("SELECT o FROM OAuth2UserProfile o WHERE o.user.id = :userId")
+    /**
+     * Find OAuth2 profile by user ID
+     */
+    @Query("SELECT p FROM OAuth2UserProfile p WHERE p.user.id = :userId")
     Optional<OAuth2UserProfile> findByUserId(@Param("userId") Long userId);
     
-    @Query("SELECT o FROM OAuth2UserProfile o WHERE o.providerName = :providerName AND o.isActive = true")
-    List<OAuth2UserProfile> findActiveProfilesByProvider(@Param("providerName") String providerName);
+    /**
+     * Check if a provider ID exists for a specific provider
+     */
+    boolean existsByProviderAndProviderId(User.AuthProvider provider, String providerId);
     
-    @Query("SELECT o FROM OAuth2UserProfile o WHERE o.lastLogin >= :since ORDER BY o.lastLogin DESC")
-    List<OAuth2UserProfile> findRecentLogins(@Param("since") LocalDateTime since);
-    
-    @Query("SELECT COUNT(o) FROM OAuth2UserProfile o WHERE o.providerName = :providerName AND o.isActive = true")
-    Long countActiveUsersByProvider(@Param("providerName") String providerName);
-    
-    boolean existsByProviderNameAndProviderUserId(String providerName, String providerUserId);
+    /**
+     * Delete OAuth2 profile by user ID
+     */
+    void deleteByUserId(Long userId);
 }

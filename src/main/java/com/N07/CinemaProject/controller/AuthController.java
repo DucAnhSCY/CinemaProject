@@ -141,18 +141,18 @@ public class AuthController {
         }
         
         // If it's an OAuth2 user
-        if (auth.getPrincipal() instanceof com.N07.CinemaProject.security.CustomOAuth2User) {
-            com.N07.CinemaProject.security.CustomOAuth2User customUser = 
-                (com.N07.CinemaProject.security.CustomOAuth2User) auth.getPrincipal();
+        if (auth.getPrincipal() instanceof com.N07.CinemaProject.service.CustomOAuth2User) {
+            com.N07.CinemaProject.service.CustomOAuth2User customUser = 
+                (com.N07.CinemaProject.service.CustomOAuth2User) auth.getPrincipal();
             
             return java.util.Map.of(
                 "id", customUser.getId(),
-                "username", customUser.getUsername() != null ? customUser.getUsername() : "",
+                "username", customUser.getUser().getUsername() != null ? customUser.getUser().getUsername() : "",
                 "email", customUser.getEmail() != null ? customUser.getEmail() : "",
-                "fullName", customUser.getFullName() != null ? customUser.getFullName() : "",
-                "displayName", customUser.getDisplayName(),
-                "avatarUrl", customUser.getAvatarUrl() != null ? customUser.getAvatarUrl() : "",
-                "role", customUser.getRole().name(),
+                "fullName", customUser.getUser().getFullName() != null ? customUser.getUser().getFullName() : "",
+                "displayName", customUser.getName(),
+                "avatarUrl", customUser.getUser().getAvatarUrl() != null ? customUser.getUser().getAvatarUrl() : "",
+                "role", customUser.getUser().getRole().name(),
                 "authProvider", customUser.getUser().getAuthProvider().name()
             );
         }
@@ -210,13 +210,13 @@ public class AuthController {
             return "Not authenticated";
         }
         
-        if (auth.getPrincipal() instanceof com.N07.CinemaProject.security.CustomOAuth2User) {
-            com.N07.CinemaProject.security.CustomOAuth2User customUser = 
-                (com.N07.CinemaProject.security.CustomOAuth2User) auth.getPrincipal();
+        if (auth.getPrincipal() instanceof com.N07.CinemaProject.service.CustomOAuth2User) {
+            com.N07.CinemaProject.service.CustomOAuth2User customUser = 
+                (com.N07.CinemaProject.service.CustomOAuth2User) auth.getPrincipal();
             
             return "CustomOAuth2User - Name: " + customUser.getName() + 
-                   ", FullName: " + customUser.getFullName() + 
-                   ", Username: " + customUser.getUsername() +
+                   ", FullName: " + customUser.getUser().getFullName() + 
+                   ", Username: " + customUser.getUser().getUsername() +
                    ", Email: " + customUser.getEmail();
         }
         

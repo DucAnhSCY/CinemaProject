@@ -1,18 +1,18 @@
 /*
  Navicat Premium Dump SQL
 
- Source Server         : SQL
+ Source Server         : cinema
  Source Server Type    : SQL Server
- Source Server Version : 16001000 (16.00.1000)
- Source Host           : FALCONZDAWORST:1433
+ Source Server Version : 16004135 (16.00.4135)
+ Source Host           : 34.71.252.111:1433
  Source Catalog        : cinema
  Source Schema         : dbo
 
  Target Server Type    : SQL Server
- Target Server Version : 16001000 (16.00.1000)
+ Target Server Version : 16004135 (16.00.4135)
  File Encoding         : 65001
 
- Date: 30/07/2025 16:29:43
+ Date: 01/08/2025 08:08:20
 */
 
 
@@ -115,16 +115,34 @@ GO
 INSERT INTO [dbo].[booked_seats] ([id], [booking_id], [seat_id], [screening_id], [seat_price]) VALUES (N'51', N'14', N'12824', N'2110', NULL)
 GO
 
-INSERT INTO [dbo].[booked_seats] ([id], [booking_id], [seat_id], [screening_id], [seat_price]) VALUES (N'52', N'15', N'12675', N'2101', NULL)
-GO
-
-INSERT INTO [dbo].[booked_seats] ([id], [booking_id], [seat_id], [screening_id], [seat_price]) VALUES (N'53', N'15', N'12676', N'2101', NULL)
-GO
-
 INSERT INTO [dbo].[booked_seats] ([id], [booking_id], [seat_id], [screening_id], [seat_price]) VALUES (N'54', N'16', N'12682', N'2101', NULL)
 GO
 
 INSERT INTO [dbo].[booked_seats] ([id], [booking_id], [seat_id], [screening_id], [seat_price]) VALUES (N'55', N'16', N'12683', N'2101', NULL)
+GO
+
+INSERT INTO [dbo].[booked_seats] ([id], [booking_id], [seat_id], [screening_id], [seat_price]) VALUES (N'56', N'17', N'12684', N'2101', NULL)
+GO
+
+INSERT INTO [dbo].[booked_seats] ([id], [booking_id], [seat_id], [screening_id], [seat_price]) VALUES (N'57', N'18', N'12699', N'2101', NULL)
+GO
+
+INSERT INTO [dbo].[booked_seats] ([id], [booking_id], [seat_id], [screening_id], [seat_price]) VALUES (N'58', N'19', N'12682', N'2125', NULL)
+GO
+
+INSERT INTO [dbo].[booked_seats] ([id], [booking_id], [seat_id], [screening_id], [seat_price]) VALUES (N'59', N'19', N'12657', N'2125', NULL)
+GO
+
+INSERT INTO [dbo].[booked_seats] ([id], [booking_id], [seat_id], [screening_id], [seat_price]) VALUES (N'60', N'20', N'12832', N'2110', NULL)
+GO
+
+INSERT INTO [dbo].[booked_seats] ([id], [booking_id], [seat_id], [screening_id], [seat_price]) VALUES (N'61', N'20', N'12831', N'2110', NULL)
+GO
+
+INSERT INTO [dbo].[booked_seats] ([id], [booking_id], [seat_id], [screening_id], [seat_price]) VALUES (N'62', N'21', N'12775', N'2107', NULL)
+GO
+
+INSERT INTO [dbo].[booked_seats] ([id], [booking_id], [seat_id], [screening_id], [seat_price]) VALUES (N'63', N'21', N'12774', N'2107', NULL)
 GO
 
 SET IDENTITY_INSERT [dbo].[booked_seats] OFF
@@ -190,10 +208,25 @@ GO
 INSERT INTO [dbo].[bookings] ([id], [user_id], [screening_id], [booking_time], [total_amount], [booking_status], [booking_code], [customer_name], [customer_phone], [customer_email]) VALUES (N'14', N'1', N'2110', N'2025-07-30 15:56:15.9766838', N'240000.00', N'CONFIRMED', NULL, NULL, NULL, NULL)
 GO
 
-INSERT INTO [dbo].[bookings] ([id], [user_id], [screening_id], [booking_time], [total_amount], [booking_status], [booking_code], [customer_name], [customer_phone], [customer_email]) VALUES (N'15', N'1', N'2101', N'2025-07-30 16:00:16.8024246', N'240000.00', N'RESERVED', NULL, NULL, NULL, NULL)
+INSERT INTO [dbo].[bookings] ([id], [user_id], [screening_id], [booking_time], [total_amount], [booking_status], [booking_code], [customer_name], [customer_phone], [customer_email]) VALUES (N'15', N'1', N'2101', N'2025-07-30 16:00:16.8024246', N'240000.00', N'EXPIRED', NULL, NULL, NULL, NULL)
 GO
 
 INSERT INTO [dbo].[bookings] ([id], [user_id], [screening_id], [booking_time], [total_amount], [booking_status], [booking_code], [customer_name], [customer_phone], [customer_email]) VALUES (N'16', N'1', N'2101', N'2025-07-30 16:01:58.2417202', N'240000.00', N'EXPIRED', NULL, NULL, NULL, NULL)
+GO
+
+INSERT INTO [dbo].[bookings] ([id], [user_id], [screening_id], [booking_time], [total_amount], [booking_status], [booking_code], [customer_name], [customer_phone], [customer_email]) VALUES (N'17', N'1', N'2101', N'2025-07-31 15:33:26.0732866', N'120000.00', N'EXPIRED', NULL, NULL, NULL, NULL)
+GO
+
+INSERT INTO [dbo].[bookings] ([id], [user_id], [screening_id], [booking_time], [total_amount], [booking_status], [booking_code], [customer_name], [customer_phone], [customer_email]) VALUES (N'18', N'1', N'2101', N'2025-07-31 15:37:17.8971617', N'204000.00', N'EXPIRED', NULL, NULL, NULL, NULL)
+GO
+
+INSERT INTO [dbo].[bookings] ([id], [user_id], [screening_id], [booking_time], [total_amount], [booking_status], [booking_code], [customer_name], [customer_phone], [customer_email]) VALUES (N'19', N'1', N'2125', N'2025-07-31 15:42:55.7103832', N'264000.00', N'CONFIRMED', NULL, NULL, NULL, NULL)
+GO
+
+INSERT INTO [dbo].[bookings] ([id], [user_id], [screening_id], [booking_time], [total_amount], [booking_status], [booking_code], [customer_name], [customer_phone], [customer_email]) VALUES (N'20', N'8', N'2110', N'2025-07-31 15:52:26.4861702', N'288000.00', N'CONFIRMED', NULL, NULL, NULL, NULL)
+GO
+
+INSERT INTO [dbo].[bookings] ([id], [user_id], [screening_id], [booking_time], [total_amount], [booking_status], [booking_code], [customer_name], [customer_phone], [customer_email]) VALUES (N'21', N'1', N'2107', N'2025-08-01 07:59:09.0828624', N'288000.00', N'EXPIRED', NULL, NULL, NULL, NULL)
 GO
 
 SET IDENTITY_INSERT [dbo].[bookings] OFF
@@ -315,93 +348,6 @@ GO
 
 
 -- ----------------------------
--- Table structure for oauth2_configs
--- ----------------------------
-IF EXISTS (SELECT * FROM sys.all_objects WHERE object_id = OBJECT_ID(N'[dbo].[oauth2_configs]') AND type IN ('U'))
-	DROP TABLE [dbo].[oauth2_configs]
-GO
-
-CREATE TABLE [dbo].[oauth2_configs] (
-  [id] bigint  IDENTITY(1,1) NOT NULL,
-  [provider_name] nvarchar(50) COLLATE SQL_Latin1_General_CP1_CI_AS  NOT NULL,
-  [client_id] nvarchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS  NOT NULL,
-  [client_secret] nvarchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS  NOT NULL,
-  [authorization_uri] nvarchar(500) COLLATE SQL_Latin1_General_CP1_CI_AS  NULL,
-  [token_uri] nvarchar(500) COLLATE SQL_Latin1_General_CP1_CI_AS  NULL,
-  [user_info_uri] nvarchar(500) COLLATE SQL_Latin1_General_CP1_CI_AS  NULL,
-  [redirect_uri] nvarchar(500) COLLATE SQL_Latin1_General_CP1_CI_AS  NULL,
-  [scope] nvarchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS  NULL,
-  [is_enabled] bit DEFAULT 1 NOT NULL,
-  [created_at] datetime2(7) DEFAULT getdate() NOT NULL,
-  [updated_at] datetime2(7) DEFAULT getdate() NOT NULL
-)
-GO
-
-ALTER TABLE [dbo].[oauth2_configs] SET (LOCK_ESCALATION = TABLE)
-GO
-
-
--- ----------------------------
--- Records of oauth2_configs
--- ----------------------------
-SET IDENTITY_INSERT [dbo].[oauth2_configs] ON
-GO
-
-INSERT INTO [dbo].[oauth2_configs] ([id], [provider_name], [client_id], [client_secret], [authorization_uri], [token_uri], [user_info_uri], [redirect_uri], [scope], [is_enabled], [created_at], [updated_at]) VALUES (N'1', N'google', N'725122679388-icmijjb52pu5c3kq0s67mv8a906c3vh8.apps.googleusercontent.com', N'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', N'https://accounts.google.com/o/oauth2/auth', N'https://oauth2.googleapis.com/token', N'https://www.googleapis.com/oauth2/v2/userinfo', N'http://localhost:8080/login/oauth2/code/google', N'openid,profile,email', N'1', N'2025-07-28 17:21:27.3533333', N'2025-07-28 17:25:27.3500000')
-GO
-
-INSERT INTO [dbo].[oauth2_configs] ([id], [provider_name], [client_id], [client_secret], [authorization_uri], [token_uri], [user_info_uri], [redirect_uri], [scope], [is_enabled], [created_at], [updated_at]) VALUES (N'2', N'github', N'Ov23liBYyO6ZWco7KmCH', N'ed56a2be94fe4d9703ac617e6a2c31a1babb23ee', N'https://github.com/login/oauth/authorize', N'https://github.com/login/oauth/access_token', N'https://api.github.com/user', N'http://localhost:8080/login/oauth2/code/github', N'user:email', N'1', N'2025-07-28 17:21:27.3533333', N'2025-07-28 17:25:27.3733333')
-GO
-
-SET IDENTITY_INSERT [dbo].[oauth2_configs] OFF
-GO
-
-
--- ----------------------------
--- Table structure for oauth2_user_profiles
--- ----------------------------
-IF EXISTS (SELECT * FROM sys.all_objects WHERE object_id = OBJECT_ID(N'[dbo].[oauth2_user_profiles]') AND type IN ('U'))
-	DROP TABLE [dbo].[oauth2_user_profiles]
-GO
-
-CREATE TABLE [dbo].[oauth2_user_profiles] (
-  [id] bigint  IDENTITY(1,1) NOT NULL,
-  [user_id] bigint  NOT NULL,
-  [provider_name] nvarchar(50) COLLATE SQL_Latin1_General_CP1_CI_AS  NOT NULL,
-  [provider_user_id] nvarchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS  NOT NULL,
-  [provider_username] nvarchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS  NULL,
-  [provider_email] nvarchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS  NOT NULL,
-  [provider_name_display] nvarchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS  NULL,
-  [provider_avatar_url] nvarchar(500) COLLATE SQL_Latin1_General_CP1_CI_AS  NULL,
-  [provider_profile_url] nvarchar(500) COLLATE SQL_Latin1_General_CP1_CI_AS  NULL,
-  [access_token] nvarchar(max) COLLATE SQL_Latin1_General_CP1_CI_AS  NULL,
-  [refresh_token] nvarchar(max) COLLATE SQL_Latin1_General_CP1_CI_AS  NULL,
-  [token_expires_at] datetime2(7)  NULL,
-  [raw_attributes] ntext COLLATE SQL_Latin1_General_CP1_CI_AS  NULL,
-  [first_login] datetime2(7) DEFAULT getdate() NOT NULL,
-  [last_login] datetime2(7) DEFAULT getdate() NOT NULL,
-  [login_count] int DEFAULT 0 NOT NULL,
-  [is_active] bit DEFAULT 1 NOT NULL,
-  [created_at] datetime2(7) DEFAULT getdate() NOT NULL,
-  [updated_at] datetime2(7) DEFAULT getdate() NOT NULL
-)
-GO
-
-ALTER TABLE [dbo].[oauth2_user_profiles] SET (LOCK_ESCALATION = TABLE)
-GO
-
-
--- ----------------------------
--- Records of oauth2_user_profiles
--- ----------------------------
-SET IDENTITY_INSERT [dbo].[oauth2_user_profiles] ON
-GO
-
-SET IDENTITY_INSERT [dbo].[oauth2_user_profiles] OFF
-GO
-
-
--- ----------------------------
 -- Table structure for payments
 -- ----------------------------
 IF EXISTS (SELECT * FROM sys.all_objects WHERE object_id = OBJECT_ID(N'[dbo].[payments]') AND type IN ('U'))
@@ -436,6 +382,21 @@ INSERT INTO [dbo].[payments] ([id], [booking_id], [amount], [payment_method], [p
 GO
 
 INSERT INTO [dbo].[payments] ([id], [booking_id], [amount], [payment_method], [payment_time], [transaction_id], [status]) VALUES (N'11', N'16', N'240000.00', N'E_WALLET', N'2025-07-30 16:06:07.7999939', N'TXN_D406E64E95CF', N'COMPLETED')
+GO
+
+INSERT INTO [dbo].[payments] ([id], [booking_id], [amount], [payment_method], [payment_time], [transaction_id], [status]) VALUES (N'12', N'17', N'120000.00', N'CREDIT_CARD', N'2025-07-31 15:33:34.6840933', N'TXN_67A66931B90A', N'COMPLETED')
+GO
+
+INSERT INTO [dbo].[payments] ([id], [booking_id], [amount], [payment_method], [payment_time], [transaction_id], [status]) VALUES (N'13', N'18', N'204000.00', N'BANK_TRANSFER', N'2025-07-31 15:37:29.9662801', N'TXN_47932DE6CFE0', N'COMPLETED')
+GO
+
+INSERT INTO [dbo].[payments] ([id], [booking_id], [amount], [payment_method], [payment_time], [transaction_id], [status]) VALUES (N'14', N'19', N'264000.00', N'E_WALLET', N'2025-07-31 15:43:02.6668270', N'TXN_DFAF8663FC0F', N'COMPLETED')
+GO
+
+INSERT INTO [dbo].[payments] ([id], [booking_id], [amount], [payment_method], [payment_time], [transaction_id], [status]) VALUES (N'15', N'20', N'288000.00', N'E_WALLET', N'2025-07-31 15:52:33.7557329', N'TXN_9CBD5A7F9803', N'COMPLETED')
+GO
+
+INSERT INTO [dbo].[payments] ([id], [booking_id], [amount], [payment_method], [payment_time], [transaction_id], [status]) VALUES (N'16', N'21', N'288000.00', N'CREDIT_CARD', N'2025-08-01 07:59:31.2142655', N'TXN_8EA798151C0C', N'COMPLETED')
 GO
 
 SET IDENTITY_INSERT [dbo].[payments] OFF
@@ -680,604 +641,604 @@ GO
 SET IDENTITY_INSERT [dbo].[seats] ON
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12652', N'257', N'A', N'1', N'VIP', N'1.50')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12652', N'257', N'A', N'1', N'STANDARD', N'1.00')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12653', N'257', N'A', N'2', N'VIP', N'1.50')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12653', N'257', N'A', N'2', N'STANDARD', N'1.00')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12654', N'257', N'A', N'3', N'VIP', N'1.50')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12654', N'257', N'A', N'3', N'STANDARD', N'1.00')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12655', N'257', N'A', N'4', N'VIP', N'1.50')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12655', N'257', N'A', N'4', N'STANDARD', N'1.00')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12656', N'257', N'A', N'5', N'VIP', N'1.50')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12656', N'257', N'A', N'5', N'STANDARD', N'1.00')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12657', N'257', N'A', N'6', N'VIP', N'1.50')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12657', N'257', N'A', N'6', N'STANDARD', N'1.00')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12658', N'257', N'A', N'7', N'VIP', N'1.50')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12658', N'257', N'A', N'7', N'STANDARD', N'1.00')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12659', N'257', N'A', N'8', N'VIP', N'1.50')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12659', N'257', N'A', N'8', N'STANDARD', N'1.00')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12660', N'257', N'A', N'9', N'VIP', N'1.50')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12660', N'257', N'A', N'9', N'STANDARD', N'1.00')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12661', N'257', N'A', N'10', N'VIP', N'1.50')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12661', N'257', N'A', N'10', N'STANDARD', N'1.00')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12662', N'257', N'B', N'1', N'VIP', N'1.50')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12662', N'257', N'B', N'1', N'STANDARD', N'1.00')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12663', N'257', N'B', N'2', N'VIP', N'1.50')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12663', N'257', N'B', N'2', N'STANDARD', N'1.00')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12664', N'257', N'B', N'3', N'VIP', N'1.50')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12664', N'257', N'B', N'3', N'STANDARD', N'1.00')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12665', N'257', N'B', N'4', N'VIP', N'1.50')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12665', N'257', N'B', N'4', N'STANDARD', N'1.00')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12666', N'257', N'B', N'5', N'VIP', N'1.50')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12666', N'257', N'B', N'5', N'STANDARD', N'1.00')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12667', N'257', N'B', N'6', N'VIP', N'1.50')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12667', N'257', N'B', N'6', N'STANDARD', N'1.00')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12668', N'257', N'B', N'7', N'VIP', N'1.50')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12668', N'257', N'B', N'7', N'STANDARD', N'1.00')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12669', N'257', N'B', N'8', N'VIP', N'1.50')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12669', N'257', N'B', N'8', N'STANDARD', N'1.00')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12670', N'257', N'B', N'9', N'VIP', N'1.50')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12670', N'257', N'B', N'9', N'STANDARD', N'1.00')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12671', N'257', N'B', N'10', N'VIP', N'1.50')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12671', N'257', N'B', N'10', N'STANDARD', N'1.00')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12672', N'257', N'C', N'1', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12672', N'257', N'C', N'1', N'VIP', N'1.20')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12673', N'257', N'C', N'2', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12673', N'257', N'C', N'2', N'VIP', N'1.20')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12674', N'257', N'C', N'3', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12674', N'257', N'C', N'3', N'VIP', N'1.20')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12675', N'257', N'C', N'4', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12675', N'257', N'C', N'4', N'VIP', N'1.20')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12676', N'257', N'C', N'5', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12676', N'257', N'C', N'5', N'VIP', N'1.20')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12677', N'257', N'C', N'6', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12677', N'257', N'C', N'6', N'VIP', N'1.20')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12678', N'257', N'C', N'7', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12678', N'257', N'C', N'7', N'VIP', N'1.20')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12679', N'257', N'D', N'1', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12679', N'257', N'D', N'1', N'VIP', N'1.20')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12680', N'257', N'D', N'2', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12680', N'257', N'D', N'2', N'VIP', N'1.20')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12681', N'257', N'D', N'3', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12681', N'257', N'D', N'3', N'VIP', N'1.20')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12682', N'257', N'D', N'4', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12682', N'257', N'D', N'4', N'VIP', N'1.20')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12683', N'257', N'D', N'5', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12683', N'257', N'D', N'5', N'VIP', N'1.20')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12684', N'257', N'D', N'6', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12684', N'257', N'D', N'6', N'VIP', N'1.20')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12685', N'257', N'D', N'7', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12685', N'257', N'D', N'7', N'VIP', N'1.20')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12686', N'257', N'E', N'1', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12686', N'257', N'E', N'1', N'VIP', N'1.20')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12687', N'257', N'E', N'2', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12687', N'257', N'E', N'2', N'VIP', N'1.20')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12688', N'257', N'E', N'3', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12688', N'257', N'E', N'3', N'VIP', N'1.20')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12689', N'257', N'E', N'4', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12689', N'257', N'E', N'4', N'VIP', N'1.20')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12690', N'257', N'E', N'5', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12690', N'257', N'E', N'5', N'VIP', N'1.20')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12691', N'257', N'E', N'6', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12691', N'257', N'E', N'6', N'VIP', N'1.20')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12692', N'257', N'E', N'7', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12692', N'257', N'E', N'7', N'VIP', N'1.20')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12693', N'257', N'F', N'1', N'COUPLE', N'1.30')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12693', N'257', N'F', N'1', N'COUPLE', N'1.70')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12694', N'257', N'F', N'2', N'COUPLE', N'1.30')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12694', N'257', N'F', N'2', N'COUPLE', N'1.70')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12695', N'257', N'F', N'3', N'COUPLE', N'1.30')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12695', N'257', N'F', N'3', N'COUPLE', N'1.70')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12696', N'257', N'F', N'4', N'COUPLE', N'1.30')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12696', N'257', N'F', N'4', N'COUPLE', N'1.70')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12697', N'257', N'F', N'5', N'COUPLE', N'1.30')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12697', N'257', N'F', N'5', N'COUPLE', N'1.70')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12698', N'257', N'F', N'6', N'COUPLE', N'1.30')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12698', N'257', N'F', N'6', N'COUPLE', N'1.70')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12699', N'257', N'F', N'7', N'COUPLE', N'1.30')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12699', N'257', N'F', N'7', N'COUPLE', N'1.70')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12700', N'257', N'F', N'8', N'COUPLE', N'1.30')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12700', N'257', N'F', N'8', N'COUPLE', N'1.70')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12701', N'257', N'F', N'9', N'COUPLE', N'1.30')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12701', N'257', N'F', N'9', N'COUPLE', N'1.70')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12702', N'258', N'A', N'1', N'VIP', N'1.50')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12702', N'258', N'A', N'1', N'STANDARD', N'1.00')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12703', N'258', N'A', N'2', N'VIP', N'1.50')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12703', N'258', N'A', N'2', N'STANDARD', N'1.00')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12704', N'258', N'A', N'3', N'VIP', N'1.50')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12704', N'258', N'A', N'3', N'STANDARD', N'1.00')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12705', N'258', N'A', N'4', N'VIP', N'1.50')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12705', N'258', N'A', N'4', N'STANDARD', N'1.00')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12706', N'258', N'A', N'5', N'VIP', N'1.50')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12706', N'258', N'A', N'5', N'STANDARD', N'1.00')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12707', N'258', N'A', N'6', N'VIP', N'1.50')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12707', N'258', N'A', N'6', N'STANDARD', N'1.00')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12708', N'258', N'A', N'7', N'VIP', N'1.50')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12708', N'258', N'A', N'7', N'STANDARD', N'1.00')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12709', N'258', N'A', N'8', N'VIP', N'1.50')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12709', N'258', N'A', N'8', N'STANDARD', N'1.00')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12710', N'258', N'A', N'9', N'VIP', N'1.50')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12710', N'258', N'A', N'9', N'STANDARD', N'1.00')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12711', N'258', N'A', N'10', N'VIP', N'1.50')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12711', N'258', N'A', N'10', N'STANDARD', N'1.00')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12712', N'258', N'B', N'1', N'VIP', N'1.50')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12712', N'258', N'B', N'1', N'STANDARD', N'1.00')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12713', N'258', N'B', N'2', N'VIP', N'1.50')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12713', N'258', N'B', N'2', N'STANDARD', N'1.00')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12714', N'258', N'B', N'3', N'VIP', N'1.50')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12714', N'258', N'B', N'3', N'STANDARD', N'1.00')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12715', N'258', N'B', N'4', N'VIP', N'1.50')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12715', N'258', N'B', N'4', N'STANDARD', N'1.00')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12716', N'258', N'B', N'5', N'VIP', N'1.50')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12716', N'258', N'B', N'5', N'STANDARD', N'1.00')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12717', N'258', N'B', N'6', N'VIP', N'1.50')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12717', N'258', N'B', N'6', N'STANDARD', N'1.00')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12718', N'258', N'B', N'7', N'VIP', N'1.50')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12718', N'258', N'B', N'7', N'STANDARD', N'1.00')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12719', N'258', N'B', N'8', N'VIP', N'1.50')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12719', N'258', N'B', N'8', N'STANDARD', N'1.00')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12720', N'258', N'B', N'9', N'VIP', N'1.50')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12720', N'258', N'B', N'9', N'STANDARD', N'1.00')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12721', N'258', N'B', N'10', N'VIP', N'1.50')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12721', N'258', N'B', N'10', N'STANDARD', N'1.00')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12722', N'258', N'C', N'1', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12722', N'258', N'C', N'1', N'VIP', N'1.20')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12723', N'258', N'C', N'2', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12723', N'258', N'C', N'2', N'VIP', N'1.20')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12724', N'258', N'C', N'3', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12724', N'258', N'C', N'3', N'VIP', N'1.20')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12725', N'258', N'C', N'4', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12725', N'258', N'C', N'4', N'VIP', N'1.20')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12726', N'258', N'C', N'5', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12726', N'258', N'C', N'5', N'VIP', N'1.20')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12727', N'258', N'C', N'6', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12727', N'258', N'C', N'6', N'VIP', N'1.20')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12728', N'258', N'C', N'7', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12728', N'258', N'C', N'7', N'VIP', N'1.20')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12729', N'258', N'D', N'1', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12729', N'258', N'D', N'1', N'VIP', N'1.20')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12730', N'258', N'D', N'2', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12730', N'258', N'D', N'2', N'VIP', N'1.20')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12731', N'258', N'D', N'3', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12731', N'258', N'D', N'3', N'VIP', N'1.20')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12732', N'258', N'D', N'4', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12732', N'258', N'D', N'4', N'VIP', N'1.20')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12733', N'258', N'D', N'5', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12733', N'258', N'D', N'5', N'VIP', N'1.20')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12734', N'258', N'D', N'6', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12734', N'258', N'D', N'6', N'VIP', N'1.20')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12735', N'258', N'D', N'7', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12735', N'258', N'D', N'7', N'VIP', N'1.20')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12736', N'258', N'E', N'1', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12736', N'258', N'E', N'1', N'VIP', N'1.20')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12737', N'258', N'E', N'2', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12737', N'258', N'E', N'2', N'VIP', N'1.20')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12738', N'258', N'E', N'3', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12738', N'258', N'E', N'3', N'VIP', N'1.20')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12739', N'258', N'E', N'4', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12739', N'258', N'E', N'4', N'VIP', N'1.20')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12740', N'258', N'E', N'5', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12740', N'258', N'E', N'5', N'VIP', N'1.20')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12741', N'258', N'E', N'6', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12741', N'258', N'E', N'6', N'VIP', N'1.20')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12742', N'258', N'E', N'7', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12742', N'258', N'E', N'7', N'VIP', N'1.20')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12743', N'258', N'F', N'1', N'COUPLE', N'1.30')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12743', N'258', N'F', N'1', N'COUPLE', N'1.70')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12744', N'258', N'F', N'2', N'COUPLE', N'1.30')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12744', N'258', N'F', N'2', N'COUPLE', N'1.70')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12745', N'258', N'F', N'3', N'COUPLE', N'1.30')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12745', N'258', N'F', N'3', N'COUPLE', N'1.70')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12746', N'258', N'F', N'4', N'COUPLE', N'1.30')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12746', N'258', N'F', N'4', N'COUPLE', N'1.70')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12747', N'258', N'F', N'5', N'COUPLE', N'1.30')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12747', N'258', N'F', N'5', N'COUPLE', N'1.70')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12748', N'258', N'F', N'6', N'COUPLE', N'1.30')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12748', N'258', N'F', N'6', N'COUPLE', N'1.70')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12749', N'258', N'F', N'7', N'COUPLE', N'1.30')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12749', N'258', N'F', N'7', N'COUPLE', N'1.70')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12750', N'258', N'F', N'8', N'COUPLE', N'1.30')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12750', N'258', N'F', N'8', N'COUPLE', N'1.70')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12751', N'258', N'F', N'9', N'COUPLE', N'1.30')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12751', N'258', N'F', N'9', N'COUPLE', N'1.70')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12752', N'259', N'A', N'1', N'VIP', N'1.50')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12752', N'259', N'A', N'1', N'STANDARD', N'1.00')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12753', N'259', N'A', N'2', N'VIP', N'1.50')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12753', N'259', N'A', N'2', N'STANDARD', N'1.00')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12754', N'259', N'A', N'3', N'VIP', N'1.50')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12754', N'259', N'A', N'3', N'STANDARD', N'1.00')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12755', N'259', N'A', N'4', N'VIP', N'1.50')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12755', N'259', N'A', N'4', N'STANDARD', N'1.00')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12756', N'259', N'A', N'5', N'VIP', N'1.50')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12756', N'259', N'A', N'5', N'STANDARD', N'1.00')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12757', N'259', N'A', N'6', N'VIP', N'1.50')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12757', N'259', N'A', N'6', N'STANDARD', N'1.00')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12758', N'259', N'A', N'7', N'VIP', N'1.50')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12758', N'259', N'A', N'7', N'STANDARD', N'1.00')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12759', N'259', N'A', N'8', N'VIP', N'1.50')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12759', N'259', N'A', N'8', N'STANDARD', N'1.00')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12760', N'259', N'A', N'9', N'VIP', N'1.50')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12760', N'259', N'A', N'9', N'STANDARD', N'1.00')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12761', N'259', N'A', N'10', N'VIP', N'1.50')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12761', N'259', N'A', N'10', N'STANDARD', N'1.00')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12762', N'259', N'B', N'1', N'VIP', N'1.50')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12762', N'259', N'B', N'1', N'STANDARD', N'1.00')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12763', N'259', N'B', N'2', N'VIP', N'1.50')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12763', N'259', N'B', N'2', N'STANDARD', N'1.00')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12764', N'259', N'B', N'3', N'VIP', N'1.50')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12764', N'259', N'B', N'3', N'STANDARD', N'1.00')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12765', N'259', N'B', N'4', N'VIP', N'1.50')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12765', N'259', N'B', N'4', N'STANDARD', N'1.00')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12766', N'259', N'B', N'5', N'VIP', N'1.50')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12766', N'259', N'B', N'5', N'STANDARD', N'1.00')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12767', N'259', N'B', N'6', N'VIP', N'1.50')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12767', N'259', N'B', N'6', N'STANDARD', N'1.00')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12768', N'259', N'B', N'7', N'VIP', N'1.50')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12768', N'259', N'B', N'7', N'STANDARD', N'1.00')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12769', N'259', N'B', N'8', N'VIP', N'1.50')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12769', N'259', N'B', N'8', N'STANDARD', N'1.00')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12770', N'259', N'B', N'9', N'VIP', N'1.50')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12770', N'259', N'B', N'9', N'STANDARD', N'1.00')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12771', N'259', N'B', N'10', N'VIP', N'1.50')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12771', N'259', N'B', N'10', N'STANDARD', N'1.00')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12772', N'259', N'C', N'1', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12772', N'259', N'C', N'1', N'VIP', N'1.20')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12773', N'259', N'C', N'2', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12773', N'259', N'C', N'2', N'VIP', N'1.20')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12774', N'259', N'C', N'3', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12774', N'259', N'C', N'3', N'VIP', N'1.20')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12775', N'259', N'C', N'4', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12775', N'259', N'C', N'4', N'VIP', N'1.20')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12776', N'259', N'C', N'5', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12776', N'259', N'C', N'5', N'VIP', N'1.20')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12777', N'259', N'C', N'6', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12777', N'259', N'C', N'6', N'VIP', N'1.20')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12778', N'259', N'C', N'7', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12778', N'259', N'C', N'7', N'VIP', N'1.20')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12779', N'259', N'D', N'1', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12779', N'259', N'D', N'1', N'VIP', N'1.20')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12780', N'259', N'D', N'2', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12780', N'259', N'D', N'2', N'VIP', N'1.20')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12781', N'259', N'D', N'3', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12781', N'259', N'D', N'3', N'VIP', N'1.20')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12782', N'259', N'D', N'4', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12782', N'259', N'D', N'4', N'VIP', N'1.20')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12783', N'259', N'D', N'5', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12783', N'259', N'D', N'5', N'VIP', N'1.20')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12784', N'259', N'D', N'6', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12784', N'259', N'D', N'6', N'VIP', N'1.20')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12785', N'259', N'D', N'7', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12785', N'259', N'D', N'7', N'VIP', N'1.20')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12786', N'259', N'E', N'1', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12786', N'259', N'E', N'1', N'VIP', N'1.20')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12787', N'259', N'E', N'2', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12787', N'259', N'E', N'2', N'VIP', N'1.20')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12788', N'259', N'E', N'3', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12788', N'259', N'E', N'3', N'VIP', N'1.20')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12789', N'259', N'E', N'4', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12789', N'259', N'E', N'4', N'VIP', N'1.20')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12790', N'259', N'E', N'5', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12790', N'259', N'E', N'5', N'VIP', N'1.20')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12791', N'259', N'E', N'6', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12791', N'259', N'E', N'6', N'VIP', N'1.20')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12792', N'259', N'E', N'7', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12792', N'259', N'E', N'7', N'VIP', N'1.20')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12793', N'259', N'F', N'1', N'COUPLE', N'1.30')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12793', N'259', N'F', N'1', N'COUPLE', N'1.70')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12794', N'259', N'F', N'2', N'COUPLE', N'1.30')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12794', N'259', N'F', N'2', N'COUPLE', N'1.70')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12795', N'259', N'F', N'3', N'COUPLE', N'1.30')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12795', N'259', N'F', N'3', N'COUPLE', N'1.70')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12796', N'259', N'F', N'4', N'COUPLE', N'1.30')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12796', N'259', N'F', N'4', N'COUPLE', N'1.70')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12797', N'259', N'F', N'5', N'COUPLE', N'1.30')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12797', N'259', N'F', N'5', N'COUPLE', N'1.70')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12798', N'259', N'F', N'6', N'COUPLE', N'1.30')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12798', N'259', N'F', N'6', N'COUPLE', N'1.70')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12799', N'259', N'F', N'7', N'COUPLE', N'1.30')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12799', N'259', N'F', N'7', N'COUPLE', N'1.70')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12800', N'259', N'F', N'8', N'COUPLE', N'1.30')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12800', N'259', N'F', N'8', N'COUPLE', N'1.70')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12801', N'259', N'F', N'9', N'COUPLE', N'1.30')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12801', N'259', N'F', N'9', N'COUPLE', N'1.70')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12802', N'260', N'A', N'1', N'VIP', N'1.50')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12802', N'260', N'A', N'1', N'STANDARD', N'1.00')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12803', N'260', N'A', N'2', N'VIP', N'1.50')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12803', N'260', N'A', N'2', N'STANDARD', N'1.00')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12804', N'260', N'A', N'3', N'VIP', N'1.50')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12804', N'260', N'A', N'3', N'STANDARD', N'1.00')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12805', N'260', N'A', N'4', N'VIP', N'1.50')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12805', N'260', N'A', N'4', N'STANDARD', N'1.00')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12806', N'260', N'A', N'5', N'VIP', N'1.50')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12806', N'260', N'A', N'5', N'STANDARD', N'1.00')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12807', N'260', N'A', N'6', N'VIP', N'1.50')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12807', N'260', N'A', N'6', N'STANDARD', N'1.00')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12808', N'260', N'A', N'7', N'VIP', N'1.50')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12808', N'260', N'A', N'7', N'STANDARD', N'1.00')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12809', N'260', N'A', N'8', N'VIP', N'1.50')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12809', N'260', N'A', N'8', N'STANDARD', N'1.00')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12810', N'260', N'A', N'9', N'VIP', N'1.50')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12810', N'260', N'A', N'9', N'STANDARD', N'1.00')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12811', N'260', N'A', N'10', N'VIP', N'1.50')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12811', N'260', N'A', N'10', N'STANDARD', N'1.00')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12812', N'260', N'B', N'1', N'VIP', N'1.50')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12812', N'260', N'B', N'1', N'STANDARD', N'1.00')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12813', N'260', N'B', N'2', N'VIP', N'1.50')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12813', N'260', N'B', N'2', N'STANDARD', N'1.00')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12814', N'260', N'B', N'3', N'VIP', N'1.50')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12814', N'260', N'B', N'3', N'STANDARD', N'1.00')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12815', N'260', N'B', N'4', N'VIP', N'1.50')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12815', N'260', N'B', N'4', N'STANDARD', N'1.00')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12816', N'260', N'B', N'5', N'VIP', N'1.50')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12816', N'260', N'B', N'5', N'STANDARD', N'1.00')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12817', N'260', N'B', N'6', N'VIP', N'1.50')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12817', N'260', N'B', N'6', N'STANDARD', N'1.00')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12818', N'260', N'B', N'7', N'VIP', N'1.50')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12818', N'260', N'B', N'7', N'STANDARD', N'1.00')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12819', N'260', N'B', N'8', N'VIP', N'1.50')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12819', N'260', N'B', N'8', N'STANDARD', N'1.00')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12820', N'260', N'B', N'9', N'VIP', N'1.50')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12820', N'260', N'B', N'9', N'STANDARD', N'1.00')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12821', N'260', N'B', N'10', N'VIP', N'1.50')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12821', N'260', N'B', N'10', N'STANDARD', N'1.00')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12822', N'260', N'C', N'1', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12822', N'260', N'C', N'1', N'VIP', N'1.20')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12823', N'260', N'C', N'2', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12823', N'260', N'C', N'2', N'VIP', N'1.20')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12824', N'260', N'C', N'3', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12824', N'260', N'C', N'3', N'VIP', N'1.20')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12825', N'260', N'C', N'4', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12825', N'260', N'C', N'4', N'VIP', N'1.20')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12826', N'260', N'C', N'5', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12826', N'260', N'C', N'5', N'VIP', N'1.20')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12827', N'260', N'C', N'6', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12827', N'260', N'C', N'6', N'VIP', N'1.20')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12828', N'260', N'C', N'7', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12828', N'260', N'C', N'7', N'VIP', N'1.20')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12829', N'260', N'D', N'1', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12829', N'260', N'D', N'1', N'VIP', N'1.20')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12830', N'260', N'D', N'2', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12830', N'260', N'D', N'2', N'VIP', N'1.20')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12831', N'260', N'D', N'3', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12831', N'260', N'D', N'3', N'VIP', N'1.20')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12832', N'260', N'D', N'4', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12832', N'260', N'D', N'4', N'VIP', N'1.20')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12833', N'260', N'D', N'5', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12833', N'260', N'D', N'5', N'VIP', N'1.20')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12834', N'260', N'D', N'6', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12834', N'260', N'D', N'6', N'VIP', N'1.20')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12835', N'260', N'D', N'7', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12835', N'260', N'D', N'7', N'VIP', N'1.20')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12836', N'260', N'E', N'1', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12836', N'260', N'E', N'1', N'VIP', N'1.20')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12837', N'260', N'E', N'2', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12837', N'260', N'E', N'2', N'VIP', N'1.20')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12838', N'260', N'E', N'3', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12838', N'260', N'E', N'3', N'VIP', N'1.20')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12839', N'260', N'E', N'4', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12839', N'260', N'E', N'4', N'VIP', N'1.20')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12840', N'260', N'E', N'5', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12840', N'260', N'E', N'5', N'VIP', N'1.20')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12841', N'260', N'E', N'6', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12841', N'260', N'E', N'6', N'VIP', N'1.20')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12842', N'260', N'E', N'7', N'STANDARD', N'1.00')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12842', N'260', N'E', N'7', N'VIP', N'1.20')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12843', N'260', N'F', N'1', N'COUPLE', N'1.30')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12843', N'260', N'F', N'1', N'COUPLE', N'1.70')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12844', N'260', N'F', N'2', N'COUPLE', N'1.30')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12844', N'260', N'F', N'2', N'COUPLE', N'1.70')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12845', N'260', N'F', N'3', N'COUPLE', N'1.30')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12845', N'260', N'F', N'3', N'COUPLE', N'1.70')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12846', N'260', N'F', N'4', N'COUPLE', N'1.30')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12846', N'260', N'F', N'4', N'COUPLE', N'1.70')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12847', N'260', N'F', N'5', N'COUPLE', N'1.30')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12847', N'260', N'F', N'5', N'COUPLE', N'1.70')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12848', N'260', N'F', N'6', N'COUPLE', N'1.30')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12848', N'260', N'F', N'6', N'COUPLE', N'1.70')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12849', N'260', N'F', N'7', N'COUPLE', N'1.30')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12849', N'260', N'F', N'7', N'COUPLE', N'1.70')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12850', N'260', N'F', N'8', N'COUPLE', N'1.30')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12850', N'260', N'F', N'8', N'COUPLE', N'1.70')
 GO
 
-INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12851', N'260', N'F', N'9', N'COUPLE', N'1.30')
+INSERT INTO [dbo].[seats] ([id], [auditorium_id], [row_number], [seat_position], [seat_type], [price_modifier]) VALUES (N'12851', N'260', N'F', N'9', N'COUPLE', N'1.70')
 GO
 
 SET IDENTITY_INSERT [dbo].[seats] OFF
@@ -1371,6 +1332,12 @@ GO
 INSERT INTO [dbo].[users] ([id], [username], [email], [password_hash], [role], [full_name], [phone], [date_of_birth], [created_at], [status], [auth_provider], [provider_id], [avatar_url], [last_login], [is_enabled]) VALUES (N'7', N'faocaozi', N'asd@gmail.com', N'$2a$10$/6wBFScct4cBbLyHaL4r.uw55ZOSwk/HZLsMFxtgIQ5Ob6hAxK1Pq', N'CUSTOMER', NULL, NULL, NULL, N'2025-07-29 08:17:38.1960052', N'ACTIVE', N'LOCAL', NULL, NULL, NULL, N'1')
 GO
 
+INSERT INTO [dbo].[users] ([id], [username], [email], [password_hash], [role], [full_name], [phone], [date_of_birth], [created_at], [status], [auth_provider], [provider_id], [avatar_url], [last_login], [is_enabled]) VALUES (N'8', N'aaa', N'dfheh@gmail.com', N'$2a$10$UtOU7zTU0g2ATGZGz/piz..1ylfsRSF5AyOeMeXoc7GJKFA4UpHoe', N'CUSTOMER', NULL, NULL, NULL, N'2025-07-31 15:49:03.1748990', N'ACTIVE', N'LOCAL', NULL, NULL, NULL, N'1')
+GO
+
+INSERT INTO [dbo].[users] ([id], [username], [email], [password_hash], [role], [full_name], [phone], [date_of_birth], [created_at], [status], [auth_provider], [provider_id], [avatar_url], [last_login], [is_enabled]) VALUES (N'9', N'testuser', N'3636@gmail.com', N'$2a$10$7ks2NtGAUy8RwmxI4SCFuOxiUcBwMcl/SgWfe53DEaDWOsFvbSnwK', N'CUSTOMER', NULL, NULL, NULL, N'2025-08-01 08:04:35.8597293', N'ACTIVE', N'LOCAL', NULL, NULL, NULL, N'1')
+GO
+
 SET IDENTITY_INSERT [dbo].[users] OFF
 GO
 
@@ -1379,6 +1346,16 @@ GO
 -- Auto increment value for auditoriums
 -- ----------------------------
 DBCC CHECKIDENT ('[dbo].[auditoriums]', RESEED, 260)
+GO
+
+
+-- ----------------------------
+-- Indexes structure for table auditoriums
+-- ----------------------------
+CREATE NONCLUSTERED INDEX [IX_auditoriums_theater_id]
+ON [dbo].[auditoriums] (
+  [theater_id] ASC
+)
 GO
 
 
@@ -1394,7 +1371,17 @@ GO
 -- ----------------------------
 -- Auto increment value for booked_seats
 -- ----------------------------
-DBCC CHECKIDENT ('[dbo].[booked_seats]', RESEED, 55)
+DBCC CHECKIDENT ('[dbo].[booked_seats]', RESEED, 63)
+GO
+
+
+-- ----------------------------
+-- Indexes structure for table booked_seats
+-- ----------------------------
+CREATE NONCLUSTERED INDEX [IX_booked_seats_screening_id]
+ON [dbo].[booked_seats] (
+  [screening_id] ASC
+)
 GO
 
 
@@ -1419,7 +1406,23 @@ GO
 -- ----------------------------
 -- Auto increment value for bookings
 -- ----------------------------
-DBCC CHECKIDENT ('[dbo].[bookings]', RESEED, 16)
+DBCC CHECKIDENT ('[dbo].[bookings]', RESEED, 21)
+GO
+
+
+-- ----------------------------
+-- Indexes structure for table bookings
+-- ----------------------------
+CREATE NONCLUSTERED INDEX [IX_bookings_user_id]
+ON [dbo].[bookings] (
+  [user_id] ASC
+)
+GO
+
+CREATE NONCLUSTERED INDEX [IX_bookings_screening_id]
+ON [dbo].[bookings] (
+  [screening_id] ASC
+)
 GO
 
 
@@ -1440,6 +1443,17 @@ GO
 
 
 -- ----------------------------
+-- Indexes structure for table movies
+-- ----------------------------
+CREATE UNIQUE NONCLUSTERED INDEX [IX_movies_tmdb_id]
+ON [dbo].[movies] (
+  [tmdb_id] ASC
+)
+WHERE ([tmdb_id] IS NOT NULL)
+GO
+
+
+-- ----------------------------
 -- Primary Key structure for table movies
 -- ----------------------------
 ALTER TABLE [dbo].[movies] ADD CONSTRAINT [PK_movies] PRIMARY KEY CLUSTERED ([id])
@@ -1449,138 +1463,9 @@ GO
 
 
 -- ----------------------------
--- Auto increment value for oauth2_configs
--- ----------------------------
-DBCC CHECKIDENT ('[dbo].[oauth2_configs]', RESEED, 2)
-GO
-
-
--- ----------------------------
--- Indexes structure for table oauth2_configs
--- ----------------------------
-CREATE NONCLUSTERED INDEX [IDX_oauth2_configs_provider_enabled]
-ON [dbo].[oauth2_configs] (
-  [provider_name] ASC,
-  [is_enabled] ASC
-)
-GO
-
-
--- ----------------------------
--- Triggers structure for table oauth2_configs
--- ----------------------------
-CREATE TRIGGER [dbo].[TRG_oauth2_configs_updated_at]
-ON [dbo].[oauth2_configs]
-WITH EXECUTE AS CALLER
-FOR UPDATE
-AS
-BEGIN
-    UPDATE [oauth2_configs]
-    SET [updated_at] = GETDATE()
-    FROM [oauth2_configs] o
-    INNER JOIN [inserted] i ON o.[id] = i.[id];
-END;
-GO
-
-
--- ----------------------------
--- Uniques structure for table oauth2_configs
--- ----------------------------
-ALTER TABLE [dbo].[oauth2_configs] ADD CONSTRAINT [UK_oauth2_configs_provider] UNIQUE NONCLUSTERED ([provider_name] ASC)
-WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON)  
-ON [PRIMARY]
-GO
-
-
--- ----------------------------
--- Primary Key structure for table oauth2_configs
--- ----------------------------
-ALTER TABLE [dbo].[oauth2_configs] ADD CONSTRAINT [PK_oauth2_configs] PRIMARY KEY CLUSTERED ([id])
-WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON)  
-ON [PRIMARY]
-GO
-
-
--- ----------------------------
--- Auto increment value for oauth2_user_profiles
--- ----------------------------
-DBCC CHECKIDENT ('[dbo].[oauth2_user_profiles]', RESEED, 1)
-GO
-
-
--- ----------------------------
--- Indexes structure for table oauth2_user_profiles
--- ----------------------------
-CREATE NONCLUSTERED INDEX [IDX_oauth2_user_profiles_provider]
-ON [dbo].[oauth2_user_profiles] (
-  [provider_name] ASC
-)
-GO
-
-CREATE NONCLUSTERED INDEX [IDX_oauth2_user_profiles_provider_email]
-ON [dbo].[oauth2_user_profiles] (
-  [provider_name] ASC,
-  [provider_email] ASC
-)
-GO
-
-CREATE NONCLUSTERED INDEX [IDX_oauth2_user_profiles_last_login]
-ON [dbo].[oauth2_user_profiles] (
-  [last_login] ASC
-)
-GO
-
-CREATE NONCLUSTERED INDEX [IDX_oauth2_user_profiles_active]
-ON [dbo].[oauth2_user_profiles] (
-  [is_active] ASC
-)
-GO
-
-
--- ----------------------------
--- Triggers structure for table oauth2_user_profiles
--- ----------------------------
-CREATE TRIGGER [dbo].[TRG_oauth2_user_profiles_updated_at]
-ON [dbo].[oauth2_user_profiles]
-WITH EXECUTE AS CALLER
-FOR UPDATE
-AS
-BEGIN
-    UPDATE [oauth2_user_profiles]
-    SET [updated_at] = GETDATE()
-    FROM [oauth2_user_profiles] o
-    INNER JOIN [inserted] i ON o.[id] = i.[id];
-END;
-GO
-
-
--- ----------------------------
--- Uniques structure for table oauth2_user_profiles
--- ----------------------------
-ALTER TABLE [dbo].[oauth2_user_profiles] ADD CONSTRAINT [UK_oauth2_user_profiles_provider_user] UNIQUE NONCLUSTERED ([provider_name] ASC, [provider_user_id] ASC)
-WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON)  
-ON [PRIMARY]
-GO
-
-ALTER TABLE [dbo].[oauth2_user_profiles] ADD CONSTRAINT [UK_oauth2_user_profiles_user] UNIQUE NONCLUSTERED ([user_id] ASC)
-WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON)  
-ON [PRIMARY]
-GO
-
-
--- ----------------------------
--- Primary Key structure for table oauth2_user_profiles
--- ----------------------------
-ALTER TABLE [dbo].[oauth2_user_profiles] ADD CONSTRAINT [PK_oauth2_user_profiles] PRIMARY KEY CLUSTERED ([id])
-WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON)  
-ON [PRIMARY]
-GO
-
-
--- ----------------------------
 -- Auto increment value for payments
 -- ----------------------------
-DBCC CHECKIDENT ('[dbo].[payments]', RESEED, 11)
+DBCC CHECKIDENT ('[dbo].[payments]', RESEED, 16)
 GO
 
 
@@ -1627,6 +1512,37 @@ GO
 
 
 -- ----------------------------
+-- Indexes structure for table screenings
+-- ----------------------------
+CREATE NONCLUSTERED INDEX [IX_screenings_start_time]
+ON [dbo].[screenings] (
+  [start_time] ASC
+)
+GO
+
+CREATE NONCLUSTERED INDEX [IX_screenings_movie_start_time]
+ON [dbo].[screenings] (
+  [movie_id] ASC,
+  [start_time] ASC
+)
+GO
+
+CREATE NONCLUSTERED INDEX [IX_screenings_auditorium_id]
+ON [dbo].[screenings] (
+  [auditorium_id] ASC
+)
+GO
+
+CREATE NONCLUSTERED INDEX [IX_screenings_composite]
+ON [dbo].[screenings] (
+  [start_time] ASC,
+  [movie_id] ASC,
+  [auditorium_id] ASC
+)
+GO
+
+
+-- ----------------------------
 -- Primary Key structure for table screenings
 -- ----------------------------
 ALTER TABLE [dbo].[screenings] ADD CONSTRAINT [PK_screenings] PRIMARY KEY CLUSTERED ([id])
@@ -1638,7 +1554,7 @@ GO
 -- ----------------------------
 -- Auto increment value for seat_holds
 -- ----------------------------
-DBCC CHECKIDENT ('[dbo].[seat_holds]', RESEED, 165)
+DBCC CHECKIDENT ('[dbo].[seat_holds]', RESEED, 206)
 GO
 
 
@@ -1700,6 +1616,16 @@ GO
 
 
 -- ----------------------------
+-- Indexes structure for table theaters
+-- ----------------------------
+CREATE NONCLUSTERED INDEX [IX_theaters_city]
+ON [dbo].[theaters] (
+  [city] ASC
+)
+GO
+
+
+-- ----------------------------
 -- Primary Key structure for table theaters
 -- ----------------------------
 ALTER TABLE [dbo].[theaters] ADD CONSTRAINT [PK_theaters] PRIMARY KEY CLUSTERED ([id])
@@ -1711,7 +1637,7 @@ GO
 -- ----------------------------
 -- Auto increment value for users
 -- ----------------------------
-DBCC CHECKIDENT ('[dbo].[users]', RESEED, 7)
+DBCC CHECKIDENT ('[dbo].[users]', RESEED, 9)
 GO
 
 
@@ -1727,6 +1653,12 @@ GO
 CREATE UNIQUE NONCLUSTERED INDEX [UQ_users_email]
 ON [dbo].[users] (
   [email] ASC
+)
+GO
+
+CREATE NONCLUSTERED INDEX [IX_users_username]
+ON [dbo].[users] (
+  [username] ASC
 )
 GO
 
@@ -1767,13 +1699,6 @@ ALTER TABLE [dbo].[bookings] ADD CONSTRAINT [FK_bookings_users] FOREIGN KEY ([us
 GO
 
 ALTER TABLE [dbo].[bookings] ADD CONSTRAINT [FK_bookings_screenings] FOREIGN KEY ([screening_id]) REFERENCES [dbo].[screenings] ([id]) ON DELETE NO ACTION ON UPDATE NO ACTION
-GO
-
-
--- ----------------------------
--- Foreign Keys structure for table oauth2_user_profiles
--- ----------------------------
-ALTER TABLE [dbo].[oauth2_user_profiles] ADD CONSTRAINT [FK_oauth2_user_profiles_user] FOREIGN KEY ([user_id]) REFERENCES [dbo].[users] ([id]) ON DELETE CASCADE ON UPDATE NO ACTION
 GO
 
 

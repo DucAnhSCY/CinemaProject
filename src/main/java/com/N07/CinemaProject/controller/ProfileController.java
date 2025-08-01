@@ -1,7 +1,7 @@
 package com.N07.CinemaProject.controller;
 
 import com.N07.CinemaProject.entity.User;
-import com.N07.CinemaProject.security.CustomOAuth2User;
+import com.N07.CinemaProject.service.CustomOAuth2User;
 import com.N07.CinemaProject.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -34,9 +34,10 @@ public class ProfileController {
                 // For OAuth users, add additional display info
                 if (auth.getPrincipal() instanceof CustomOAuth2User) {
                     CustomOAuth2User customUser = (CustomOAuth2User) auth.getPrincipal();
-                    model.addAttribute("displayName", customUser.getFullName() != null ? customUser.getFullName() : customUser.getUsername());
+                    User oauthUser = customUser.getUser();
+                    model.addAttribute("displayName", oauthUser.getFullName() != null ? oauthUser.getFullName() : oauthUser.getUsername());
                     model.addAttribute("isOAuth", true);
-                    model.addAttribute("avatarUrl", customUser.getAvatarUrl());
+                    model.addAttribute("avatarUrl", oauthUser.getAvatarUrl());
                 } else {
                     model.addAttribute("displayName", user.getFullName() != null ? user.getFullName() : user.getUsername());
                     model.addAttribute("isOAuth", false);

@@ -1,177 +1,159 @@
 package com.N07.CinemaProject.service;
+
+import com.N07.CinemaProject.entity.OAuth2UserProfile;
 import com.N07.CinemaProject.entity.User;
-import com.N07.CinemaProject.security.CustomOAuth2User;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.N07.CinemaProject.repository.OAuth2UserProfileRepository;
+import com.N07.CinemaProject.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.Optional;
 
+@Slf4j
 @Service
+@RequiredArgsConstructor
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     
-    @Autowired
-    private UserService userService;
-    
-    @Autowired
-    private OAuth2UserProfileService oauth2UserProfileService;
+    private final UserRepository userRepository;
+    private final OAuth2UserProfileRepository oauth2UserProfileRepository;
     
     @Override
+    @Transactional
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
         OAuth2User oauth2User = super.loadUser(userRequest);
         
-        String registrationId = userRequest.getClientRegistration().getRegistrationId();
-        Map<String, Object> attributes = oauth2User.getAttributes();
-        
         try {
-            User user = processOAuth2User(registrationId, attributes, userRequest);
-            
-            // Return custom OAuth2User with proper name handling
-            return new CustomOAuth2User(user, attributes, getNameAttributeKey(registrationId));
-        } catch (Exception e) {
-            throw new OAuth2AuthenticationException("Error processing OAuth2 user: " + e.getMessage());
+            return processOAuth2User(userRequest, oauth2User);
+        } catch (Exception ex) {
+            log.error("Error processing OAuth2 user", ex);
+            throw new OAuth2AuthenticationException("Error processing OAuth2 user: " + ex.getMessage());
         }
     }
     
-    private User processOAuth2User(String registrationId, Map<String, Object> attributes, OAuth2UserRequest userRequest) {
-        String email;
-        String name;
-        String avatarUrl = null;
-        String providerId;
-        String providerProfileUrl = null;
-        User.AuthProvider provider;
+    private OAuth2User processOAuth2User(OAuth2UserRequest userRequest, OAuth2User oauth2User) {
+        String registrationId = userRequest.getClientRegistration().getRegistrationId();
+        User.AuthProvider authProvider = getAuthProvider(registrationId);
         
-        // Extract access token from the request
-        String accessToken = userRequest.getAccessToken().getTokenValue();
-        LocalDateTime tokenExpiresAt = null;
-        if (userRequest.getAccessToken().getExpiresAt() != null) {
-            tokenExpiresAt = LocalDateTime.ofInstant(
-                userRequest.getAccessToken().getExpiresAt(), 
-                java.time.ZoneId.systemDefault()
-            );
-        }
+        Map<String, Object> attributes = oauth2User.getAttributes();
+        OAuth2UserInfo userInfo = OAuth2UserInfoFactory.getOAuth2UserInfo(registrationId, attributes);
         
-        if ("google".equals(registrationId)) {
-            provider = User.AuthProvider.GOOGLE;
-            email = (String) attributes.get("email");
-            name = (String) attributes.get("name");
-            avatarUrl = (String) attributes.get("picture");
-            providerId = (String) attributes.get("sub");
-            providerProfileUrl = "https://accounts.google.com/" + providerId;
-            
-            // Log thông tin để debug
-            System.out.println("Google OAuth - Email: " + email + ", Name: " + name + ", Avatar: " + avatarUrl);
-        } else if ("github".equals(registrationId)) {
-            provider = User.AuthProvider.GITHUB;
-            email = (String) attributes.get("email");
-            name = (String) attributes.get("name");
-            avatarUrl = (String) attributes.get("avatar_url");
-            providerId = String.valueOf(attributes.get("id"));
-            providerProfileUrl = (String) attributes.get("html_url");
-            
-            // Log thông tin để debug
-            System.out.println("GitHub OAuth - Email: " + email + ", Name: " + name + ", Avatar: " + avatarUrl);
-        } else {
-            throw new OAuth2AuthenticationException("Unsupported provider: " + registrationId);
-        }
-        
-        if (email == null || email.isEmpty()) {
+        if (userInfo.getEmail() == null || userInfo.getEmail().isEmpty()) {
             throw new OAuth2AuthenticationException("Email not found from OAuth2 provider");
         }
         
-        if (name == null || name.isEmpty()) {
-            // Use email as name if name is not provided
-            name = email.split("@")[0];
+        Optional<User> userOptional = userRepository.findByEmail(userInfo.getEmail());
+        User user;
+        
+        if (userOptional.isPresent()) {
+            user = userOptional.get();
+            if (!user.getAuthProvider().equals(authProvider)) {
+                throw new OAuth2AuthenticationException(
+                    "Looks like you're signed up with " + user.getAuthProvider() + 
+                    " account. Please use your " + user.getAuthProvider() + " account to login."
+                );
+            }
+            user = updateExistingUser(user, userInfo);
+        } else {
+            user = registerNewUser(userRequest, userInfo, authProvider);
         }
         
-        // Check if user exists by provider ID
-        Optional<User> existingUserByProvider = userService.findByProviderId(providerId, provider);
-        if (existingUserByProvider.isPresent()) {
-            // Update existing OAuth user
-            User existingUser = existingUserByProvider.get();
-            User updatedUser = userService.updateOAuthUser(existingUser, name, avatarUrl);
-            
-            // Update OAuth2 profile
-            oauth2UserProfileService.createOrUpdateProfile(
-                updatedUser, registrationId, providerId, email, 
-                (String) attributes.get("login"), // username for GitHub, null for Google
-                name, avatarUrl, providerProfileUrl, 
-                accessToken, null, tokenExpiresAt, attributes
-            );
-            
-            return updatedUser;
+        // Update or create OAuth2 profile
+        updateOAuth2Profile(user, userRequest, userInfo, authProvider);
+        
+        // Update last login
+        user.setLastLogin(LocalDateTime.now());
+        userRepository.save(user);
+        
+        return new CustomOAuth2User(oauth2User.getAttributes(), user);
+    }
+    
+    private User registerNewUser(OAuth2UserRequest userRequest, OAuth2UserInfo userInfo, User.AuthProvider authProvider) {
+        User user = new User();
+        user.setProviderId(userInfo.getId());
+        user.setFullName(userInfo.getName());
+        user.setEmail(userInfo.getEmail());
+        user.setAvatarUrl(userInfo.getImageUrl());
+        user.setAuthProvider(authProvider);
+        user.setRole(User.Role.CUSTOMER); // Default role
+        user.setIsEnabled(true);
+        
+        // Generate username from email
+        String username = generateUsername(userInfo.getEmail());
+        user.setUsername(username);
+        
+        log.info("Registering new user with email: {}", userInfo.getEmail());
+        return userRepository.save(user);
+    }
+    
+    private User updateExistingUser(User existingUser, OAuth2UserInfo userInfo) {
+        existingUser.setFullName(userInfo.getName());
+        existingUser.setAvatarUrl(userInfo.getImageUrl());
+        return userRepository.save(existingUser);
+    }
+    
+    private void updateOAuth2Profile(User user, OAuth2UserRequest userRequest, OAuth2UserInfo userInfo, User.AuthProvider authProvider) {
+        Optional<OAuth2UserProfile> profileOptional = oauth2UserProfileRepository.findByUser(user);
+        OAuth2UserProfile profile;
+        
+        if (profileOptional.isPresent()) {
+            profile = profileOptional.get();
+        } else {
+            profile = new OAuth2UserProfile();
+            profile.setUser(user);
+            profile.setProvider(authProvider);
+            profile.setProviderId(userInfo.getId());
         }
         
-        // Check if user exists by email
-        Optional<User> existingUserByEmail = userService.findByEmail(email);
-        if (existingUserByEmail.isPresent()) {
-            User existingUser = existingUserByEmail.get();
-            if (existingUser.getAuthProvider() == User.AuthProvider.LOCAL) {
-                // Link OAuth account to existing local account
-                existingUser.setAuthProvider(provider);
-                existingUser.setProviderId(providerId);
-                if (existingUser.getFullName() == null || existingUser.getFullName().isEmpty()) {
-                    existingUser.setFullName(name);
-                }
-                if (existingUser.getAvatarUrl() == null || existingUser.getAvatarUrl().isEmpty()) {
-                    existingUser.setAvatarUrl(avatarUrl);
-                }
-                User updatedUser = userService.updateLastLogin(existingUser);
-                
-                // Create OAuth2 profile for existing local user
-                oauth2UserProfileService.createOrUpdateProfile(
-                    updatedUser, registrationId, providerId, email,
-                    (String) attributes.get("login"), // username for GitHub, null for Google
-                    name, avatarUrl, providerProfileUrl,
-                    accessToken, null, tokenExpiresAt, attributes
-                );
-                
-                return updatedUser;
-            } else {
-                // User exists with different OAuth provider - update with new provider info
-                existingUser.setAuthProvider(provider);
-                existingUser.setProviderId(providerId);
-                existingUser.setFullName(name);
-                existingUser.setAvatarUrl(avatarUrl);
-                User updatedUser = userService.updateLastLogin(existingUser);
-                
-                // Update OAuth2 profile
-                oauth2UserProfileService.createOrUpdateProfile(
-                    updatedUser, registrationId, providerId, email,
-                    (String) attributes.get("login"), // username for GitHub, null for Google
-                    name, avatarUrl, providerProfileUrl,
-                    accessToken, null, tokenExpiresAt, attributes
-                );
-                
-                return updatedUser;
+        // Update profile information
+        profile.setProviderUsername(userInfo.getName());
+        profile.setPictureUrl(userInfo.getImageUrl());
+        
+        if (userInfo instanceof GoogleOAuth2UserInfo) {
+            GoogleOAuth2UserInfo googleInfo = (GoogleOAuth2UserInfo) userInfo;
+            profile.setLocale(googleInfo.getLocale());
+            profile.setVerifiedEmail(googleInfo.getVerifiedEmail());
+            profile.setFamilyName(googleInfo.getFamilyName());
+            profile.setGivenName(googleInfo.getGivenName());
+        }
+        
+        // Store access token if available
+        if (userRequest.getAccessToken() != null) {
+            profile.setAccessToken(userRequest.getAccessToken().getTokenValue());
+            if (userRequest.getAccessToken().getExpiresAt() != null) {
+                profile.setTokenExpiry(userRequest.getAccessToken().getExpiresAt()
+                    .atZone(java.time.ZoneId.systemDefault()).toLocalDateTime());
             }
         }
         
-        // Create new user
-        User newUser = userService.createOAuthUser(email, name, avatarUrl, providerId, provider);
-        
-        // Create OAuth2 profile for new user
-        oauth2UserProfileService.createOrUpdateProfile(
-            newUser, registrationId, providerId, email,
-            (String) attributes.get("login"), // username for GitHub, null for Google
-            name, avatarUrl, providerProfileUrl,
-            accessToken, null, tokenExpiresAt, attributes
-        );
-        
-        return newUser;
+        oauth2UserProfileRepository.save(profile);
     }
     
-    private String getNameAttributeKey(String registrationId) {
-        if ("google".equals(registrationId)) {
-            return "sub";
-        } else if ("github".equals(registrationId)) {
-            return "id";
+    private String generateUsername(String email) {
+        String baseUsername = email.split("@")[0];
+        String username = baseUsername;
+        int counter = 1;
+        
+        while (userRepository.findByUsername(username).isPresent()) {
+            username = baseUsername + counter;
+            counter++;
         }
-        return "id";
+        
+        return username;
+    }
+    
+    private User.AuthProvider getAuthProvider(String registrationId) {
+        return switch (registrationId.toLowerCase()) {
+            case "google" -> User.AuthProvider.GOOGLE;
+            case "github" -> User.AuthProvider.GITHUB;
+            default -> throw new OAuth2AuthenticationException("Sorry! Login with " + registrationId + " is not supported yet.");
+        };
     }
 }
