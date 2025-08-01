@@ -13,6 +13,71 @@
             height: 40px;
             object-fit: cover;
         }
+        
+        .auth-provider {
+            font-size: 0.75rem;
+        }
+        
+        .user-role {
+            font-size: 0.75rem;
+        }
+        
+        .user-status {
+            font-size: 0.75rem;
+        }
+        
+        .card-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .badge {
+            font-size: 0.75rem;
+        }
+        
+        .table th {
+            border-top: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        
+        .btn-group .btn {
+            border-radius: 0.375rem;
+            margin-right: 0.25rem;
+        }
+        
+        .btn-group .btn:last-child {
+            margin-right: 0;
+        }
+        
+        .input-group-text {
+            background-color: #f8f9fa;
+            border-color: #dee2e6;
+        }
+        
+        .form-select:focus, .form-control:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        }
+        
+        .user-row {
+            transition: all 0.2s ease;
+        }
+        
+        .user-row:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .alert-info {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            color: white;
+        }
+        
+        .alert-info .badge {
+            background-color: rgba(255, 255, 255, 0.2) !important;
+            color: white;
+        }
     </style>
     <meta name="_csrf" th:content="${_csrf.token}"/>
     <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
@@ -66,6 +131,61 @@
             </div>
         </div>
 
+        <!-- Search and Filter Section -->
+        <div class="card mb-3">
+            <div class="card-header">
+                <h6 class="mb-0"><i class="fas fa-search me-2"></i>Tìm kiếm và Lọc</h6>
+            </div>
+            <div class="card-body">
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <label for="searchInput" class="form-label">Tìm kiếm</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-search"></i></span>
+                            <input type="text" class="form-control" id="searchInput" 
+                                   placeholder="Tên, email, username..." onkeyup="filterUsers()">
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="roleFilter" class="form-label">Lọc theo Role</label>
+                        <select class="form-select" id="roleFilter" onchange="filterUsers()">
+                            <option value="">Tất cả Role</option>
+                            <option value="ADMIN">Administrator</option>
+                            <option value="THEATER_MANAGER">Quản Lý Rạp</option>
+                            <option value="CUSTOMER">Khách Hàng</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="authFilter" class="form-label">Loại Xác Thực</label>
+                        <select class="form-select" id="authFilter" onchange="filterUsers()">
+                            <option value="">Tất cả</option>
+                            <option value="LOCAL">Local</option>
+                            <option value="GOOGLE">Google</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label for="statusFilter" class="form-label">Trạng Thái</label>
+                        <select class="form-select" id="statusFilter" onchange="filterUsers()">
+                            <option value="">Tất cả</option>
+                            <option value="active">Hoạt động</option>
+                            <option value="inactive">Vô hiệu hóa</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-12">
+                        <button type="button" class="btn btn-outline-secondary btn-sm" onclick="clearFilters()">
+                            <i class="fas fa-times me-1"></i>Xóa bộ lọc
+                        </button>
+                        <span class="ms-3 text-muted">
+                            <span id="totalUsers" th:text="${#lists.size(users)}">0</span> người dùng tổng cộng
+                            | <span id="filteredCount" th:text="${#lists.size(users)}">0</span> hiển thị
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Users List -->
         <div class="card">
             <div class="card-header">
@@ -81,50 +201,66 @@
                 </div>
 
                 <div th:if="${!#lists.isEmpty(users)}" class="table-responsive">
-                    <table class="table table-striped table-hover">
+                    <table class="table table-striped table-hover" id="usersTable">
                         <thead class="table-dark">
                             <tr>
                                 <th>Avatar</th>
                                 <th>Thông Tin</th>
                                 <th>Email</th>
                                 <th>Role</th>
+                                <th>Loại Xác Thực</th>
                                 <th>Trạng Thái</th>
                                 <th>Ngày Tạo</th>
                                 <th>Hành Động</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr th:each="user : ${users}">
+                            <tr th:each="user : ${users}" class="user-row"
+                                th:attr="data-role=${user.role.name()}, data-auth=${user.authProvider.name()}, data-status=${user.isEnabled ? 'active' : 'inactive'}">
                                 <td>
-                                    <img th:src="${user.avatarUrl != null ? user.avatarUrl : '/images/default-avatar.png'}" 
+                                    <img th:src="${user.avatarUrl != null ? user.avatarUrl : '/images/default-avatar.svg'}" 
                                          th:alt="${user.fullName}" 
                                          th:title="${user.fullName}"
                                          alt="User Avatar"
                                          title="User Avatar"
                                          class="rounded-circle user-avatar">
                                 </td>
-                                <td>
+                                <td class="user-info">
                                     <div>
                                         <strong th:text="${user.fullName != null ? user.fullName : user.username}">Full Name</strong>
                                         <br>
                                         <small class="text-muted">@<span th:text="${user.username}">username</span></small>
                                     </div>
                                 </td>
-                                <td th:text="${user.email}">Email</td>
+                                <td class="user-email" th:text="${user.email}">Email</td>
                                 <td>
-                                    <span class="badge" 
-                                          th:classappend="${user.role.name() == 'ADMIN'} ? 'bg-danger' : (${user.role.name() == 'THEATER_MANAGER'} ? 'bg-warning' : 'bg-secondary')">
+                                    <span class="badge user-role" 
+                                          th:classappend="${user.role.name() == 'ADMIN'} ? 'bg-danger' : (${user.role.name() == 'THEATER_MANAGER'} ? 'bg-warning text-dark' : (${user.role.name() == 'STAFF'} ? 'bg-info' : 'bg-secondary'))">
                                         <i th:if="${user.role.name() == 'ADMIN'}" class="fas fa-crown me-1"></i>
                                         <i th:if="${user.role.name() == 'THEATER_MANAGER'}" class="fas fa-user-tie me-1"></i>
+                                        <i th:if="${user.role.name() == 'STAFF'}" class="fas fa-user-cog me-1"></i>
                                         <i th:if="${user.role.name() == 'CUSTOMER'}" class="fas fa-user me-1"></i>
                                         <span th:if="${user.role.name() == 'ADMIN'}">Administrator</span>
                                         <span th:if="${user.role.name() == 'THEATER_MANAGER'}">Quản Lý Rạp</span>
+                                        <span th:if="${user.role.name() == 'STAFF'}">Nhân Viên</span>
                                         <span th:if="${user.role.name() == 'CUSTOMER'}">Khách Hàng</span>
                                     </span>
                                 </td>
                                 <td>
-                                    <span th:if="${user.isEnabled}" class="badge bg-success">Hoạt động</span>
-                                    <span th:if="${!user.isEnabled}" class="badge bg-secondary">Vô hiệu hóa</span>
+                                    <span class="badge auth-provider"
+                                          th:classappend="${user.authProvider.name() == 'LOCAL'} ? 'bg-primary' : (${user.authProvider.name() == 'GOOGLE'} ? 'bg-danger' : 'bg-dark')">
+                                        <i th:if="${user.authProvider.name() == 'LOCAL'}" class="fas fa-key me-1"></i>
+                                        <i th:if="${user.authProvider.name() == 'GOOGLE'}" class="fab fa-google me-1"></i>
+                                        <span th:text="${user.authProvider.name()}">Provider</span>
+                                    </span>
+                                </td>
+                                <td>
+                                    <span th:if="${user.isEnabled}" class="badge bg-success user-status">
+                                        <i class="fas fa-check-circle me-1"></i>Hoạt động
+                                    </span>
+                                    <span th:if="${!user.isEnabled}" class="badge bg-secondary user-status">
+                                        <i class="fas fa-ban me-1"></i>Vô hiệu hóa
+                                    </span>
                                 </td>
                                 <td>
                                     <span th:if="${user.createdAt != null}" th:text="${#temporals.format(user.createdAt, 'dd/MM/yyyy')}">Created Date</span>
@@ -166,6 +302,75 @@
         // Get CSRF token
         const token = document.querySelector('meta[name="_csrf"]').getAttribute('content');
         const header = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
+
+        // Filter and Search Functions
+        function filterUsers() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const roleFilter = document.getElementById('roleFilter').value;
+            const authFilter = document.getElementById('authFilter').value;
+            const statusFilter = document.getElementById('statusFilter').value;
+            
+            const rows = document.querySelectorAll('.user-row');
+            let visibleCount = 0;
+            
+            rows.forEach(row => {
+                const userInfo = row.querySelector('.user-info').textContent.toLowerCase();
+                const userEmail = row.querySelector('.user-email').textContent.toLowerCase();
+                const userRole = row.getAttribute('data-role');
+                const userAuth = row.getAttribute('data-auth');
+                const userStatus = row.getAttribute('data-status');
+                
+                const matchesSearch = searchTerm === '' || 
+                                    userInfo.includes(searchTerm) || 
+                                    userEmail.includes(searchTerm);
+                
+                const matchesRole = roleFilter === '' || userRole === roleFilter;
+                const matchesAuth = authFilter === '' || userAuth === authFilter;
+                const matchesStatus = statusFilter === '' || userStatus === statusFilter;
+                
+                if (matchesSearch && matchesRole && matchesAuth && matchesStatus) {
+                    row.style.display = '';
+                    visibleCount++;
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+            
+            document.getElementById('filteredCount').textContent = visibleCount;
+            
+            // Show/hide no results message
+            const tbody = document.querySelector('#usersTable tbody');
+            const noResultsRow = document.getElementById('noResultsRow');
+            
+            if (visibleCount === 0 && !noResultsRow) {
+                const tr = document.createElement('tr');
+                tr.id = 'noResultsRow';
+                tr.innerHTML = `
+                    <td colspan="8" class="text-center py-4">
+                        <i class="fas fa-search fa-2x text-muted mb-2"></i>
+                        <p class="text-muted mb-0">Không tìm thấy người dùng phù hợp với bộ lọc</p>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            } else if (visibleCount > 0 && noResultsRow) {
+                noResultsRow.remove();
+            }
+        }
+
+        function clearFilters() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('roleFilter').value = '';
+            document.getElementById('authFilter').value = '';
+            document.getElementById('statusFilter').value = '';
+            filterUsers();
+        }
+
+        // Initialize filter count on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const totalUsers = document.querySelectorAll('.user-row').length;
+            document.getElementById('totalUsers').textContent = totalUsers;
+            document.getElementById('filteredCount').textContent = totalUsers;
+        });
 
         function toggleUserStatus(userId) {
             fetch(`/admin/users/${userId}/toggle-status`, {

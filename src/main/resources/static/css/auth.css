@@ -256,18 +256,6 @@
     border-color: #4285f4;
 }
 
-.oauth-github {
-    background: #24292e;
-    color: #ffffff;
-    border-color: #444d56;
-}
-
-.oauth-github:hover {
-    background: #2f363d;
-    color: #ffffff;
-    border-color: #586069;
-}
-
 /* ===== AUTH LINKS ===== */
 .auth-links {
     text-align: center;

@@ -60,6 +60,14 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                     " account. Please use your " + user.getAuthProvider() + " account to login."
                 );
             }
+            
+            // Check if user account is disabled
+            if (!user.getIsEnabled()) {
+                throw new OAuth2AuthenticationException(
+                    "Your account has been disabled. Please contact the administrator for assistance."
+                );
+            }
+            
             user = updateExistingUser(user, userInfo);
         } else {
             user = registerNewUser(userRequest, userInfo, authProvider);
@@ -127,9 +135,9 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         // Store access token if available
         if (userRequest.getAccessToken() != null) {
             profile.setAccessToken(userRequest.getAccessToken().getTokenValue());
-            if (userRequest.getAccessToken().getExpiresAt() != null) {
-                profile.setTokenExpiry(userRequest.getAccessToken().getExpiresAt()
-                    .atZone(java.time.ZoneId.systemDefault()).toLocalDateTime());
+            var expiresAt = userRequest.getAccessToken().getExpiresAt();
+            if (expiresAt != null) {
+                profile.setTokenExpiry(expiresAt.atZone(java.time.ZoneId.systemDefault()).toLocalDateTime());
             }
         }
         
@@ -152,7 +160,6 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     private User.AuthProvider getAuthProvider(String registrationId) {
         return switch (registrationId.toLowerCase()) {
             case "google" -> User.AuthProvider.GOOGLE;
-            case "github" -> User.AuthProvider.GITHUB;
             default -> throw new OAuth2AuthenticationException("Sorry! Login with " + registrationId + " is not supported yet.");
         };
     }

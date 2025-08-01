@@ -62,11 +62,11 @@ public class User {
     private OAuth2UserProfile oauth2Profile;
     
     public enum Role {
-        CUSTOMER, ADMIN, THEATER_MANAGER, STAFF
+        CUSTOMER, ADMIN, THEATER_MANAGER,
     }
     
     public enum AuthProvider {
-        LOCAL, GOOGLE, GITHUB
+        LOCAL, GOOGLE
     }
     
     @PrePersist
