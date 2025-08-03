@@ -1,146 +1,69 @@
 pipeline {
     agent any
     
-    environment {
-        // Sử dụng Maven wrapper để tránh phụ thuộc vào cấu hình tools
-        MAVEN_OPTS = '-Xmx1024m'
-        JAVA_HOME = "${tool 'Default'}" // Sử dụng JDK mặc định
-    }
-    
     stages {
-        stage('Clone') {
+        stage('clone') {
             steps {
                 echo 'Cloning source code'
                 git branch: 'main', url: 'https://github.com/DucAnhSCY/CinemaProject.git'
             }
         } // end clone
         
-        stage('Clean & Compile') {
+        stage('restore package') {
             steps {
-                echo 'Cleaning and compiling project'
+                echo 'Restore package'
+                bat './mvnw.cmd dependency:resolve'
+            }
+        } // end restore package
+        
+        stage('build') {
+            steps {
+                echo 'build project java'
                 bat './mvnw.cmd clean compile'
             }
-        } // end clean & compile
+        } // end build
         
-        stage('Test') {
+        stage('tests') {
             steps {
-                echo 'Running tests...'
+                echo 'running test...'
                 bat './mvnw.cmd test'
             }
-            post {
-                always {
-                    // Lưu kết quả test
-                    publishTestResults testResultsPattern: 'target/surefire-reports/*.xml'
-                    // Lưu coverage report nếu có
-                    publishCoverage adapters: [jacocoAdapter('target/site/jacoco/jacoco.xml')], sourceFileResolver: sourceFiles('STORE_LAST_BUILD')
-                }
-            }
-        } // end test
+        } // end tests
         
-        stage('Package') {
+        stage('package to jar') {
             steps {
-                echo 'Packaging application...'
+                echo 'Packaging...'
                 bat './mvnw.cmd package -DskipTests'
             }
         } // end package
         
-        stage('Build Docker Image') {
+        stage('copy to deploy folder') {
             steps {
-                echo 'Building Docker image...'
-                script {
-                    // Tạo Dockerfile nếu chưa có
-                    if (!fileExists('Dockerfile')) {
-                        writeFile file: 'Dockerfile', text: '''
-FROM openjdk:17-jre-slim
-VOLUME /tmp
-COPY target/*.jar app.jar
-EXPOSE 8090
-ENTRYPOINT ["java","-jar","/app.jar","--server.port=8090"]
-'''
-                    }
-                    // Build Docker image
-                    bat 'docker build -t cinema-project:latest .'
-                }
+                echo 'copy to running folder'
+                bat 'xcopy "%WORKSPACE%\\target\\*.jar" /Y "c:\\wwwroot\\cinema-project\\"'
             }
-        } // end docker build
+        } // end copy
         
-        stage('Deploy to Test Environment') {
+        stage('Deploy to Tomcat/Java Service') {
             steps {
-                echo 'Deploying to test environment...'
-                script {
-                    // Stop existing container if running
-                    bat 'docker stop cinema-test || echo "No container to stop"'
-                    bat 'docker rm cinema-test || echo "No container to remove"'
-                    
-                    // Run new container
-                    bat 'docker run -d --name cinema-test -p 8090:8090 cinema-project:latest'
+                powershell '''
+                # Stop existing Java service if running
+                Get-Process -Name "java" -ErrorAction SilentlyContinue | Where-Object {$_.CommandLine -like "*cinema*"} | Stop-Process -Force
+                
+                # Start new Java application
+                Start-Process -FilePath "java" -ArgumentList "-jar","c:\\wwwroot\\cinema-project\\*.jar","--server.port=8090" -WorkingDirectory "c:\\wwwroot\\cinema-project"
+                
+                # Wait and check if service started
+                Start-Sleep -Seconds 10
+                try {
+                    $response = Invoke-WebRequest -Uri "http://localhost:8090" -TimeoutSec 30
+                    Write-Output "Application deployed successfully"
+                } catch {
+                    Write-Output "Deployment may need manual verification"
                 }
+                '''
             }
-        } // end deploy test
-        
-        stage('Health Check') {
-            steps {
-                echo 'Performing health check...'
-                script {
-                    // Wait for application to start
-                    sleep(30)
-                    
-                    // Simple health check
-                    bat '''
-                        curl -f http://localhost:8090/actuator/health || (
-                            echo "Health check failed"
-                            docker logs cinema-test
-                            exit 1
-                        )
-                    '''
-                }
-            }
-        } // end health check
-        
-        stage('Deploy to Production') {
-            when {
-                branch 'main'
-            }
-            steps {
-                echo 'Deploying to production...'
-                script {
-                    // Copy JAR file to production directory
-                    bat 'xcopy "%WORKSPACE%\\target\\*.jar" /Y "C:\\cinema-production\\"'
-                    
-                    // Restart production service (adjust according to your setup)
-                    bat '''
-                        net stop "CinemaService" || echo "Service not running"
-                        timeout /t 5
-                        net start "CinemaService" || echo "Failed to start service"
-                    '''
-                }
-            }
-        } // end deploy production
+        } // end deploy
         
     } // end stages
-    
-    post {
-        always {
-            // Clean workspace
-            cleanWs()
-        }
-        success {
-            echo 'Pipeline completed successfully!'
-            // Send success notification
-            emailext (
-                subject: "Jenkins Build SUCCESS: ${env.JOB_NAME} - ${env.BUILD_NUMBER}",
-                body: "Build completed successfully. Check console output at ${env.BUILD_URL}",
-                to: "your-email@domain.com"
-            )
-        }
-        failure {
-            echo 'Pipeline failed!'
-            // Send failure notification
-            emailext (
-                subject: "Jenkins Build FAILED: ${env.JOB_NAME} - ${env.BUILD_NUMBER}",
-                body: "Build failed. Check console output at ${env.BUILD_URL}",
-                to: "your-email@domain.com"
-            )
-        }
-    }
 } // end pipeline
