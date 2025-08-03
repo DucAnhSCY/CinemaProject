@@ -1,9 +1,10 @@
 pipeline {
     agent any
     
-    tools {
-        maven 'Maven-3.9.0' // Đảm bảo Maven đã được cấu hình trong Jenkins Global Tool Configuration
-        jdk 'JDK-17' // Đảm bảo JDK đã được cấu hình trong Jenkins Global Tool Configuration
+    environment {
+        // Sử dụng Maven wrapper để tránh phụ thuộc vào cấu hình tools
+        MAVEN_OPTS = '-Xmx1024m'
+        JAVA_HOME = "${tool 'Default'}" // Sử dụng JDK mặc định
     }
     
     stages {
@@ -17,14 +18,14 @@ pipeline {
         stage('Clean & Compile') {
             steps {
                 echo 'Cleaning and compiling project'
-                bat 'mvn clean compile'
+                bat './mvnw.cmd clean compile'
             }
         } // end clean & compile
         
         stage('Test') {
             steps {
                 echo 'Running tests...'
-                bat 'mvn test'
+                bat './mvnw.cmd test'
             }
             post {
                 always {
@@ -39,7 +40,7 @@ pipeline {
         stage('Package') {
             steps {
                 echo 'Packaging application...'
-                bat 'mvn package -DskipTests'
+                bat './mvnw.cmd package -DskipTests'
             }
         } // end package
         
