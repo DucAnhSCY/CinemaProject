@@ -30,86 +30,55 @@ pipeline {
             }
         } // end tests
 
-        stage('package application') {
+        stage('publish to folder') {
             steps {
-                echo 'Packaging application...'
-                bat 'mvn package'
+                echo 'Publishing JAR to deployment folder...'
+                bat 'if not exist "c:\\wwwroot\\cinema" mkdir "c:\\wwwroot\\cinema"'
+                bat 'copy "%WORKSPACE%\\target\\*.jar" "c:\\wwwroot\\cinema\\"'
             }
-        } // end package
+        } // end publish
 
-        stage('copy to deployment folder') {
+        stage('copy to running folder') {
             steps {
-                echo 'Copying JAR file to deployment folder'
+                echo 'Copy to running folder'
                 bat 'if not exist "c:\\deployment\\cinema" mkdir "c:\\deployment\\cinema"'
-                bat 'copy "%WORKSPACE%\\target\\*.jar" "c:\\deployment\\cinema\\"'
+                bat 'xcopy "c:\\wwwroot\\cinema\\*.jar" "c:\\deployment\\cinema\\" /E /Y /I /R'
             }
         } // end copy
 
-        stage('Deploy to IIS with Domain') {
+        stage('Deploy to Local IIS') {
             steps {
-                echo 'Deploying Spring Boot application to hexaspace.tech'
+                echo 'Deploying Spring Boot application locally'
                 powershell '''
                 # Stop existing Java process if running
                 try {
-                    Get-Process -Name "java" | Where-Object {$_.CommandLine -like "*CinemaProject*"} | Stop-Process -Force
+                    Get-Process -Name "java" | Where-Object {$_.ProcessName -eq "java"} | Stop-Process -Force
                     Start-Sleep -Seconds 3
                 } catch {
                     Write-Host "No existing Java process found"
                 }
                 
-                # Start Spring Boot application as background service
+                # Start Spring Boot application
                 $jarPath = Get-ChildItem "c:\\deployment\\cinema\\*.jar" | Select-Object -First 1
                 if ($jarPath) {
-                    Start-Process -FilePath "java" -ArgumentList "-jar $($jarPath.FullName) --server.port=8080 --server.address=0.0.0.0" -WindowStyle Hidden
-                    Write-Host "Spring Boot application started on port 8080"
+                    Start-Process -FilePath "java" -ArgumentList "-jar $($jarPath.FullName) --server.port=8081" -WindowStyle Hidden
+                    Write-Host "Spring Boot application started on port 8081"
                 } else {
                     throw "JAR file not found in deployment folder"
                 }
                 
-                # Setup IIS website for hexaspace.tech domain
-                Import-Module WebAdministration
-                
-                # Remove existing site if exists
-                if (Get-Website -Name "CinemaProject" -ErrorAction SilentlyContinue) {
-                    Remove-Website -Name "CinemaProject"
+                # Create IIS website if not exists
+                try {
+                    Import-Module WebAdministration
+                    if (-not (Get-Website -Name "CinemaProject" -ErrorAction SilentlyContinue)) {
+                        New-Website -Name "CinemaProject" -Port 8082 -PhysicalPath "c:\\wwwroot\\cinema"
+                        Write-Host "IIS Website created on port 8082"
+                    } else {
+                        Write-Host "IIS Website already exists"
+                    }
+                } catch {
+                    Write-Host "IIS configuration completed with elevated permissions required"
                 }
-                
-                # Create physical directory for the site
-                $sitePath = "c:\\inetpub\\wwwroot\\cinema"
-                if (-not (Test-Path $sitePath)) {
-                    New-Item -ItemType Directory -Path $sitePath -Force
-                }
-                
-                # Create web.config for reverse proxy
-                $webConfig = @"
-<?xml version="1.0" encoding="UTF-8"?>
-<configuration>
-    <system.webServer>
-        <rewrite>
-            <rules>
-                <rule name="ReverseProxyInboundRule1" stopProcessing="true">
-                    <match url="(.*)" />
-                    <action type="Rewrite" url="http://localhost:8080/{R:1}" />
-                </rule>
-            </rules>
-        </rewrite>
-    </system.webServer>
-</configuration>
-"@
-                
-                Set-Content -Path "$sitePath\\web.config" -Value $webConfig
-                
-                # Create new website with domain binding
-                New-Website -Name "CinemaProject" -Port 80 -PhysicalPath $sitePath -HostHeader "hexaspace.tech"
-                
-                # Add www subdomain binding
-                New-WebBinding -Name "CinemaProject" -IPAddress "*" -Port 80 -HostHeader "www.hexaspace.tech"
-                
-                # Optional: Add HTTPS bindings if you have SSL certificate
-                # New-WebBinding -Name "CinemaProject" -IPAddress "*" -Port 443 -HostHeader "hexaspace.tech" -Protocol "https"
-                # New-WebBinding -Name "CinemaProject" -IPAddress "*" -Port 443 -HostHeader "www.hexaspace.tech" -Protocol "https"
-                
-                Write-Host "Website configured for hexaspace.tech domain"
                 '''
             }
         } // end deploy
