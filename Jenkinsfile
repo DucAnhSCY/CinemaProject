@@ -54,9 +54,59 @@ pipeline {
             }
         } // end copy
         
-        stage('Deploy to Tomcat/Java Service') {
+        stage('Deploy with Docker') {
             steps {
-                powershell '''
+                script {
+                    // Kiểm tra deployment method từ environment variable
+                    def deployMethod = env.DEPLOY_METHOD ?: 'docker'
+                    
+                    if (deployMethod == 'docker') {
+                        echo 'Deploying with Docker...'
+                        powershell '''
+                        # Build Docker image
+                        Write-Output "Building Docker image..."
+                        docker build -t cinema-app:latest .
+                        
+                        # Stop existing containers
+                        Write-Output "Stopping existing containers..."
+                        docker-compose down
+                        
+                        # Start new containers
+                        Write-Output "Starting new containers..."
+                        docker-compose up -d
+                        
+                        # Wait for health check
+                        Write-Output "Waiting for application to start..."
+                        Start-Sleep -Seconds 45
+                        
+                        # Check if containers are running
+                        Write-Output "Checking container status..."
+                        $containers = docker-compose ps --filter "status=running"
+                        Write-Output "Container status: $containers"
+                        
+                        # Health check
+                        try {
+                            $healthCheck = Invoke-WebRequest -Uri "http://localhost:8080/actuator/health" -TimeoutSec 30 -UseBasicParsing
+                            Write-Output "✅ Docker deployment successful! Health status: $($healthCheck.StatusCode)"
+                        } catch {
+                            Write-Output "⚠️ Health check failed, checking logs..."
+                            docker-compose logs --tail=20 cinema-app
+                            
+                            # Still check if container is running
+                            $runningContainers = docker-compose ps --filter "status=running"
+                            if ($runningContainers -like "*cinema-app*") {
+                                Write-Output "✅ Container is running, application may still be starting"
+                            } else {
+                                Write-Error "❌ Docker deployment failed!"
+                                docker-compose logs cinema-app
+                                exit 1
+                            }
+                        }
+                        '''
+                    } else {
+                        // Legacy deployment method
+                        echo 'Deploying with traditional Java service...'
+                        powershell '''
                 # Kiểm tra JAR file tồn tại
                 $jarFiles = Get-ChildItem -Path "c:\\wwwroot\\cinema-project\\*.jar"
                 if ($jarFiles.Count -eq 0) {
@@ -131,7 +181,9 @@ java -jar "$jarFile" --server.port=8090 > app.log 2>&1
                     }
                 }
                 '''
-            }
+                    }
+                } // end script
+            } // end steps
         } // end deploy
         
     } // end stages
