@@ -37,7 +37,7 @@ public class SecurityConfig {
         http
             .authorizeHttpRequests(authz -> authz
                 // Public endpoints
-                .requestMatchers("/", "/home", "/search", "/movies/**", "/api/movies/**", 
+                .requestMatchers("/", "/home", "/search", "/movies/**", "/theaters", "/api/movies/**", 
                                 "/api/tmdb/**", "/css/**", "/js/**", "/images/**", 
                                 "/auth/**", "/login", "/register", "/error", "/auth/debug").permitAll()
                 

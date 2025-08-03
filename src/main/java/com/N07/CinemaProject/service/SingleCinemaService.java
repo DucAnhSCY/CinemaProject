@@ -80,11 +80,15 @@ public class SingleCinemaService {
     }
     
     /**
-     * Lấy tất cả suất chiếu của rạp
+     * Lấy tất cả suất chiếu của rạp (chỉ những suất chưa diễn ra)
      */
     public List<Screening> getAllScreenings() {
         List<Auditorium> auditoriums = getAllAuditoriums();
-        return screeningRepository.findByAuditoriumInOrderByStartTimeAsc(auditoriums);
+        LocalDateTime now = LocalDateTime.now();
+        return screeningRepository.findByAuditoriumInOrderByStartTimeAsc(auditoriums)
+            .stream()
+            .filter(screening -> screening.getStartTime().isAfter(now))
+            .toList();
     }
     
     /**
@@ -97,11 +101,15 @@ public class SingleCinemaService {
     }
     
     /**
-     * Lấy suất chiếu theo phim
+     * Lấy suất chiếu theo phim (chỉ những suất chưa diễn ra)
      */
     public List<Screening> getScreeningsByMovie(Movie movie) {
         List<Auditorium> auditoriums = getAllAuditoriums();
-        return screeningRepository.findByMovieAndAuditoriumInOrderByStartTimeAsc(movie, auditoriums);
+        LocalDateTime now = LocalDateTime.now();
+        return screeningRepository.findByMovieAndAuditoriumInOrderByStartTimeAsc(movie, auditoriums)
+            .stream()
+            .filter(screening -> screening.getStartTime().isAfter(now))
+            .toList();
     }
     
     /**

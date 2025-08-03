@@ -19,14 +19,18 @@ public class ScreeningService {
     
     @Cacheable("screenings")
     public List<Screening> getAllScreenings() {
-        return screeningRepository.findAllWithRelatedData();
+        LocalDateTime now = LocalDateTime.now();
+        return screeningRepository.findAllWithRelatedData()
+            .stream()
+            .filter(screening -> screening.getStartTime().isAfter(now))
+            .toList();
     }
     
     @Cacheable(value = "screenings", key = "'today-' + T(java.time.LocalDate).now().toString()")
     public List<Screening> getTodayScreenings() {
-        LocalDateTime startOfDay = LocalDate.now().atStartOfDay();
+        LocalDateTime now = LocalDateTime.now();
         LocalDateTime endOfDay = LocalDate.now().atTime(23, 59, 59);
-        return screeningRepository.findTodayScreeningsWithRelatedData(startOfDay, endOfDay);
+        return screeningRepository.findTodayScreeningsWithRelatedData(now, endOfDay);
     }
     
     public Optional<Screening> getScreeningById(Long id) {

@@ -4,8 +4,8 @@ import com.N07.CinemaProject.entity.Movie;
 import com.N07.CinemaProject.entity.Theater;
 import com.N07.CinemaProject.entity.Screening;
 import com.N07.CinemaProject.service.MovieService;
+import com.N07.CinemaProject.service.ScreeningService;
 import com.N07.CinemaProject.repository.TheaterRepository;
-import com.N07.CinemaProject.repository.ScreeningRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,7 +28,7 @@ public class MovieApiController {
     private TheaterRepository theaterRepository;
 
     @Autowired
-    private ScreeningRepository screeningRepository;
+    private ScreeningService screeningService;
 
     @GetMapping
     public ResponseEntity<List<Movie>> getAllMovies() {
@@ -59,8 +59,8 @@ public class MovieApiController {
                 return ResponseEntity.notFound().build();
             }
             
-            // Use optimized query that avoids N+1 problem
-            List<Screening> screenings = screeningRepository.findByMovieIdOrderByStartTime(id);
+            // Use service method that filters by time
+            List<Screening> screenings = screeningService.getScreeningsByMovie(id);
             return ResponseEntity.ok(screenings);
         } catch (Exception e) {
             return ResponseEntity.internalServerError().build();
