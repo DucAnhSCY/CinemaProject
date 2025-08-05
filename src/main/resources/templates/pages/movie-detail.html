@@ -56,7 +56,7 @@
                                     <span class="badge bg-primary px-3 py-2" style="border-radius: 20px; font-size: 1rem;" th:text="${movie.genre ?: 'Chưa phân loại'}">Thể loại</span>
                                     <span class="meta-item text-light" th:if="${movie.durationMin != null and movie.durationMin > 0}">
                                         <i class="fas fa-clock me-2 text-warning"></i>
-                                        <span th:text="${movie.durationMin + ' phút'}">120 phút</span>
+                                        <span th:text="${movie.durationMin + ' '}" th:inline="text">120 </span><span data-translate="minutes">phút</span>
                                     </span>
                                     <span class="meta-item text-light" th:if="${movie.releaseDate != null}">
                                         <i class="fas fa-calendar me-2 text-info"></i>
@@ -159,9 +159,9 @@
             <div class="row mb-5">
                 <div class="col-12 text-center">
                     <h2 class="text-white mb-3">
-                        <i class="fas fa-calendar-alt me-2 text-primary"></i>Lịch Chiếu
+                        <i class="fas fa-calendar-alt me-2 text-primary"></i><span data-translate="showtimes">Lịch Chiếu</span>
                     </h2>
-                    <p class="text-muted">Chọn suất chiếu phù hợp với bạn</p>
+                    <p class="text-muted" data-translate="chooseShowtime">Chọn suất chiếu phù hợp với bạn</p>
                 </div>
             </div>
 

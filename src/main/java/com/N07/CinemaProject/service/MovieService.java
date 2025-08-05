@@ -145,6 +145,26 @@ public class MovieService {
         }
     }
     
+    public List<Movie> searchMovies(String title, String genre, Integer year) {
+        List<Movie> movies = getAllMovies();
+        
+        return movies.stream()
+                .filter(movie -> {
+                    boolean titleMatch = title == null || title.trim().isEmpty() || 
+                                       (movie.getTitle() != null && movie.getTitle().toLowerCase().contains(title.toLowerCase()));
+                    
+                    boolean genreMatch = genre == null || genre.trim().isEmpty() || 
+                                       (movie.getGenre() != null && movie.getGenre().toLowerCase().contains(genre.toLowerCase()));
+                    
+                    boolean yearMatch = year == null || 
+                                      (movie.getReleaseDate() != null && 
+                                       movie.getReleaseDate().getYear() == year);
+                    
+                    return titleMatch && genreMatch && yearMatch;
+                })
+                .collect(Collectors.toList());
+    }
+    
     @Transactional
     public Movie getOrCreateMovieByTmdbId(Long tmdbId) {
         try {

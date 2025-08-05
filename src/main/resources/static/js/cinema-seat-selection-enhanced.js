@@ -101,30 +101,53 @@ class CinemaSeatSelection {
             return;
         }
 
-        try {
-            const response = await fetch('/api/seats/hold', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: new URLSearchParams({
-                    screeningId: this.screeningId,
-                    seatIds: this.selectedSeats.join(',')
-                })
-            });
+        const maxRetries = 2;
+        let retryCount = 0;
 
-            const data = await response.json();
-            
-            if (data.success) {
-                this.startHoldTimer(data.expiresIn || 600); // 10 minutes default
-                this.showNotification('Ghế đã được giữ chỗ trong 10 phút', 'success');
-            } else {
-                this.showNotification(data.message || 'Không thể giữ chỗ ghế', 'error');
-                this.refreshSeatStatus();
+        while (retryCount <= maxRetries) {
+            try {
+                const response = await fetch('/api/seats/hold', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: new URLSearchParams({
+                        screeningId: this.screeningId,
+                        seatIds: this.selectedSeats.join(',')
+                    })
+                });
+
+                const data = await response.json();
+                
+                if (data.success) {
+                    this.startHoldTimer(data.expiresIn || 600); // 10 minutes default
+                    this.showNotification('Ghế đã được giữ chỗ trong 10 phút', 'success');
+                    return; // Success, exit retry loop
+                } else {
+                    if (retryCount < maxRetries && data.message.includes('người khác')) {
+                        // Retry for conflicts
+                        retryCount++;
+                        await new Promise(resolve => setTimeout(resolve, 100 + (retryCount * 100))); // Progressive delay
+                        continue;
+                    } else {
+                        this.showNotification(data.message || 'Không thể giữ chỗ ghế', 'error');
+                        this.refreshSeatStatus();
+                        return;
+                    }
+                }
+            } catch (error) {
+                console.error('Error holding seats:', error);
+                
+                if (retryCount < maxRetries) {
+                    retryCount++;
+                    await new Promise(resolve => setTimeout(resolve, 100 + (retryCount * 100)));
+                    continue;
+                } else {
+                    this.showNotification('Lỗi kết nối. Vui lòng thử lại.', 'error');
+                    this.refreshSeatStatus();
+                    return;
+                }
             }
-        } catch (error) {
-            console.error('Error holding seats:', error);
-            this.showNotification('Lỗi kết nối. Vui lòng thử lại.', 'error');
         }
     }
 

@@ -39,7 +39,29 @@ public class SeatController {
             
             String sessionId = session.getId();
             
-            boolean success = seatHoldService.holdSeats(seatIdList, screeningId, sessionId);
+            // Add retry logic for deadlock handling
+            boolean success = false;
+            int maxRetries = 3;
+            int retryCount = 0;
+            
+            while (!success && retryCount < maxRetries) {
+                try {
+                    success = seatHoldService.holdSeats(seatIdList, screeningId, sessionId);
+                    if (!success && retryCount < maxRetries - 1) {
+                        // Wait a bit before retry to avoid immediate collision
+                        Thread.sleep(50 + (retryCount * 50)); // Progressive backoff
+                        retryCount++;
+                    } else {
+                        break;
+                    }
+                } catch (Exception e) {
+                    retryCount++;
+                    if (retryCount >= maxRetries) {
+                        throw e; // Re-throw if all retries failed
+                    }
+                    Thread.sleep(50 + (retryCount * 50));
+                }
+            }
             
             if (success) {
                 response.put("success", true);
@@ -50,6 +72,10 @@ public class SeatController {
                 response.put("message", "Không thể giữ chỗ. Một số ghế đã được chọn bởi người khác");
             }
             
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            response.put("success", false);
+            response.put("message", "Quá trình giữ chỗ bị gián đoạn");
         } catch (Exception e) {
             response.put("success", false);
             response.put("message", "Lỗi: " + e.getMessage());

@@ -11,24 +11,30 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <!-- Cinema Theme CSS -->
     <link th:href="@{/css/cinema-theme.css}" href="/css/cinema-theme.css" rel="stylesheet">
+    <!-- Language Switcher JS -->
+    <script th:src="@{/js/language-switcher.js}"></script>
 </head>
 <body>
     <!-- Navigation -->
     <nav th:replace="~{layout/fragments/navigation :: nav}"></nav>
 
     <!-- Search Results Header -->
-    <section class="py-5 bg-dark-secondary">
+    <section class="py-5" style="background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);">
         <div class="container">
             <div class="row">
                 <div class="col-12">
-                    <h1 class="text-center mb-4">Kết Quả Tìm Kiếm</h1>
+                    <h1 class="text-white text-center mb-4">
+                        <i class="fas fa-search me-3 text-primary"></i><span data-translate="searchResults"></span>Kết Quả Tìm Kiếm</span>
+                    </h1>
                     <div class="text-center">
-                        <p class="text-muted" th:if="${searchTitle || searchGenre}">
-                            <span th:if="${searchTitle}">Tìm kiếm: "<span th:text="${searchTitle}"></span>"</span>
-                            <span th:if="${searchTitle && searchGenre}"> - </span>
-                            <span th:if="${searchGenre}">Thể loại: "<span th:text="${searchGenre}"></span>"</span>
+                        <p class="text-muted" th:if="${searchTitle || searchGenre || searchYear}">
+                            <span th:if="${searchTitle}">Tìm kiếm: "<span class="text-primary" th:text="${searchTitle}"></span>"</span>
+                            <span th:if="${(searchTitle && searchGenre) || (searchTitle && searchYear)}"> - </span>
+                            <span th:if="${searchGenre}">Thể loại: "<span class="text-warning" th:text="${searchGenre}"></span>"</span>
+                            <span th:if="${searchGenre && searchYear}"> - </span>
+                            <span th:if="${searchYear}">Năm: "<span class="text-info" th:text="${searchYear}"></span>"</span>
                         </p>
-                        <p class="text-muted" th:unless="${searchTitle || searchGenre}">Tất cả phim</p>
+                        <p class="text-muted" th:unless="${searchTitle || searchGenre || searchYear}">Tất cả phim</p>
                     </div>
                 </div>
             </div>
@@ -36,54 +42,74 @@
     </section>
 
     <!-- Search Results -->
-    <section class="py-5">
+    <section class="py-5" style="background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);">
         <div class="container">
             <div class="row">
                 <div class="col-12">
                     <div class="d-flex justify-content-between align-items-center mb-4">
-                        <h3 th:text="${#lists.size(movies) + ' kết quả tìm thấy'}">0 kết quả tìm thấy</h3>
+                        <h3 class="text-white">
+                            <span th:text="${#lists.size(movies)} + ' kết quả tìm thấy'">0 kết quả tìm thấy</span>
+                        </h3>
                         <a th:href="@{/movies}" class="btn btn-outline-primary">
-                            <i class="fas fa-arrow-left me-2"></i>Quay lại danh sách phim
+                            <i class="fas fa-arrow-left me-2"></i><span data-translate="back">Quay lại danh sách phim</span>
                         </a>
                     </div>
                 </div>
             </div>
             
-            <div class="movie-grid" th:if="${not #lists.isEmpty(movies)}">
-                <div th:each="movie : ${movies}" class="movie-card">
-                    <img th:src="${movie.posterUrl}" th:alt="${movie.title}" th:title="${movie.title}" class="movie-poster" alt="Movie poster" title="Movie poster">
-                    <div class="movie-info">
-                        <h5 class="movie-title" th:text="${movie.title}">Tên phim</h5>
-                        <p class="movie-genre" th:text="${movie.genre}">Thể loại</p>
-                        <div class="movie-rating">
-                            <div class="rating-stars">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="far fa-star"></i>
+            <!-- Movies Grid -->
+            <div class="row g-4" th:if="${not #lists.isEmpty(movies)}">
+                <div th:each="movie : ${movies}" class="col-lg-3 col-md-4 col-sm-6">
+                    <div class="movie-card h-100">
+                        <div class="movie-poster">
+                            <img th:src="${movie.posterUrl != null and !movie.posterUrl.isEmpty() ? movie.posterUrl : 'https://via.placeholder.com/300x450/333/fff?text=' + movie.title}" 
+                                 th:alt="${movie.title}" 
+                                 th:title="${movie.title}" 
+                                 class="movie-poster-img w-100">
+                            <div class="movie-overlay">
+                                <a th:href="@{/movies/{id}(id=${movie.id})}" class="btn btn-primary">
+                                    <i class="fas fa-info-circle me-1"></i>Chi tiết
+                                </a>
                             </div>
-                            <span class="ms-2" th:text="${movie.voteAverage + '/10'}">8.5/10</span>
                         </div>
-                        <div class="d-grid gap-2">
-                            <a th:href="@{/movies/{id}(id=${movie.id})}" class="btn btn-primary btn-sm">
-                                <i class="fas fa-info-circle me-1"></i>Chi tiết
-                            </a>
-                            <button class="btn btn-outline-primary btn-sm" th:onclick="'showBookingModal(' + ${movie.id} + ')'">
-                                <i class="fas fa-ticket-alt me-1"></i>Đặt vé
-                            </button>
+                        <div class="movie-content">
+                            <h5 class="movie-title text-white" th:text="${movie.title}">Tên phim</h5>
+                            <p class="movie-genre text-muted" th:text="${movie.genre}">Thể loại</p>
+                            <div class="movie-rating mb-2" th:if="${movie.voteAverage}">
+                                <div class="rating-stars">
+                                    <th:block th:each="i : ${#numbers.sequence(1, 5)}">
+                                        <i th:class="${movie.voteAverage >= i * 2 ? 'fas fa-star text-warning' : 'far fa-star text-muted'}"></i>
+                                    </th:block>
+                                </div>
+                                <span class="ms-2 text-muted" th:text="${movie.voteAverage + '/10'}">8.5/10</span>
+                            </div>
+                            <div class="movie-duration mb-2 text-muted" th:if="${movie.durationMin}">
+                                <i class="fas fa-clock me-1"></i>
+                                <span th:text="${movie.durationMin + ' phút'}">120 phút</span>
+                            </div>
+                            <div class="d-grid gap-2">
+                                <a th:href="@{/movies/{id}(id=${movie.id})}" class="btn btn-primary btn-sm">
+                                    <i class="fas fa-info-circle me-1"></i>Chi tiết
+                                </a>
+                                <button class="btn btn-outline-primary btn-sm" th:onclick="'showBookingModal(' + ${movie.id} + ')'">
+                                    <i class="fas fa-ticket-alt me-1"></i>Đặt vé
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
             
+            <!-- No Results Message -->
             <div class="text-center mt-5" th:if="${#lists.isEmpty(movies)}">
-                <i class="fas fa-search fa-3x text-muted mb-3"></i>
-                <h4 class="text-muted">Không tìm thấy phim nào phù hợp</h4>
-                <p class="text-muted">Hãy thử tìm kiếm với từ khóa khác hoặc xem tất cả phim</p>
-                <a th:href="@{/movies}" class="btn btn-primary">
-                    <i class="fas fa-film me-2"></i>Xem tất cả phim
-                </a>
+                <div class="no-results">
+                    <i class="fas fa-search fa-3x text-muted mb-3"></i>
+                    <h4 class="text-white">Không tìm thấy phim nào phù hợp</h4>
+                    <p class="text-muted">Hãy thử tìm kiếm với từ khóa khác hoặc xem tất cả phim</p>
+                    <a th:href="@{/movies}" class="btn btn-primary">
+                        <i class="fas fa-film me-2"></i>Xem tất cả phim
+                    </a>
+                </div>
             </div>
         </div>
     </section>

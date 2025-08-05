@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.annotation.Isolation;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -30,29 +31,44 @@ public class SeatHoldService {
     @Autowired
     private BookedSeatRepository bookedSeatRepository;
     
-    @Transactional
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public boolean holdSeats(List<Long> seatIds, Long screeningId, String userSession) {
         try {
-            // Xóa các hold cũ của user này trước
+            // Use a more atomic approach - validate all seats first
+            LocalDateTime now = LocalDateTime.now();
+            LocalDateTime expiresAt = now.plusMinutes(10);
+            
+            // First, clean up any expired holds for these specific seats
+            for (Long seatId : seatIds) {
+                seatHoldRepository.findBySeatIdAndScreeningId(seatId, screeningId)
+                    .ifPresent(existingHold -> {
+                        if (existingHold.isExpired()) {
+                            seatHoldRepository.delete(existingHold);
+                        }
+                    });
+            }
+            
+            // Release all previous holds by this user session to avoid conflicts
             releaseHoldsByUserSession(userSession);
             
-            // Kiểm tra xem các ghế có đang được hold bởi user khác hoặc đã được book không
+            // Validate all seats are available in a single check
             for (Long seatId : seatIds) {
-                if (isSeatUnavailableForNewUser(seatId, screeningId, userSession)) {
+                boolean isBooked = bookedSeatRepository.existsBySeatIdAndScreeningId(seatId, screeningId);
+                boolean isOnHoldByOthers = seatHoldRepository.existsBySeatIdAndScreeningIdAndUserSessionNotAndExpiresAtAfter(
+                    seatId, screeningId, userSession, now);
+                
+                if (isBooked || isOnHoldByOthers) {
                     return false;
                 }
             }
             
-            // Tạo hold mới cho từng ghế
-            LocalDateTime now = LocalDateTime.now();
-            LocalDateTime expiresAt = now.plusMinutes(10); // Hold trong 10 phút
+            // If we reach here, all seats are available - create holds atomically
+            Screening screening = screeningRepository.findById(screeningId)
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy suất chiếu"));
             
             for (Long seatId : seatIds) {
                 Seat seat = seatRepository.findById(seatId)
                     .orElseThrow(() -> new RuntimeException("Không tìm thấy ghế"));
-                
-                Screening screening = screeningRepository.findById(screeningId)
-                    .orElseThrow(() -> new RuntimeException("Không tìm thấy suất chiếu"));
                 
                 SeatHold seatHold = new SeatHold();
                 seatHold.setSeat(seat);
@@ -66,6 +82,8 @@ public class SeatHoldService {
             
             return true;
         } catch (Exception e) {
+            System.err.println("⚠️ Error holding seats: " + e.getMessage());
+            e.printStackTrace();
             return false;
         }
     }
@@ -114,13 +132,17 @@ public class SeatHoldService {
     
     /**
      * Scheduled task để tự động xóa các hold đã hết hạn
-     * Chạy mỗi phút
+     * Chạy mỗi 30 giây để giảm thiểu deadlock
      */
-    @Scheduled(fixedRate = 60000) // 1 phút
+    @Scheduled(fixedRate = 30000) // 30 giây
     @Transactional
     public void cleanupExpiredHolds() {
-        LocalDateTime now = LocalDateTime.now();
-        seatHoldRepository.deleteExpiredHolds(now);
+        try {
+            LocalDateTime now = LocalDateTime.now();
+            seatHoldRepository.deleteExpiredHolds(now);
+        } catch (Exception e) {
+            System.err.println("⚠️ Error during cleanup of expired holds: " + e.getMessage());
+        }
     }
     
     public List<SeatHold> getUserHolds(String userSession) {

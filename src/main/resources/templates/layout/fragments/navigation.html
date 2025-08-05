@@ -31,7 +31,7 @@
                     <li class="nav-item">
                         <a class="nav-link" th:href="@{/}" 
                            th:classappend="${currentPath != null and currentPath == '/' ? 'active' : ''}">
-                            <i class="fas fa-home me-1"></i>Trang Chủ
+                            <i class="fas fa-home me-1"></i><span data-translate="home">Trang Chủ</span>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -51,28 +51,6 @@
                            th:classappend="${currentPath != null and #strings.startsWith(currentPath, '/promotions') ? 'active' : ''}">
                             <i class="fas fa-gift me-1"></i><span data-translate="promotions">Khuyến Mãi</span>
                         </a>
-                    </li>
-                </ul>
-                
-                <!-- Language Toggle -->
-                <ul class="navbar-nav me-3">
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="languageDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="fas fa-globe me-1"></i>
-                            <span id="currentLanguage">Tiếng Việt</span>
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="languageDropdown">
-                            <li>
-                                <a class="dropdown-item" href="#" onclick="changeLanguage('vi')">
-                                    <i class="fas fa-flag me-2"></i>Tiếng Việt
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="#" onclick="changeLanguage('en')">
-                                    <i class="fas fa-flag me-2"></i>English
-                                </a>
-                            </li>
-                        </ul>
                     </li>
                 </ul>
                 

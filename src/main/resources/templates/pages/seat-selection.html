@@ -11,6 +11,8 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <!-- Cinema Theme CSS -->
     <link th:href="@{/css/cinema-theme.css}" href="/css/cinema-theme.css" rel="stylesheet">
+    <!-- Language Switcher JS -->
+    <script th:src="@{/js/language-switcher.js}"></script>
     
     <style>
         :root {
@@ -37,6 +39,7 @@
 
         .movie-info-card {
             background: rgba(42, 42, 42, 0.95);
+            -webkit-backdrop-filter: blur(10px);
             backdrop-filter: blur(10px);
             border-radius: 20px;
             padding: 2rem;
