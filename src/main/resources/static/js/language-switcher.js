@@ -1,155 +1,139 @@
-// Language Switcher for Cinema Paradise
-let currentLang = localStorage.getItem('language') || 'vi';
+// Language Switcher for Cinema Project
+// Provides client-side language switching between Vietnamese and English
 
-// Translation data
+// Language translations object
 const translations = {
     vi: {
         // Navigation
-        home: 'Trang Chủ',
-        movies: 'Phim',
-        theaters: 'Rạp Chiếu',
-        promotions: 'Khuyến Mãi',
-        profile: 'Hồ Sơ',
-        myBookings: 'Vé Đã Đặt',
-        login: 'Đăng Nhập',
-        register: 'Đăng Ký',
-        logout: 'Đăng Xuất',
-        admin: 'Quản Trị',
-        currentLanguage: 'Tiếng Việt',
+        movies: "Phim",
+        theaters: "Rạp Chiếu",
+        promotions: "Khuyến Mãi",
+        profile: "Hồ Sơ Cá Nhân",
+        myBookings: "Vé Đã Đặt",
+        admin: "Quản Trị",
+        userManagement: "Quản Lý Người Dùng",
+        login: "Đăng Nhập",
+        register: "Đăng Ký",
+        logout: "Đăng Xuất",
+        currentLanguage: "Tiếng Việt",
         
-        // Common
-        search: 'Tìm kiếm',
-        searchPlaceholder: 'Tìm kiếm phim, rạp...',
-        viewDetail: 'Xem Chi Tiết',
-        bookNow: 'Đặt Vé Ngay',
-        back: 'Quay Lại',
-        next: 'Tiếp Theo',
-        confirm: 'Xác Nhận',
-        cancel: 'Hủy Bỏ',
-        save: 'Lưu',
-        edit: 'Chỉnh Sửa',
-        delete: 'Xóa',
-        
-        // Movie details
-        genre: 'Thể Loại',
-        duration: 'Thời Lượng',
-        releaseDate: 'Ngày Phát Hành',
-        director: 'Đạo Diễn',
-        cast: 'Diễn Viên',
-        rating: 'Đánh Giá',
-        overview: 'Tóm Tắt',
-        screenings: 'Lịch Chiếu',
+        // Movie Detail Page
+        bookTicket: "Đặt vé",
+        movieDetails: "Chi Tiết Phim",
+        duration: "Thời lượng",
+        genre: "Thể loại",
+        releaseDate: "Ngày khởi chiếu",
+        rating: "Đánh giá",
+        overview: "Tóm tắt",
+        showtimes: "Lịch chiếu",
+        theater: "Rạp",
+        hall: "Phòng",
+        time: "Giờ",
+        date: "Ngày",
+        price: "Giá vé",
+        contact: "Liên hệ",
         
         // Booking
-        selectSeats: 'Chọn Ghế',
-        selectedSeats: 'Ghế Đã Chọn',
-        totalPrice: 'Tổng Tiền',
-        paymentMethod: 'Phương Thức Thanh Toán',
-        bookingConfirmation: 'Xác Nhận Đặt Vé',
+        seatSelection: "Chọn ghế",
+        standardSeat: "Ghế thường",
+        vipSeat: "Ghế VIP",
+        coupleSeat: "Ghế đôi",
+        bookingConfirmation: "Xác nhận đặt vé",
+        totalAmount: "Tổng tiền",
         
-        // Profile
-        personalInfo: 'Thông Tin Cá Nhân',
-        bookingHistory: 'Lịch Sử Đặt Vé',
-        changePassword: 'Đổi Mật Khẩu',
-        
-        // Admin
-        movieManagement: 'Quản Lý Phim',
-        theaterManagement: 'Quản Lý Rạp',
-        screeningManagement: 'Quản Lý Lịch Chiếu',
-        userManagement: 'Quản Lý Người Dùng',
-        dashboard: 'Bảng Điều Khiển',
-        
-        // Messages
-        loginSuccess: 'Đăng nhập thành công!',
-        loginFailed: 'Đăng nhập thất bại!',
-        bookingSuccess: 'Đặt vé thành công!',
-        bookingFailed: 'Đặt vé thất bại!',
-        languageChanged: 'Đã chuyển sang Tiếng Việt'
+        // Common
+        back: "Quay lại",
+        confirm: "Xác nhận",
+        cancel: "Hủy",
+        loading: "Đang tải...",
+        error: "Lỗi",
+        success: "Thành công",
+        noInformation: "Chưa có thông tin"
     },
     en: {
         // Navigation
-        home: 'Home',
-        movies: 'Movies',
-        theaters: 'Theaters',
-        promotions: 'Promotions',
-        profile: 'Profile',
-        myBookings: 'My Bookings',
-        login: 'Login',
-        register: 'Register',
-        logout: 'Logout',
-        admin: 'Admin',
-        currentLanguage: 'English',
+        movies: "Movies",
+        theaters: "Theaters",
+        promotions: "Promotions",
+        profile: "Profile",
+        myBookings: "My Bookings",
+        admin: "Admin",
+        userManagement: "User Management",
+        login: "Login",
+        register: "Register",
+        logout: "Logout",
+        currentLanguage: "English",
         
-        // Common
-        search: 'Search',
-        searchPlaceholder: 'Search movies, theaters...',
-        viewDetail: 'View Details',
-        bookNow: 'Book Now',
-        back: 'Back',
-        next: 'Next',
-        confirm: 'Confirm',
-        cancel: 'Cancel',
-        save: 'Save',
-        edit: 'Edit',
-        delete: 'Delete',
-        
-        // Movie details
-        genre: 'Genre',
-        duration: 'Duration',
-        releaseDate: 'Release Date',
-        director: 'Director',
-        cast: 'Cast',
-        rating: 'Rating',
-        overview: 'Overview',
-        screenings: 'Screenings',
+        // Movie Detail Page
+        bookTicket: "Book Ticket",
+        movieDetails: "Movie Details",
+        duration: "Duration",
+        genre: "Genre",
+        releaseDate: "Release Date",
+        rating: "Rating",
+        overview: "Overview",
+        showtimes: "Showtimes",
+        theater: "Theater",
+        hall: "Hall",
+        time: "Time",
+        date: "Date",
+        price: "Price",
+        contact: "Contact",
         
         // Booking
-        selectSeats: 'Select Seats',
-        selectedSeats: 'Selected Seats',
-        totalPrice: 'Total Price',
-        paymentMethod: 'Payment Method',
-        bookingConfirmation: 'Booking Confirmation',
+        seatSelection: "Seat Selection",
+        standardSeat: "Standard Seat",
+        vipSeat: "VIP Seat",
+        coupleSeat: "Couple Seat",
+        bookingConfirmation: "Booking Confirmation",
+        totalAmount: "Total Amount",
         
-        // Profile
-        personalInfo: 'Personal Information',
-        bookingHistory: 'Booking History',
-        changePassword: 'Change Password',
-        
-        // Admin
-        movieManagement: 'Movie Management',
-        theaterManagement: 'Theater Management',
-        screeningManagement: 'Screening Management',
-        userManagement: 'User Management',
-        dashboard: 'Dashboard',
-        
-        // Messages
-        loginSuccess: 'Login successful!',
-        loginFailed: 'Login failed!',
-        bookingSuccess: 'Booking successful!',
-        bookingFailed: 'Booking failed!',
-        languageChanged: 'Language changed to English'
+        // Common
+        back: "Back",
+        confirm: "Confirm",
+        cancel: "Cancel",
+        loading: "Loading...",
+        error: "Error",
+        success: "Success",
+        noInformation: "No information available"
     }
 };
 
-// Change language function
-function changeLanguage(lang) {
-    currentLang = lang;
-    localStorage.setItem('language', lang);
-    applyLanguage(lang);
+// Current language state
+let currentLang = localStorage.getItem('language') || 'vi';
+
+// Initialize language on page load
+document.addEventListener('DOMContentLoaded', function() {
+    initializeLanguage();
+});
+
+// Initialize language based on saved preference
+function initializeLanguage() {
+    applyLanguage(currentLang);
     updateLanguageSelector();
-    
-    // Show notification
-    const message = translations[lang].languageChanged;
-    showNotification(message, 'success');
 }
 
-// Apply language to page
+// Change language function
+function changeLanguage(lang) {
+    if (lang !== currentLang) {
+        currentLang = lang;
+        localStorage.setItem('language', lang);
+        applyLanguage(lang);
+        updateLanguageSelector();
+        
+        // Show success notification
+        showNotification(translations[lang].success + '! ' + 
+                        (lang === 'vi' ? 'Đã chuyển sang tiếng Việt' : 'Switched to English'));
+    }
+}
+
+// Apply language to page elements
 function applyLanguage(lang) {
     const langData = translations[lang];
     
-    // Update all elements with data-lang-key attribute
-    document.querySelectorAll('[data-lang-key]').forEach(element => {
-        const key = element.getAttribute('data-lang-key');
+    // Update elements with data-translate attribute
+    document.querySelectorAll('[data-translate]').forEach(element => {
+        const key = element.getAttribute('data-translate');
         if (langData[key]) {
             if (element.tagName === 'INPUT' && element.type === 'button') {
                 element.value = langData[key];
@@ -215,12 +199,6 @@ function showNotification(message, type = 'success') {
 function getCurrentLanguage() {
     return currentLang;
 }
-
-// Initialize language on page load
-document.addEventListener('DOMContentLoaded', function() {
-    applyLanguage(currentLang);
-    updateLanguageSelector();
-});
 
 // Export functions for use in other scripts
 window.changeLanguage = changeLanguage;

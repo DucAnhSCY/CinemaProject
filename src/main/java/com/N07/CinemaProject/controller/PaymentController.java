@@ -71,7 +71,7 @@ public class PaymentController {
             } else {
                 redirectAttributes.addFlashAttribute("error", 
                     "Thanh toán thất bại! Vui lòng thử lại.");
-                return "redirect:/payment/failed/" + payment.getId();
+                return "redirect:/payment/booking/" + bookingId;
             }
             
         } catch (Exception e) {
@@ -120,16 +120,8 @@ public class PaymentController {
             // Giả lập delay xử lý
             Thread.sleep(1000);
             
-            // E_WALLET luôn thất bại
-            if (payment.getPaymentMethod() == Payment.PaymentMethod.E_WALLET) {
-                System.out.println("🚫 E_WALLET payment simulation: FAILED");
-                return false;
-            }
-            
-            // Các phương thức khác có tỷ lệ thành công 95%
-            boolean success = Math.random() < 0.95;
-            System.out.println("💳 Payment simulation for " + payment.getPaymentMethod() + ": " + (success ? "SUCCESS" : "FAILED"));
-            return success;
+            // Giả lập tỷ lệ thành công 95%
+            return Math.random() < 0.95;
         } catch (InterruptedException e) {
             return false;
         }

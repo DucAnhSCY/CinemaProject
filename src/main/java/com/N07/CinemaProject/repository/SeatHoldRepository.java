@@ -28,14 +28,7 @@ public interface SeatHoldRepository extends JpaRepository<SeatHold, Long> {
     @Query("DELETE FROM SeatHold sh WHERE sh.userSession = :userSession")
     void deleteByUserSession(@Param("userSession") String userSession);
     
-    @Modifying
-    @Query("DELETE FROM SeatHold sh WHERE sh.seat.id IN :seatIds AND sh.screening.id = :screeningId AND sh.expiresAt < :now")
-    void deleteExpiredHoldsForSeats(@Param("seatIds") List<Long> seatIds, @Param("screeningId") Long screeningId, @Param("now") LocalDateTime now);
-    
     boolean existsBySeatIdAndScreeningIdAndExpiresAtAfter(Long seatId, Long screeningId, LocalDateTime now);
     
     boolean existsBySeatIdAndScreeningIdAndUserSessionNotAndExpiresAtAfter(Long seatId, Long screeningId, String userSession, LocalDateTime now);
-    
-    @Query("SELECT COUNT(sh) FROM SeatHold sh WHERE sh.seat.id IN :seatIds AND sh.screening.id = :screeningId AND sh.userSession != :userSession AND sh.expiresAt > :now")
-    long countConflictingHolds(@Param("seatIds") List<Long> seatIds, @Param("screeningId") Long screeningId, @Param("userSession") String userSession, @Param("now") LocalDateTime now);
 }

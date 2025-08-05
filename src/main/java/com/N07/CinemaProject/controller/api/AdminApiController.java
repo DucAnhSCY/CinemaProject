@@ -30,6 +30,24 @@ public class AdminApiController {
     @Autowired
     private TheaterRepository theaterRepository;
 
+    // Cache Management
+    @PostMapping("/cache/clear")
+    public ResponseEntity<Map<String, Object>> clearCache() {
+        try {
+            movieService.clearAllCache();
+            
+            Map<String, Object> response = new HashMap<>();
+            response.put("success", true);
+            response.put("message", "Cache đã được xóa thành công!");
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            Map<String, Object> response = new HashMap<>();
+            response.put("success", false);
+            response.put("message", "Lỗi khi xóa cache: " + e.getMessage());
+            return ResponseEntity.badRequest().body(response);
+        }
+    }
+
     // Movie Management
     @GetMapping("/movies")
     public ResponseEntity<List<Movie>> getAllMovies() {
@@ -88,23 +106,6 @@ public class AdminApiController {
         }
     }
 
-    // Clear Cache endpoint
-    @PostMapping("/cache/clear")
-    public ResponseEntity<Map<String, Object>> clearCache() {
-        try {
-            movieService.clearAllCache();
-            Map<String, Object> response = new HashMap<>();
-            response.put("success", true);
-            response.put("message", "Cache đã được xóa thành công!");
-            return ResponseEntity.ok(response);
-        } catch (Exception e) {
-            Map<String, Object> response = new HashMap<>();
-            response.put("success", false);
-            response.put("message", "Lỗi khi xóa cache: " + e.getMessage());
-            return ResponseEntity.badRequest().body(response);
-        }
-    }
-
     // Screening Management
     @GetMapping("/screenings")
     public ResponseEntity<List<Screening>> getAllScreenings() {
@@ -114,7 +115,8 @@ public class AdminApiController {
 
     @GetMapping("/screenings/movie/{movieId}")
     public ResponseEntity<List<Screening>> getScreeningsByMovie(@PathVariable Long movieId) {
-        List<Screening> screenings = screeningService.getScreeningsByMovie(movieId);
+        // Admin có thể xem tất cả suất chiếu của một phim
+        List<Screening> screenings = screeningService.getAllScreeningsByMovie(movieId);
         return ResponseEntity.ok(screenings);
     }
 

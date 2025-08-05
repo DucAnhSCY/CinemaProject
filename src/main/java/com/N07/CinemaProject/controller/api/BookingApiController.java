@@ -55,12 +55,8 @@ public class BookingApiController {
                 return ResponseEntity.status(401).body(response);
             }
             
-            // Find user by username/email
-            String username = authentication.getName();
-            Optional<User> userOpt = userService.findByUsername(username);
-            if (userOpt.isEmpty()) {
-                userOpt = userService.findByEmail(username);
-            }
+            // Use UserService.getCurrentUser() to handle both OAuth2 and regular users
+            Optional<User> userOpt = userService.getCurrentUser();
             
             if (userOpt.isEmpty()) {
                 response.put("success", false);
@@ -134,12 +130,8 @@ public class BookingApiController {
                 return ResponseEntity.status(401).body(response);
             }
             
-            // Find user by username/email
-            String username = authentication.getName();
-            Optional<User> userOpt = userService.findByUsername(username);
-            if (userOpt.isEmpty()) {
-                userOpt = userService.findByEmail(username);
-            }
+            // Use UserService.getCurrentUser() to handle both OAuth2 and regular users
+            Optional<User> userOpt = userService.getCurrentUser();
             
             if (userOpt.isEmpty()) {
                 Map<String, Object> response = new HashMap<>();

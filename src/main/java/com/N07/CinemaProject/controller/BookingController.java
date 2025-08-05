@@ -17,6 +17,7 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/booking")
@@ -33,15 +34,15 @@ public class BookingController {
         try {
             System.out.println("🎬 Loading seat selection for screening ID: " + screeningId);
             
-            // Get current authenticated user
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            String username = authentication.getName();
-            User currentUser = userService.findByUsername(username).orElse(null);
+            // Get current authenticated user using UserService.getCurrentUser() to handle OAuth2
+            Optional<User> currentUserOpt = userService.getCurrentUser();
             
-            if (currentUser == null) {
-                System.err.println("❌ Current user not found: " + username);
+            if (currentUserOpt.isEmpty()) {
+                System.err.println("❌ Current user not found or not authenticated");
                 return "redirect:/auth/login";
             }
+            
+            User currentUser = currentUserOpt.get();
             
             Screening screening = screeningService.getScreeningById(screeningId).orElse(null);
             if (screening == null) {
@@ -118,17 +119,11 @@ public class BookingController {
             if (userId != null) {
                 bookings = bookingService.getBookingsByUser(userId);
             } else {
-                // Get current authenticated user's bookings
-                Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-                if (auth != null && auth.isAuthenticated() && !"anonymousUser".equals(auth.getName())) {
-                    // Find current user by username and get their bookings
-                    String username = auth.getName();
-                    User currentUser = userService.findByUsername(username).orElse(null);
-                    if (currentUser != null) {
-                        bookings = bookingService.getBookingsByUser(currentUser.getId());
-                    } else {
-                        bookings = List.of();
-                    }
+                // Get current authenticated user's bookings using UserService.getCurrentUser()
+                Optional<User> currentUserOpt = userService.getCurrentUser();
+                if (currentUserOpt.isPresent()) {
+                    User currentUser = currentUserOpt.get();
+                    bookings = bookingService.getBookingsByUser(currentUser.getId());
                 } else {
                     bookings = List.of();
                 }

@@ -11,8 +11,6 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <!-- Cinema Theme CSS -->
     <link th:href="@{/css/cinema-theme.css}" href="/css/cinema-theme.css" rel="stylesheet">
-    <!-- Language Switcher JS -->
-    <script th:src="@{/js/language-switcher.js}"></script>
 </head>
 <body>
     <!-- Navigation -->
@@ -163,9 +161,9 @@
 
                                         <!-- Booking Time -->
                                         <div class="booking-time mt-3 pt-3" style="border-top: 1px solid rgba(255, 255, 255, 0.1);">
-                                            <small class="text-white-50">
+                                            <small class="text-muted">
                                                 <i class="fas fa-clock me-1"></i>
-                                                Đặt lúc: <span class="text-white fw-bold" th:text="${#temporals.format(booking.bookingTime, 'HH:mm dd/MM/yyyy')}">14:30 14/12/2024</span>
+                                                Đặt lúc: <span class="text-white" th:text="${#temporals.format(booking.bookingTime, 'HH:mm dd/MM/yyyy')}">14:30 14/12/2024</span>
                                             </small>
                                         </div>
                                     </div>
@@ -179,11 +177,11 @@
                                                 <i class="fas fa-qrcode text-primary" style="font-size: 4rem;"></i>
                                             </div>
                                             <h6 class="text-white mb-2">Mã QR</h6>
-                                            <small class="text-white-50">Quét mã này tại rạp để vào xem phim</small>
+                                            <small class="text-muted">Quét mã này tại rạp để vào xem phim</small>
                                         </div>
                                         <div class="qr-instructions">
                                             <div class="alert alert-info border-0 p-3" style="background: rgba(13, 110, 253, 0.1);">
-                                                <small class="text-white">
+                                                <small class="text-primary">
                                                     <i class="fas fa-mobile-alt me-2"></i>
                                                     Xuất trình QR code hoặc Booking ID tại quầy vé
                                                 </small>

@@ -22,7 +22,7 @@ public class MovieService {
     @Autowired
     private TmdbService tmdbService;
     
-    // Removed @Cacheable to always get fresh data from database
+    @Cacheable("movies")
     public List<Movie> getAllMovies() {
         return movieRepository.findAll();
     }
@@ -95,11 +95,6 @@ public class MovieService {
                 .collect(Collectors.toList());
     }
     
-    @CacheEvict(value = {"movies", "popularMovies", "screenings"}, allEntries = true)
-    public void clearAllCache() {
-        System.out.println("Clearing all movie and screening caches...");
-    }
-    
     public List<Movie> searchMoviesByTitle(String title) {
         // First search in database
         List<Movie> dbResults = movieRepository.findByTitleContainingIgnoreCase(title);
@@ -125,12 +120,21 @@ public class MovieService {
         return movieRepository.findByGenreContainingIgnoreCase(genre);
     }
     
+    @CacheEvict(value = {"movies", "popularMovies", "screenings"}, allEntries = true)
     public Movie saveMovie(Movie movie) {
+        System.out.println("Saving movie and clearing cache...");
         return movieRepository.save(movie);
     }
     
+    @CacheEvict(value = {"movies", "popularMovies", "screenings"}, allEntries = true)
     public void deleteMovie(Long id) {
+        System.out.println("Deleting movie and clearing cache...");
         movieRepository.deleteById(id);
+    }
+    
+    @CacheEvict(value = {"movies", "popularMovies", "screenings", "activeScreenings"}, allEntries = true)
+    public void clearAllCache() {
+        System.out.println("Clearing all movie and screening caches...");
     }
     
     public void deleteAllMovies() {
@@ -148,26 +152,6 @@ public class MovieService {
         } else {
             return getCurrentlyShowingMovies();
         }
-    }
-    
-    public List<Movie> searchMovies(String title, String genre, Integer year) {
-        List<Movie> movies = getAllMovies();
-        
-        return movies.stream()
-                .filter(movie -> {
-                    boolean titleMatch = title == null || title.trim().isEmpty() || 
-                                       (movie.getTitle() != null && movie.getTitle().toLowerCase().contains(title.toLowerCase()));
-                    
-                    boolean genreMatch = genre == null || genre.trim().isEmpty() || 
-                                       (movie.getGenre() != null && movie.getGenre().toLowerCase().contains(genre.toLowerCase()));
-                    
-                    boolean yearMatch = year == null || 
-                                      (movie.getReleaseDate() != null && 
-                                       movie.getReleaseDate().getYear() == year);
-                    
-                    return titleMatch && genreMatch && yearMatch;
-                })
-                .collect(Collectors.toList());
     }
     
     @Transactional

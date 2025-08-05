@@ -14,7 +14,7 @@ public class CacheConfig {
     @Bean
     public ConcurrentMapCacheManager cacheManager() {
         ConcurrentMapCacheManager cacheManager = new ConcurrentMapCacheManager();
-        cacheManager.setCacheNames(Arrays.asList("theaters", "movies", "auditoriums", "screenings", "users", "popularMovies"));
+        cacheManager.setCacheNames(Arrays.asList("theaters", "movies", "auditoriums", "screenings", "users", "popularMovies", "activeScreenings"));
         return cacheManager;
     }
 }

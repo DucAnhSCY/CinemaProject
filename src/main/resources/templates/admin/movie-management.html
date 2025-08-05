@@ -143,18 +143,11 @@
                             <i class="fas fa-plus me-2"></i>Thêm Phim Mới
                         </a>
                         <a th:href="@{/admin/movies/tmdb-search}" 
-                           class="btn btn-success me-2"
+                           class="btn btn-success"
                            th:classappend="${!@securityUtils.isAdmin()} ? 'security-disabled'"
                            th:onclick="${!@securityUtils.isAdmin()} ? 'return false;'">
                             <i class="fas fa-database me-2"></i>Thêm Từ TMDB
                         </a>
-                        <button type="button" 
-                                class="btn btn-warning" 
-                                onclick="clearMovieCache()"
-                                th:classappend="${!@securityUtils.isAdmin()} ? 'security-disabled'"
-                                th:onclick="${!@securityUtils.isAdmin()} ? 'return false;'">
-                            <i class="fas fa-refresh me-2"></i>Làm Mới Cache
-                        </button>
                     </div>
                 </div>
             </div>
@@ -281,32 +274,6 @@
                 .catch(error => {
                     console.error('Error:', error);
                     alert('Có lỗi xảy ra khi xóa phim');
-                });
-            }
-        }
-
-        function clearMovieCache() {
-            if (confirm('Bạn có chắc chắn muốn làm mới cache? Điều này sẽ tải lại dữ liệu từ cơ sở dữ liệu.')) {
-                fetch('/api/admin/cache/clear', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-Requested-With': 'XMLHttpRequest',
-                        [header]: token
-                    }
-                })
-                .then(response => response.json())
-                .then(result => {
-                    if (result.success) {
-                        alert('Cache đã được làm mới thành công!');
-                        location.reload();
-                    } else {
-                        alert('Có lỗi xảy ra: ' + result.message);
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('Có lỗi xảy ra khi làm mới cache');
                 });
             }
         }

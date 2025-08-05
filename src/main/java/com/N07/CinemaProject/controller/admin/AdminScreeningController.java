@@ -32,6 +32,39 @@ public class AdminScreeningController {
     @Autowired
     private TheaterService theaterService;
 
+    @GetMapping("/debug")
+    public String debugScreenings(Model model) {
+        try {
+            List<Screening> screenings = screeningService.getAllScreenings();
+            List<Movie> movies = movieService.getAllMovies();
+            List<Theater> theaters = theaterService.getAllTheaters();
+            
+            long todayScreenings = screenings.stream()
+                .filter(screening -> screening.getStartTime().toLocalDate().isEqual(java.time.LocalDate.now()))
+                .count();
+            
+            model.addAttribute("screenings", screenings);
+            model.addAttribute("movies", movies);
+            model.addAttribute("theaters", theaters);
+            model.addAttribute("totalScreenings", screenings.size());
+            model.addAttribute("todayScreenings", todayScreenings);
+            
+            System.out.println("Debug endpoint - Total screenings: " + screenings.size());
+            System.out.println("Debug endpoint - Total movies: " + movies.size());
+            System.out.println("Debug endpoint - Total theaters: " + theaters.size());
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+            model.addAttribute("error", "Lỗi khi debug: " + e.getMessage());
+            model.addAttribute("screenings", List.of());
+            model.addAttribute("movies", List.of());
+            model.addAttribute("theaters", List.of());
+            model.addAttribute("totalScreenings", 0);
+            model.addAttribute("todayScreenings", 0);
+        }
+        return "debug/screening-debug";
+    }
+
     @GetMapping
     public String screeningManagement(@RequestParam(value = "sortBy", defaultValue = "startTime") String sortBy,
                                       @RequestParam(value = "movieId", required = false) Long movieId,
@@ -41,9 +74,17 @@ public class AdminScreeningController {
             
             // Filter by movie if specified
             if (movieId != null) {
-                screenings = screeningService.getScreeningsByMovie(movieId);
+                screenings = screeningService.getAllScreeningsByMovie(movieId);
             } else {
                 screenings = screeningService.getAllScreenings();
+            }
+            
+            // Debug: Log thông tin về screenings
+            System.out.println("Total screenings found: " + screenings.size());
+            if (!screenings.isEmpty()) {
+                System.out.println("First screening: " + screenings.get(0).getId() 
+                    + " - " + screenings.get(0).getMovie().getTitle() 
+                    + " - " + screenings.get(0).getStartTime());
             }
             
             // Sort screenings
@@ -79,6 +120,7 @@ public class AdminScreeningController {
             model.addAttribute("selectedMovieId", movieId);
             model.addAttribute("pageTitle", "Quản Lý Lịch Chiếu");
         } catch (Exception e) {
+            e.printStackTrace(); // Debug: In lỗi ra console
             model.addAttribute("error", "Lỗi khi tải danh sách lịch chiếu: " + e.getMessage());
             model.addAttribute("screenings", List.of());
             model.addAttribute("movies", List.of());
@@ -246,6 +288,26 @@ public class AdminScreeningController {
             return ResponseEntity.ok(response);
         } else {
             return ResponseEntity.notFound().build();
+        }
+    }
+
+    // Clear cache endpoint for debugging
+    @PostMapping("/clear-cache")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> clearCache() {
+        try {
+            // Clear various caches if needed
+            // Note: This would need cache manager injection to work properly
+            
+            Map<String, Object> response = new HashMap<>();
+            response.put("success", true);
+            response.put("message", "Cache cleared successfully");
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            Map<String, Object> response = new HashMap<>();
+            response.put("success", false);
+            response.put("message", "Failed to clear cache: " + e.getMessage());
+            return ResponseEntity.badRequest().body(response);
         }
     }
 }

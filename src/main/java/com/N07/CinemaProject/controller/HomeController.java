@@ -82,23 +82,17 @@ public class HomeController {
     @GetMapping("/search")
     public String search(@RequestParam(required = false) String title,
                         @RequestParam(required = false) String genre,
-                        @RequestParam(required = false) Integer year,
                         Model model, HttpServletRequest request) {
         model.addAttribute("currentPath", request.getRequestURI());
-        
         try {
             // Thêm thông tin rạp
-            try {
-                SingleCinemaService.CinemaInfo cinemaInfo = singleCinemaService.getCinemaInfo();
-                model.addAttribute("cinema", cinemaInfo);
-                model.addAttribute("isSingleCinema", true);
-            } catch (Exception e) {
-                model.addAttribute("isSingleCinema", false);
-            }
+            SingleCinemaService.CinemaInfo cinemaInfo = singleCinemaService.getCinemaInfo();
+            model.addAttribute("cinema", cinemaInfo);
+            model.addAttribute("isSingleCinema", true);
             
             List<Movie> movies;
-            if (title != null && !title.trim().isEmpty() || genre != null && !genre.trim().isEmpty() || year != null) {
-                movies = movieService.searchMovies(title, genre, year);
+            if (title != null && !title.trim().isEmpty() || genre != null && !genre.trim().isEmpty()) {
+                movies = movieService.searchMovies(title, genre);
             } else {
                 movies = movieService.getAllMovies();
             }
@@ -117,14 +111,8 @@ public class HomeController {
             model.addAttribute("movies", movies);
             model.addAttribute("searchTitle", title);
             model.addAttribute("searchGenre", genre);
-            model.addAttribute("searchYear", year);
-            
         } catch (Exception e) {
             model.addAttribute("movies", List.of());
-            model.addAttribute("searchTitle", title);
-            model.addAttribute("searchGenre", genre);
-            model.addAttribute("searchYear", year);
-            model.addAttribute("isSingleCinema", false);
         }
         return "pages/search-results";
     }
