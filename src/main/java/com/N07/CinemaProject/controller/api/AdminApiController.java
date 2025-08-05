@@ -88,6 +88,23 @@ public class AdminApiController {
         }
     }
 
+    // Clear Cache endpoint
+    @PostMapping("/cache/clear")
+    public ResponseEntity<Map<String, Object>> clearCache() {
+        try {
+            movieService.clearAllCache();
+            Map<String, Object> response = new HashMap<>();
+            response.put("success", true);
+            response.put("message", "Cache đã được xóa thành công!");
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            Map<String, Object> response = new HashMap<>();
+            response.put("success", false);
+            response.put("message", "Lỗi khi xóa cache: " + e.getMessage());
+            return ResponseEntity.badRequest().body(response);
+        }
+    }
+
     // Screening Management
     @GetMapping("/screenings")
     public ResponseEntity<List<Screening>> getAllScreenings() {

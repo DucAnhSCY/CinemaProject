@@ -22,7 +22,7 @@ public class MovieService {
     @Autowired
     private TmdbService tmdbService;
     
-    @Cacheable("movies")
+    // Removed @Cacheable to always get fresh data from database
     public List<Movie> getAllMovies() {
         return movieRepository.findAll();
     }
@@ -93,6 +93,11 @@ public class MovieService {
         return movieRepository.findAll().stream()
                 .limit(20)
                 .collect(Collectors.toList());
+    }
+    
+    @CacheEvict(value = {"movies", "popularMovies", "screenings"}, allEntries = true)
+    public void clearAllCache() {
+        System.out.println("Clearing all movie and screening caches...");
     }
     
     public List<Movie> searchMoviesByTitle(String title) {
