@@ -1,17 +1,45 @@
 # Cinema Project - Docker Setup
 
-Hướng dẫn chạy Cinema Project bằng Docker.
+Hướng dẫn chạy Cinema Project bằng Docker và Docker Hub.
 
 ## Yêu cầu
 
 - Docker Desktop đã được cài đặt và chạy
 - Docker Compose (thường đi cùng với Docker Desktop)
+- Tài khoản Docker Hub (nếu muốn push/pull từ Docker Hub)
 
-## Cách chạy nhanh
+## 🚀 Cách chạy từ Docker Hub (Khuyến nghị)
+
+### Chạy nhanh từ Docker Hub
+```bash
+# Pull và chạy từ Docker Hub
+docker-run-prod.bat
+
+# Dừng ứng dụng
+docker-stop-prod.bat
+```
+
+### Chạy trực tiếp với Docker
+```bash
+# Pull image từ Docker Hub
+docker pull ducanh/cinema-project:latest
+
+# Chạy container
+docker run -d \
+  --name cinema-app \
+  -p 8081:8080 \
+  -e SPRING_PROFILES_ACTIVE=docker \
+  -e SPRING_DATASOURCE_URL="jdbc:sqlserver://34.71.252.111:1433;databaseName=cinema;encrypt=false;trustServerCertificate=true" \
+  -e SPRING_DATASOURCE_USERNAME=sqlserver \
+  -e SPRING_DATASOURCE_PASSWORD=123 \
+  ducanh/cinema-project:latest
+```
+
+## 🔧 Build và Development
 
 ### Option 1: Sử dụng script (Đơn giản nhất)
 ```bash
-# Chạy ứng dụng
+# Build và chạy local
 docker-run.bat
 
 # Dừng ứng dụng
@@ -39,11 +67,46 @@ docker build -t cinema-app:latest .
 docker run -d -p 8080:8080 --name cinema-app cinema-app:latest
 ```
 
+## 📦 Publish lên Docker Hub
+
+### Thủ công (Manual)
+```bash
+# Build và push lên Docker Hub
+docker-push.bat
+
+# Hoặc thủ công:
+docker build -t ducanh/cinema-project:latest .
+docker login
+docker push ducanh/cinema-project:latest
+```
+
+### Tự động (GitHub Actions)
+Project đã có GitHub Actions workflow sẽ tự động build và push lên Docker Hub khi:
+- Push code lên branch `main` hoặc `develop`
+- Tạo tag version (v1.0.0, v1.1.0, etc.)
+
+Để sử dụng GitHub Actions, cần set up secrets trong GitHub repository:
+- `DOCKER_USERNAME`: Docker Hub username
+- `DOCKER_PASSWORD`: Docker Hub password hoặc access token
+
+## 🌐 Sử dụng Image từ Docker Hub
+
+### Pull image
+```bash
+docker pull ducanh/cinema-project:latest
+```
+
+### Các tag available:
+- `latest`: Version mới nhất từ main branch
+- `main`: Build từ main branch
+- `develop`: Build từ develop branch
+- `v1.0.0`, `v1.1.0`: Các version releases
+
 ## Kiểm tra ứng dụng
 
 Sau khi chạy thành công:
-- Ứng dụng: http://localhost:8080
-- Health check: http://localhost:8080/actuator/health
+- Ứng dụng: http://localhost:8081 (production) hoặc http://localhost:8080 (development)
+- Health check: http://localhost:8081/actuator/health
 
 ## Cấu hình
 
@@ -65,7 +128,11 @@ Có thể override các cấu hình thông qua environment variables trong `dock
 
 ### Xem logs
 ```bash
+# Development
 docker-compose logs cinema-app
+
+# Production
+docker logs cinema-app-prod -f
 ```
 
 ### Container không start
@@ -78,6 +145,15 @@ docker-compose logs cinema-app
 
 # Rebuild image
 docker-compose up --build --force-recreate
+```
+
+### Pull image mới từ Docker Hub
+```bash
+# Stop container cũ
+docker-stop-prod.bat
+
+# Pull image mới và chạy
+docker-run-prod.bat
 ```
 
 ### Port đã được sử dụng
