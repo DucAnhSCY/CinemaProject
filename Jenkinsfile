@@ -436,7 +436,7 @@ java -jar "$jarFile" --server.port=8090 > app.log 2>&1
                 
                 # Remove old Docker images (keep last 3 builds)
                 try {
-                    $oldImages = docker images $env:DOCKER_IMAGE_NAME --format "{{.Tag}}" | Where-Object {$_ -match "^\d+$"} | Sort-Object {[int]$_} | Select-Object -SkipLast 3
+                    $oldImages = docker images $env:DOCKER_IMAGE_NAME --format "{{.Tag}}" | Where-Object {$_ -match "^\\d+$"} | Sort-Object {[int]$_} | Select-Object -SkipLast 3
                     if ($oldImages) {
                         Write-Output "Removing old Docker images: $($oldImages -join ', ')"
                         foreach ($tag in $oldImages) {
