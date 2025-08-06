@@ -13,6 +13,7 @@ services:
       - SPRING_DATASOURCE_USERNAME=sqlserver
       - SPRING_DATASOURCE_PASSWORD=123
       - SPRING_DATASOURCE_DRIVER_CLASS_NAME=com.microsoft.sqlserver.jdbc.SQLServerDriver
+      
       # JPA Configuration
       - SPRING_JPA_HIBERNATE_DDL_AUTO=validate
       - SPRING_JPA_SHOW_SQL=false
@@ -21,6 +22,7 @@ services:
       # Application configuration
       - SPRING_PROFILES_ACTIVE=docker
       - SERVER_PORT=8080
+      
     volumes:
       - ./logs:/app/logs
     restart: unless-stopped
