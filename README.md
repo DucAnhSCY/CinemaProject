@@ -55,7 +55,33 @@ docker-compose up --build
 ./mvnw spring-boot:run
 ```
 
-## 📦 Docker Hub
+## � CI/CD Pipeline
+
+### GitHub Actions (Recommended)
+Tự động build và push lên Docker Hub khi:
+- Push code lên `main` hoặc `develop`
+- Tạo tag release
+
+### Jenkins Integration 🆕
+Pipeline hoàn chỉnh với Docker Hub:
+```bash
+# Test pipeline locally
+./test-jenkins-pipeline.ps1
+
+# Setup Jenkins với Docker Hub
+# Xem hướng dẫn: docs/jenkins-docker-setup.md
+```
+
+**Jenkins Pipeline Features:**
+- ✅ Tự động build từ GitHub
+- ✅ Maven test & package  
+- ✅ Docker build & test
+- ✅ Push lên Docker Hub
+- ✅ Deploy từ Docker Hub
+- ✅ Health check & monitoring
+- ✅ Auto cleanup old images
+
+## �📦 Docker Hub
 
 Image có sẵn trên Docker Hub: [`ducanh/cinema-project`](https://hub.docker.com/r/ducanhscy/cinema-project)
 
@@ -101,8 +127,9 @@ CinemaProject/
 
 Xem thêm:
 - [Docker Setup Guide](DOCKER-README.md)
+- [Jenkins + Docker Hub Setup](docs/jenkins-docker-setup.md) 🆕
+- [Deployment Guide](docs/deployment.md)
 - [API Documentation](docs/api.md) (coming soon)
-- [Deployment Guide](docs/deployment.md) (coming soon)
 
 ## 🤝 Contributing
 
