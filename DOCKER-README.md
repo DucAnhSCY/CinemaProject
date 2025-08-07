@@ -22,7 +22,7 @@ docker-stop-prod.bat
 ### Chạy trực tiếp với Docker
 ```bash
 # Pull image từ Docker Hub
-docker pull ducanh/cinema-project:latest
+docker pull ducanhscy/cinema-project:latest
 
 # Chạy container
 docker run -d \
@@ -32,7 +32,7 @@ docker run -d \
   -e SPRING_DATASOURCE_URL="jdbc:sqlserver://34.71.252.111:1433;databaseName=cinema;encrypt=false;trustServerCertificate=true" \
   -e SPRING_DATASOURCE_USERNAME=sqlserver \
   -e SPRING_DATASOURCE_PASSWORD=123 \
-  ducanh/cinema-project:latest
+  ducanhscy/cinema-project:latest
 ```
 
 ## 🔧 Build và Development
@@ -75,9 +75,9 @@ docker run -d -p 8080:8080 --name cinema-app cinema-app:latest
 docker-push.bat
 
 # Hoặc thủ công:
-docker build -t ducanh/cinema-project:latest .
+docker build -t ducanhscy/cinema-project:latest .
 docker login
-docker push ducanh/cinema-project:latest
+docker push ducanhscy/cinema-project:latest
 ```
 
 ### Tự động (GitHub Actions)
@@ -93,7 +93,7 @@ Project đã có GitHub Actions workflow sẽ tự động build và push lên D
 
 ### Pull image
 ```bash
-docker pull ducanh/cinema-project:latest
+docker pull ducanhscy/cinema-project:latest
 ```
 
 ### Các tag available:
