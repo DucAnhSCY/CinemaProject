@@ -1,7 +1,7 @@
 /*
  Navicat Premium Dump SQL
 
- Source Server         : cinema
+ Source Server         : sqlserverggcloud
  Source Server Type    : SQL Server
  Source Server Version : 16004135 (16.00.4135)
  Source Host           : 34.71.252.111:1433
@@ -12,7 +12,7 @@
  Target Server Version : 16004135 (16.00.4135)
  File Encoding         : 65001
 
- Date: 01/08/2025 08:08:20
+ Date: 09/08/2025 16:10:29
 */
 
 
@@ -145,6 +145,30 @@ GO
 INSERT INTO [dbo].[booked_seats] ([id], [booking_id], [seat_id], [screening_id], [seat_price]) VALUES (N'63', N'21', N'12774', N'2107', NULL)
 GO
 
+INSERT INTO [dbo].[booked_seats] ([id], [booking_id], [seat_id], [screening_id], [seat_price]) VALUES (N'67', N'23', N'12664', N'2101', NULL)
+GO
+
+INSERT INTO [dbo].[booked_seats] ([id], [booking_id], [seat_id], [screening_id], [seat_price]) VALUES (N'68', N'23', N'12673', N'2101', NULL)
+GO
+
+INSERT INTO [dbo].[booked_seats] ([id], [booking_id], [seat_id], [screening_id], [seat_price]) VALUES (N'69', N'23', N'12696', N'2101', NULL)
+GO
+
+INSERT INTO [dbo].[booked_seats] ([id], [booking_id], [seat_id], [screening_id], [seat_price]) VALUES (N'70', N'24', N'12665', N'2102', NULL)
+GO
+
+INSERT INTO [dbo].[booked_seats] ([id], [booking_id], [seat_id], [screening_id], [seat_price]) VALUES (N'71', N'24', N'12673', N'2102', NULL)
+GO
+
+INSERT INTO [dbo].[booked_seats] ([id], [booking_id], [seat_id], [screening_id], [seat_price]) VALUES (N'72', N'24', N'12696', N'2102', NULL)
+GO
+
+INSERT INTO [dbo].[booked_seats] ([id], [booking_id], [seat_id], [screening_id], [seat_price]) VALUES (N'82', N'30', N'12682', N'2139', NULL)
+GO
+
+INSERT INTO [dbo].[booked_seats] ([id], [booking_id], [seat_id], [screening_id], [seat_price]) VALUES (N'83', N'30', N'12683', N'2139', NULL)
+GO
+
 SET IDENTITY_INSERT [dbo].[booked_seats] OFF
 GO
 
@@ -202,10 +226,10 @@ GO
 SET IDENTITY_INSERT [dbo].[bookings] ON
 GO
 
-INSERT INTO [dbo].[bookings] ([id], [user_id], [screening_id], [booking_time], [total_amount], [booking_status], [booking_code], [customer_name], [customer_phone], [customer_email]) VALUES (N'13', N'1', N'2110', N'2025-07-30 15:52:41.4858097', N'960000.00', N'CONFIRMED', NULL, NULL, NULL, NULL)
+INSERT INTO [dbo].[bookings] ([id], [user_id], [screening_id], [booking_time], [total_amount], [booking_status], [booking_code], [customer_name], [customer_phone], [customer_email]) VALUES (N'13', N'1', N'2110', N'2025-07-30 15:52:41.4858097', N'960000.00', N'CANCELLED', NULL, NULL, NULL, NULL)
 GO
 
-INSERT INTO [dbo].[bookings] ([id], [user_id], [screening_id], [booking_time], [total_amount], [booking_status], [booking_code], [customer_name], [customer_phone], [customer_email]) VALUES (N'14', N'1', N'2110', N'2025-07-30 15:56:15.9766838', N'240000.00', N'CONFIRMED', NULL, NULL, NULL, NULL)
+INSERT INTO [dbo].[bookings] ([id], [user_id], [screening_id], [booking_time], [total_amount], [booking_status], [booking_code], [customer_name], [customer_phone], [customer_email]) VALUES (N'14', N'1', N'2110', N'2025-07-30 15:56:15.9766838', N'240000.00', N'CANCELLED', NULL, NULL, NULL, NULL)
 GO
 
 INSERT INTO [dbo].[bookings] ([id], [user_id], [screening_id], [booking_time], [total_amount], [booking_status], [booking_code], [customer_name], [customer_phone], [customer_email]) VALUES (N'15', N'1', N'2101', N'2025-07-30 16:00:16.8024246', N'240000.00', N'EXPIRED', NULL, NULL, NULL, NULL)
@@ -220,13 +244,40 @@ GO
 INSERT INTO [dbo].[bookings] ([id], [user_id], [screening_id], [booking_time], [total_amount], [booking_status], [booking_code], [customer_name], [customer_phone], [customer_email]) VALUES (N'18', N'1', N'2101', N'2025-07-31 15:37:17.8971617', N'204000.00', N'EXPIRED', NULL, NULL, NULL, NULL)
 GO
 
-INSERT INTO [dbo].[bookings] ([id], [user_id], [screening_id], [booking_time], [total_amount], [booking_status], [booking_code], [customer_name], [customer_phone], [customer_email]) VALUES (N'19', N'1', N'2125', N'2025-07-31 15:42:55.7103832', N'264000.00', N'CONFIRMED', NULL, NULL, NULL, NULL)
+INSERT INTO [dbo].[bookings] ([id], [user_id], [screening_id], [booking_time], [total_amount], [booking_status], [booking_code], [customer_name], [customer_phone], [customer_email]) VALUES (N'19', N'1', N'2125', N'2025-07-31 15:42:55.7103832', N'264000.00', N'EXPIRED', NULL, NULL, NULL, NULL)
 GO
 
-INSERT INTO [dbo].[bookings] ([id], [user_id], [screening_id], [booking_time], [total_amount], [booking_status], [booking_code], [customer_name], [customer_phone], [customer_email]) VALUES (N'20', N'8', N'2110', N'2025-07-31 15:52:26.4861702', N'288000.00', N'CONFIRMED', NULL, NULL, NULL, NULL)
+INSERT INTO [dbo].[bookings] ([id], [user_id], [screening_id], [booking_time], [total_amount], [booking_status], [booking_code], [customer_name], [customer_phone], [customer_email]) VALUES (N'20', N'8', N'2110', N'2025-07-31 15:52:26.4861702', N'288000.00', N'CANCELLED', NULL, NULL, NULL, NULL)
 GO
 
 INSERT INTO [dbo].[bookings] ([id], [user_id], [screening_id], [booking_time], [total_amount], [booking_status], [booking_code], [customer_name], [customer_phone], [customer_email]) VALUES (N'21', N'1', N'2107', N'2025-08-01 07:59:09.0828624', N'288000.00', N'EXPIRED', NULL, NULL, NULL, NULL)
+GO
+
+INSERT INTO [dbo].[bookings] ([id], [user_id], [screening_id], [booking_time], [total_amount], [booking_status], [booking_code], [customer_name], [customer_phone], [customer_email]) VALUES (N'22', N'1', N'2101', N'2025-08-03 19:53:40.1034207', N'432000.00', N'EXPIRED', NULL, NULL, NULL, NULL)
+GO
+
+INSERT INTO [dbo].[bookings] ([id], [user_id], [screening_id], [booking_time], [total_amount], [booking_status], [booking_code], [customer_name], [customer_phone], [customer_email]) VALUES (N'23', N'1', N'2101', N'2025-08-03 19:57:18.6250610', N'468000.00', N'EXPIRED', NULL, NULL, NULL, NULL)
+GO
+
+INSERT INTO [dbo].[bookings] ([id], [user_id], [screening_id], [booking_time], [total_amount], [booking_status], [booking_code], [customer_name], [customer_phone], [customer_email]) VALUES (N'24', N'1', N'2102', N'2025-08-03 19:59:03.1099645', N'468000.00', N'EXPIRED', NULL, NULL, NULL, NULL)
+GO
+
+INSERT INTO [dbo].[bookings] ([id], [user_id], [screening_id], [booking_time], [total_amount], [booking_status], [booking_code], [customer_name], [customer_phone], [customer_email]) VALUES (N'25', N'1', N'2101', N'2025-08-03 21:49:16.2675056', N'288000.00', N'EXPIRED', NULL, NULL, NULL, NULL)
+GO
+
+INSERT INTO [dbo].[bookings] ([id], [user_id], [screening_id], [booking_time], [total_amount], [booking_status], [booking_code], [customer_name], [customer_phone], [customer_email]) VALUES (N'26', N'1', N'2101', N'2025-08-05 13:22:41.9882061', N'288000.00', N'EXPIRED', NULL, NULL, NULL, NULL)
+GO
+
+INSERT INTO [dbo].[bookings] ([id], [user_id], [screening_id], [booking_time], [total_amount], [booking_status], [booking_code], [customer_name], [customer_phone], [customer_email]) VALUES (N'27', N'1', N'2101', N'2025-08-05 13:29:44.5141175', N'288000.00', N'EXPIRED', NULL, NULL, NULL, NULL)
+GO
+
+INSERT INTO [dbo].[bookings] ([id], [user_id], [screening_id], [booking_time], [total_amount], [booking_status], [booking_code], [customer_name], [customer_phone], [customer_email]) VALUES (N'28', N'1', N'2101', N'2025-08-05 13:41:56.4163466', N'288000.00', N'EXPIRED', NULL, NULL, NULL, NULL)
+GO
+
+INSERT INTO [dbo].[bookings] ([id], [user_id], [screening_id], [booking_time], [total_amount], [booking_status], [booking_code], [customer_name], [customer_phone], [customer_email]) VALUES (N'29', N'1', N'2101', N'2025-08-05 15:12:58.0119189', N'144000.00', N'EXPIRED', NULL, NULL, NULL, NULL)
+GO
+
+INSERT INTO [dbo].[bookings] ([id], [user_id], [screening_id], [booking_time], [total_amount], [booking_status], [booking_code], [customer_name], [customer_phone], [customer_email]) VALUES (N'30', N'14', N'2139', N'2025-08-05 15:47:46.6252820', N'480000.00', N'CONFIRMED', NULL, NULL, NULL, NULL)
 GO
 
 SET IDENTITY_INSERT [dbo].[bookings] OFF
@@ -343,7 +394,80 @@ GO
 INSERT INTO [dbo].[movies] ([id], [title], [duration_min], [genre], [description], [release_date], [poster_url], [tmdb_id], [backdrop_url], [original_language], [vote_average], [vote_count], [popularity], [original_title], [adult], [director], [cast], [country], [language], [overview], [image_url], [rating], [status]) VALUES (N'25', N'Mật Vụ Kingsman', N'129', N'Phim Hình Sự, Phim Hài, Phim Hành Động, Phim Phiêu Lưu', N'Bộ phim kể về một tổ chức điệp viên siêu đẳng sử dụng vũ khí công nghệ cao để chống lại ác nhân Richmond Valentine, một tỷ phú thiên tài với âm mưu xóa sổ phần lớn dân cư trên trái đất để thanh lọc thành một thế giới mới theo ý của mình.', N'2015-01-24', N'https://image.tmdb.org/t/p/w500/jbyzyYucBh1OOb0o88U57GjdGCq.jpg', N'207703', N'https://image.tmdb.org/t/p/w1280/qzUIOTk0E3F1zjvYjcBRTKUTgf9.jpg', N'en', N'7.625', N'17188', N'9.8813', N'Kingsman: The Secret Service', N'0', NULL, NULL, NULL, NULL, NULL, NULL, NULL, N'ACTIVE')
 GO
 
+INSERT INTO [dbo].[movies] ([id], [title], [duration_min], [genre], [description], [release_date], [poster_url], [tmdb_id], [backdrop_url], [original_language], [vote_average], [vote_count], [popularity], [original_title], [adult], [director], [cast], [country], [language], [overview], [image_url], [rating], [status]) VALUES (N'26', N'Batman Đại Chiến Superman: Ánh Sáng Công Lý', N'152', N'Phim Hành Động, Phim Phiêu Lưu, Phim Giả Tượng', N'Nội dung bộ phim sẽ xoay quanh cuộc đối đầu có 1-0-2 của vị hiệp sĩ mạnh mẽ, đáng gờm nhất của thành phố Gotham với biểu tượng được tôn sùng nhất của thành phố Metropolis. Nguyên nhân của “cuộc chiến” này bắt nguồn từ việc họ đang lo lắng vì không thể kiểm soát được siêu anh hùng mới có sức mạnh thần thánh. Tuy nhiên, trong lúc họ “mải miết” chiến đấu với nhau thì có một mối đe dọa khác đã nổi lên và đẩy nhân loại vào tình thế nguy hiểm hơn bao giờ hết.', N'2016-03-23', N'https://image.tmdb.org/t/p/w500/aOqrz5D9Kl0ZRWoDjUj025o2os9.jpg', N'209112', N'https://image.tmdb.org/t/p/w1280/doiUtOHzcxXFl0GVQ2n8Ay6Pirx.jpg', N'en', N'5.983', N'18412', N'26.1996', N'Batman v Superman: Dawn of Justice', N'0', NULL, NULL, NULL, NULL, N'Nội dung bộ phim sẽ xoay quanh cuộc đối đầu có 1-0-2 của vị hiệp sĩ mạnh mẽ, đáng gờm nhất của thành phố Gotham với biểu tượng được tôn sùng nhất của thành phố Metropolis. Nguyên nhân của “cuộc chiến” này bắt nguồn từ việc họ đang lo lắng vì không thể kiểm soát được siêu anh hùng mới có sức mạnh thần thánh. Tuy nhiên, trong lúc họ “mải miết” chiến đấu với nhau thì có một mối đe dọa khác đã nổi lên và đẩy nhân loại vào tình thế nguy hiểm hơn bao giờ hết.', NULL, NULL, N'ACTIVE')
+GO
+
+INSERT INTO [dbo].[movies] ([id], [title], [duration_min], [genre], [description], [release_date], [poster_url], [tmdb_id], [backdrop_url], [original_language], [vote_average], [vote_count], [popularity], [original_title], [adult], [director], [cast], [country], [language], [overview], [image_url], [rating], [status]) VALUES (N'27', N'Kingsman: Tổ Chức Hoàng Kim', N'141', N'Phim Hành Động, Phim Phiêu Lưu, Phim Hài, Phim Hình Sự', N'Sau sự kiện ở phần một, Eggsy giờ đây đã trở thành điệp viên chính thức của tổ chức Kingsman. Eggsy cùng chuyên gia công nghệ Merlin và các đồng đội cũ buộc phải chạy sang Mỹ sau khi căn cứ của Kingsman bị phá hủy. Tại đây, họ phải phối hợp cùng các đồng minh thuộc Statesmen, tổ chức điệp viên tại Mỹ, để triệt phá mưu của ác nữ Poppy, vốn là thành viên của The Golden Circle - một hội kín mang mục đích lập lại trật tự thế giới mới.', N'2017-09-20', N'https://image.tmdb.org/t/p/w500/xPlvdwpuk7l0LyTjlMQPX8Qy5PS.jpg', N'343668', N'https://image.tmdb.org/t/p/w1280/eVHVwP71el20fofkCHo78ebQv7Q.jpg', N'en', N'6.956', N'10687', N'7.9795', N'Kingsman: The Golden Circle', N'0', NULL, NULL, NULL, NULL, N'Sau sự kiện ở phần một, Eggsy giờ đây đã trở thành điệp viên chính thức của tổ chức Kingsman. Eggsy cùng chuyên gia công nghệ Merlin và các đồng đội cũ buộc phải chạy sang Mỹ sau khi căn cứ của Kingsman bị phá hủy. Tại đây, họ phải phối hợp cùng các đồng minh thuộc Statesmen, tổ chức điệp viên tại Mỹ, để triệt phá mưu của ác nữ Poppy, vốn là thành viên của The Golden Circle - một hội kín mang mục đích lập lại trật tự thế giới mới.', NULL, NULL, N'ACTIVE')
+GO
+
+INSERT INTO [dbo].[movies] ([id], [title], [duration_min], [genre], [description], [release_date], [poster_url], [tmdb_id], [backdrop_url], [original_language], [vote_average], [vote_count], [popularity], [original_title], [adult], [director], [cast], [country], [language], [overview], [image_url], [rating], [status]) VALUES (N'28', N'Xì Trum: Ngôi Làng Kỳ Bí', N'89', N'Phim Gia Đình, Phim Hài, Phim Phiêu Lưu, Phim Hoạt Hình', N'Lần này, thế giới Xì Trum sẽ là bối cảnh chính và những chú Xì Trum dễ thương sẽ giữ vai trò chủ đạo chứ không phải làm nền cho loài người. Tí Cô Nương, Tí Vụng Về, Tí Đô và Tí Cận sẽ rời ngôi làng xì trum để tham vào một cuộc phiêu lưu đầy mới lạ đến vùng đất bí ẩn.', N'2017-03-23', N'https://image.tmdb.org/t/p/w500/aXPGzJyWJBlGcKvO2MW72GF9P7S.jpg', N'137116', N'https://image.tmdb.org/t/p/w1280/sN1sIv6YZTpdBr7D9mQBxGzRnLL.jpg', N'en', N'6.3', N'1485', N'5.4869', N'Smurfs: The Lost Village', N'0', NULL, NULL, NULL, NULL, N'Lần này, thế giới Xì Trum sẽ là bối cảnh chính và những chú Xì Trum dễ thương sẽ giữ vai trò chủ đạo chứ không phải làm nền cho loài người. Tí Cô Nương, Tí Vụng Về, Tí Đô và Tí Cận sẽ rời ngôi làng xì trum để tham vào một cuộc phiêu lưu đầy mới lạ đến vùng đất bí ẩn.', NULL, NULL, N'ACTIVE')
+GO
+
+INSERT INTO [dbo].[movies] ([id], [title], [duration_min], [genre], [description], [release_date], [poster_url], [tmdb_id], [backdrop_url], [original_language], [vote_average], [vote_count], [popularity], [original_title], [adult], [director], [cast], [country], [language], [overview], [image_url], [rating], [status]) VALUES (N'29', N'Bí Kíp Luyện Rồng: Trở Về Nhà', N'22', N'Phim Hoạt Hình, Phim Giả Tượng, Phim Phiêu Lưu, Phim Hành Động, Phim Gia Đình', N'Đã mười năm kể từ khi những con rồng chuyển đến Thế giới ẩn, và mặc dù Toothless không sống ở New Berk nữa, Hiccup vẫn tiếp tục truyền thống kỳ nghỉ mà anh từng chia sẻ với người bạn thân nhất của mình. Nhưng những người Viking ở New Berk đã bắt đầu quên đi tình bạn của họ với rồng. Hiccup, Astrid và Gobber không biết phải làm gì để giữ những con rồng trong lòng dân làng. Và trên biển, những con rồng có một kế hoạch của riêng mình ...', N'2019-12-03', N'https://image.tmdb.org/t/p/w500/kXj2Qrfm994yLeuADqbOieU1mUH.jpg', N'638507', N'https://image.tmdb.org/t/p/w1280/lI2AHx0QQrNnEkUqUG01QHUdLDW.jpg', N'en', N'8.03', N'1050', N'12.7057', N'How to Train Your Dragon: Homecoming', N'0', NULL, NULL, NULL, NULL, N'Đã mười năm kể từ khi những con rồng chuyển đến Thế giới ẩn, và mặc dù Toothless không sống ở New Berk nữa, Hiccup vẫn tiếp tục truyền thống kỳ nghỉ mà anh từng chia sẻ với người bạn thân nhất của mình. Nhưng những người Viking ở New Berk đã bắt đầu quên đi tình bạn của họ với rồng. Hiccup, Astrid và Gobber không biết phải làm gì để giữ những con rồng trong lòng dân làng. Và trên biển, những con rồng có một kế hoạch của riêng mình ...', NULL, NULL, N'ACTIVE')
+GO
+
+INSERT INTO [dbo].[movies] ([id], [title], [duration_min], [genre], [description], [release_date], [poster_url], [tmdb_id], [backdrop_url], [original_language], [vote_average], [vote_count], [popularity], [original_title], [adult], [director], [cast], [country], [language], [overview], [image_url], [rating], [status]) VALUES (N'31', N'Gay ?', N'2', N'', N'', N'2001-01-01', N'https://image.tmdb.org/t/p/w500/1AlL1cL0pfpEXG6FkmVkFL5f4xe.jpg', N'600789', NULL, N'fr', N'9.357', N'7', N'0.284', N'Gay ?', N'0', NULL, NULL, NULL, NULL, N'', NULL, NULL, N'ACTIVE')
+GO
+
+INSERT INTO [dbo].[movies] ([id], [title], [duration_min], [genre], [description], [release_date], [poster_url], [tmdb_id], [backdrop_url], [original_language], [vote_average], [vote_count], [popularity], [original_title], [adult], [director], [cast], [country], [language], [overview], [image_url], [rating], [status]) VALUES (N'32', N'Gay', N'99', N'Phim Chính Kịch', N'', N'2004-11-04', N'https://image.tmdb.org/t/p/w500/qnhbXd1qvZE0D5TOWwn0yYVdAso.jpg', N'126058', N'https://image.tmdb.org/t/p/w1280/wdQTE7wglfJn32A0dIVSwNtbI48.jpg', N'nl', N'5.692', N'13', N'0.3637', N'Gay', N'0', NULL, NULL, NULL, NULL, N'', NULL, NULL, N'ACTIVE')
+GO
+
 SET IDENTITY_INSERT [dbo].[movies] OFF
+GO
+
+
+-- ----------------------------
+-- Table structure for oauth2_user_profiles
+-- ----------------------------
+IF EXISTS (SELECT * FROM sys.all_objects WHERE object_id = OBJECT_ID(N'[dbo].[oauth2_user_profiles]') AND type IN ('U'))
+	DROP TABLE [dbo].[oauth2_user_profiles]
+GO
+
+CREATE TABLE [dbo].[oauth2_user_profiles] (
+  [id] bigint  IDENTITY(1,1) NOT NULL,
+  [user_id] bigint  NOT NULL,
+  [provider_id] nvarchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS  NOT NULL,
+  [provider] nvarchar(20) COLLATE SQL_Latin1_General_CP1_CI_AS  NOT NULL,
+  [provider_username] nvarchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS  NULL,
+  [access_token] ntext COLLATE SQL_Latin1_General_CP1_CI_AS  NULL,
+  [refresh_token] ntext COLLATE SQL_Latin1_General_CP1_CI_AS  NULL,
+  [token_expiry] datetime2(7)  NULL,
+  [created_at] datetime2(7) DEFAULT getdate() NOT NULL,
+  [updated_at] datetime2(7) DEFAULT getdate() NOT NULL,
+  [picture_url] nvarchar(500) COLLATE SQL_Latin1_General_CP1_CI_AS  NULL,
+  [locale] nvarchar(10) COLLATE SQL_Latin1_General_CP1_CI_AS  NULL,
+  [verified_email] bit  NULL,
+  [family_name] nvarchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS  NULL,
+  [given_name] nvarchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS  NULL
+)
+GO
+
+ALTER TABLE [dbo].[oauth2_user_profiles] SET (LOCK_ESCALATION = TABLE)
+GO
+
+
+-- ----------------------------
+-- Records of oauth2_user_profiles
+-- ----------------------------
+SET IDENTITY_INSERT [dbo].[oauth2_user_profiles] ON
+GO
+
+INSERT INTO [dbo].[oauth2_user_profiles] ([id], [user_id], [provider_id], [provider], [provider_username], [access_token], [refresh_token], [token_expiry], [created_at], [updated_at], [picture_url], [locale], [verified_email], [family_name], [given_name]) VALUES (N'1', N'10', N'115087535176634989947', N'GOOGLE', N'Michael Oscar', N'ya29.a0AS3H6NzjiYeZnLpsdl4Bh5ORiqbu8_W9ZvuajKzJimWE7TvcZrK6HV7pSRUP7lEWqZ0xdX431Aa0uye9oCoSqhTkTVkrzBHUzqPAKLCVQkhJ8V8K5q4C-O_XIovwg80toOqK1e5XmMXs-jfAoa1WI2RJxo1eupPv-0-9gYqAaCgYKAScSARMSFQHGX2MimCVKGVoIqWBQWPfafaDZXQ0175', NULL, N'2025-08-05 16:11:33.9065052', N'2025-08-01 08:22:43.0081380', N'2025-08-05 15:11:36.0150232', N'https://lh3.googleusercontent.com/a/ACg8ocLGm5aLdMB3RHo9zCs3D6IgZX3Oiqg7gLW5rLdxapPvkMi92U5Q=s96-c', NULL, N'1', N'Oscar', N'Michael')
+GO
+
+INSERT INTO [dbo].[oauth2_user_profiles] ([id], [user_id], [provider_id], [provider], [provider_username], [access_token], [refresh_token], [token_expiry], [created_at], [updated_at], [picture_url], [locale], [verified_email], [family_name], [given_name]) VALUES (N'2', N'11', N'117476013917899003381', N'GOOGLE', N'Edward Kenway', N'ya29.A0AS3H6NwyVw45WSlO5BTdCXpYRYjwoXQh7wOnCTj4AMirWTkZPhG9HAlFvEd3XWCiyixDMVG04DzD1CS7e-cGs_RIcWUGT6gG7j5q3h8K84hLyf_18oMD78SXVCJsT7XWSFDrq-WEvWqcogmkUhIeeu_BUMzaW4bW52d0JfBdyMjjR7A-a95C0uApuXXg2nqnOt6noRkaCgYKASMSARUSFQHGX2Mi8k725sD5GRuxOomefJ-rvA0206', NULL, N'2025-08-01 09:27:19.4328325', N'2025-08-01 08:25:31.7327204', N'2025-08-01 08:27:21.9428602', N'https://lh3.googleusercontent.com/a/ACg8ocLDVLrsDXzhTUwZ4yF7__6hJshlu_Ps6HtqwXK_wIM_M6bidw=s96-c', NULL, N'1', N'Kenway', N'Edward')
+GO
+
+INSERT INTO [dbo].[oauth2_user_profiles] ([id], [user_id], [provider_id], [provider], [provider_username], [access_token], [refresh_token], [token_expiry], [created_at], [updated_at], [picture_url], [locale], [verified_email], [family_name], [given_name]) VALUES (N'3', N'12', N'107265308616433449172', N'GOOGLE', N'falconzdaworst', N'ya29.A0AS3H6Nz09No50qeBKm6vMH6-IjptNiyxRiP7tHEmieVIWHsyxVQkqnuVE8npd_OV4Kmf4Vz_KGFyuYYWIg0NvIa9eqT6X2OGAVSODQw7BXqj8uthYFtYAehzxnGIojHgICL0Y_KnBV6pV_U3BVMQR3tI2N4ogQD6_HQjjQ9LnTYjzdk10irbD7r3AxD51aGrixeRskMaCgYKAQkSARYSFQHGX2MilcA-wVYOoi2K8l1N7iMTEg0206', NULL, N'2025-08-01 09:28:33.0340755', N'2025-08-01 08:28:36.8325491', N'2025-08-01 08:28:36.8325491', N'https://lh3.googleusercontent.com/a/ACg8ocLhHJcslv18SE1LCcNZ0fKo6qrKkd3OXYwslHrEVm2HucDWKhDc=s96-c', NULL, N'1', NULL, N'falconzdaworst')
+GO
+
+INSERT INTO [dbo].[oauth2_user_profiles] ([id], [user_id], [provider_id], [provider], [provider_username], [access_token], [refresh_token], [token_expiry], [created_at], [updated_at], [picture_url], [locale], [verified_email], [family_name], [given_name]) VALUES (N'4', N'13', N'103539428708250377644', N'GOOGLE', N'edward Kenway', N'ya29.A0AS3H6NyAYgIA7_wF24FcA1Wr7JNGZFnTK-0WiZ0TxKoHh0Styl8mnZwaBcdI7acrmSLTGuf13ETDh8ucq79uocspSllV0uaS-UfWhUQYEY1xOAGo3vgWDufzJiAHJsVHG3GCaw7rgxfrxupMnBCSSIxVT1u8gG9vfM_klH81tzFka2JpvvaYi67jZ4uZWzOmdgfjKVkaCgYKAX0SARMSFQHGX2Mi5b3kJY0rtWo8my9WKX5-MA0206', NULL, N'2025-08-01 09:28:53.8685327', N'2025-08-01 08:28:57.0063916', N'2025-08-01 08:28:57.0063916', N'https://lh3.googleusercontent.com/a/ACg8ocJfOhmYq5Y33wuaeBsWPjsGh3-eyPp-aIf2f5-QZxItVKRL8A=s96-c', NULL, N'1', N'Kenway', N'edward')
+GO
+
+INSERT INTO [dbo].[oauth2_user_profiles] ([id], [user_id], [provider_id], [provider], [provider_username], [access_token], [refresh_token], [token_expiry], [created_at], [updated_at], [picture_url], [locale], [verified_email], [family_name], [given_name]) VALUES (N'5', N'14', N'116241324821797637063', N'GOOGLE', N'Đức Anh Phùng', N'ya29.a0AS3H6Nxwz7XEqmCc_KPxu8kzqjOinOXg1eqhg6SgQEeB6hDNm5oCzgkAwtD_M3oOU511xcamUA3sIprzNy2Rhbv6rpSpVvdm9rkx36M30belMwg30mp33XEH_Db-tiD_Tlb1o5qrdlFE5-0fmDxX1C1bQDJBMALthNweiYmzaCgYKASUSARQSFQHGX2MiR5UBRubfBs1XFB4yyU1TQQ0175', NULL, N'2025-08-05 16:47:21.8921074', N'2025-08-05 15:43:57.2744323', N'2025-08-05 15:47:24.3498948', N'https://lh3.googleusercontent.com/a/ACg8ocLN2ZEsZJmqbISvDl2bL-VKQ6-8hRz24xgZoWMa3yKufRYMsSbS=s96-c', NULL, N'1', N'Phùng', N'Đức Anh')
+GO
+
+SET IDENTITY_INSERT [dbo].[oauth2_user_profiles] OFF
 GO
 
 
@@ -397,6 +521,27 @@ INSERT INTO [dbo].[payments] ([id], [booking_id], [amount], [payment_method], [p
 GO
 
 INSERT INTO [dbo].[payments] ([id], [booking_id], [amount], [payment_method], [payment_time], [transaction_id], [status]) VALUES (N'16', N'21', N'288000.00', N'CREDIT_CARD', N'2025-08-01 07:59:31.2142655', N'TXN_8EA798151C0C', N'COMPLETED')
+GO
+
+INSERT INTO [dbo].[payments] ([id], [booking_id], [amount], [payment_method], [payment_time], [transaction_id], [status]) VALUES (N'17', N'23', N'468000.00', N'CREDIT_CARD', N'2025-08-03 19:57:50.0173723', N'TXN_AC3FD40C2EF9', N'COMPLETED')
+GO
+
+INSERT INTO [dbo].[payments] ([id], [booking_id], [amount], [payment_method], [payment_time], [transaction_id], [status]) VALUES (N'18', N'24', N'468000.00', N'DEBIT_CARD', N'2025-08-03 19:59:11.2570489', N'TXN_552EE2BB2C0C', N'COMPLETED')
+GO
+
+INSERT INTO [dbo].[payments] ([id], [booking_id], [amount], [payment_method], [payment_time], [transaction_id], [status]) VALUES (N'19', N'26', N'288000.00', N'E_WALLET', N'2025-08-05 13:22:51.4605075', N'TXN_7BB64F6211A4', N'FAILED')
+GO
+
+INSERT INTO [dbo].[payments] ([id], [booking_id], [amount], [payment_method], [payment_time], [transaction_id], [status]) VALUES (N'20', N'27', N'288000.00', N'E_WALLET', N'2025-08-05 13:30:02.8406158', N'TXN_B0622D56FE0E', N'FAILED')
+GO
+
+INSERT INTO [dbo].[payments] ([id], [booking_id], [amount], [payment_method], [payment_time], [transaction_id], [status]) VALUES (N'21', N'28', N'288000.00', N'E_WALLET', N'2025-08-05 13:42:05.6553972', N'TXN_DD4225731A2B', N'FAILED')
+GO
+
+INSERT INTO [dbo].[payments] ([id], [booking_id], [amount], [payment_method], [payment_time], [transaction_id], [status]) VALUES (N'22', N'29', N'144000.00', N'E_WALLET', N'2025-08-05 15:13:15.1943928', N'TXN_E1CC5B2F30DE', N'FAILED')
+GO
+
+INSERT INTO [dbo].[payments] ([id], [booking_id], [amount], [payment_method], [payment_time], [transaction_id], [status]) VALUES (N'23', N'30', N'480000.00', N'E_WALLET', N'2025-08-05 15:47:53.7437860', N'TXN_EB0600C6663C', N'COMPLETED')
 GO
 
 SET IDENTITY_INSERT [dbo].[payments] OFF
@@ -471,7 +616,7 @@ GO
 SET IDENTITY_INSERT [dbo].[screenings] ON
 GO
 
-INSERT INTO [dbo].[screenings] ([id], [movie_id], [auditorium_id], [start_time], [end_time], [ticket_price], [status]) VALUES (N'2101', N'1', N'257', N'2025-07-30 09:00:00.3462565', NULL, N'120000.00', N'ACTIVE')
+INSERT INTO [dbo].[screenings] ([id], [movie_id], [auditorium_id], [start_time], [end_time], [ticket_price], [status]) VALUES (N'2101', N'1', N'257', N'2025-08-10 09:00:00.0000000', NULL, N'120000.00', N'ACTIVE')
 GO
 
 INSERT INTO [dbo].[screenings] ([id], [movie_id], [auditorium_id], [start_time], [end_time], [ticket_price], [status]) VALUES (N'2102', N'1', N'257', N'2025-07-30 14:00:00.3462565', NULL, N'120000.00', N'ACTIVE')
@@ -577,6 +722,15 @@ INSERT INTO [dbo].[screenings] ([id], [movie_id], [auditorium_id], [start_time],
 GO
 
 INSERT INTO [dbo].[screenings] ([id], [movie_id], [auditorium_id], [start_time], [end_time], [ticket_price], [status]) VALUES (N'2136', N'4', N'260', N'2025-08-01 19:00:00.3462565', NULL, N'150000.00', N'ACTIVE')
+GO
+
+INSERT INTO [dbo].[screenings] ([id], [movie_id], [auditorium_id], [start_time], [end_time], [ticket_price], [status]) VALUES (N'2137', N'27', N'257', N'2025-08-05 22:30:00.0000000', NULL, N'120000.00', N'ACTIVE')
+GO
+
+INSERT INTO [dbo].[screenings] ([id], [movie_id], [auditorium_id], [start_time], [end_time], [ticket_price], [status]) VALUES (N'2138', N'5', N'258', N'2025-08-05 18:30:00.0000000', NULL, N'100000.00', N'ACTIVE')
+GO
+
+INSERT INTO [dbo].[screenings] ([id], [movie_id], [auditorium_id], [start_time], [end_time], [ticket_price], [status]) VALUES (N'2139', N'31', N'257', N'2025-08-12 19:40:00.0000000', NULL, N'200000.00', N'ACTIVE')
 GO
 
 SET IDENTITY_INSERT [dbo].[screenings] OFF
@@ -1320,7 +1474,7 @@ GO
 INSERT INTO [dbo].[users] ([id], [username], [email], [password_hash], [role], [full_name], [phone], [date_of_birth], [created_at], [status], [auth_provider], [provider_id], [avatar_url], [last_login], [is_enabled]) VALUES (N'1', N'admin', N'admin@cinemaparadise.vn', N'$2a$12$ql7t3dfII28oIf.6sUe/Uuomu.ClsPplwpbY8pMo83JAI6VwSn5Ra', N'ADMIN', N'Administrator', N'0236.3888.999', NULL, N'2025-07-28 16:00:55.8866667', N'ACTIVE', N'LOCAL', NULL, NULL, NULL, N'1')
 GO
 
-INSERT INTO [dbo].[users] ([id], [username], [email], [password_hash], [role], [full_name], [phone], [date_of_birth], [created_at], [status], [auth_provider], [provider_id], [avatar_url], [last_login], [is_enabled]) VALUES (N'2', N'staff1', N'staff1@cinemaparadise.vn', N'$2a$12$ql7t3dfII28oIf.6sUe/Uuomu.ClsPplwpbY8pMo83JAI6VwSn5Ra', N'STAFF', N'Nhân viên 1', N'0236.3888.998', NULL, N'2025-07-28 16:00:55.8866667', N'ACTIVE', N'LOCAL', NULL, NULL, NULL, N'1')
+INSERT INTO [dbo].[users] ([id], [username], [email], [password_hash], [role], [full_name], [phone], [date_of_birth], [created_at], [status], [auth_provider], [provider_id], [avatar_url], [last_login], [is_enabled]) VALUES (N'2', N'staff1', N'staff1@cinemaparadise.vn', N'$2a$12$ql7t3dfII28oIf.6sUe/Uuomu.ClsPplwpbY8pMo83JAI6VwSn5Ra', N'THEATER_MANAGER', N'Nhân viên 1', N'0236.3888.998', NULL, N'2025-07-28 16:00:55.8866667', N'ACTIVE', N'LOCAL', NULL, NULL, NULL, N'1')
 GO
 
 INSERT INTO [dbo].[users] ([id], [username], [email], [password_hash], [role], [full_name], [phone], [date_of_birth], [created_at], [status], [auth_provider], [provider_id], [avatar_url], [last_login], [is_enabled]) VALUES (N'3', N'customer1', N'customer1@gmail.com', N'$2a$12$ql7t3dfII28oIf.6sUe/Uuomu.ClsPplwpbY8pMo83JAI6VwSn5Ra', N'CUSTOMER', N'Khách hàng 1', N'0901234567', NULL, N'2025-07-28 16:00:55.8866667', N'ACTIVE', N'LOCAL', NULL, NULL, NULL, N'1')
@@ -1329,13 +1483,28 @@ GO
 INSERT INTO [dbo].[users] ([id], [username], [email], [password_hash], [role], [full_name], [phone], [date_of_birth], [created_at], [status], [auth_provider], [provider_id], [avatar_url], [last_login], [is_enabled]) VALUES (N'4', N'DucAnh808', N'ducanh.aoa@gmail.com', N'$2a$10$ty5dKA6OpsVovmG01EzDE.jG7oSHDHMpk4JGo8bCagxiCuVBx27Oq', N'CUSTOMER', NULL, NULL, NULL, N'2025-07-28 16:36:41.3574050', N'ACTIVE', N'LOCAL', NULL, NULL, NULL, N'1')
 GO
 
-INSERT INTO [dbo].[users] ([id], [username], [email], [password_hash], [role], [full_name], [phone], [date_of_birth], [created_at], [status], [auth_provider], [provider_id], [avatar_url], [last_login], [is_enabled]) VALUES (N'7', N'faocaozi', N'asd@gmail.com', N'$2a$10$/6wBFScct4cBbLyHaL4r.uw55ZOSwk/HZLsMFxtgIQ5Ob6hAxK1Pq', N'CUSTOMER', NULL, NULL, NULL, N'2025-07-29 08:17:38.1960052', N'ACTIVE', N'LOCAL', NULL, NULL, NULL, N'1')
+INSERT INTO [dbo].[users] ([id], [username], [email], [password_hash], [role], [full_name], [phone], [date_of_birth], [created_at], [status], [auth_provider], [provider_id], [avatar_url], [last_login], [is_enabled]) VALUES (N'7', N'faocaozi', N'asd@gmail.com', N'$2a$10$/6wBFScct4cBbLyHaL4r.uw55ZOSwk/HZLsMFxtgIQ5Ob6hAxK1Pq', N'CUSTOMER', NULL, NULL, NULL, N'2025-07-29 08:17:38.1960052', N'ACTIVE', N'LOCAL', NULL, NULL, NULL, N'0')
 GO
 
-INSERT INTO [dbo].[users] ([id], [username], [email], [password_hash], [role], [full_name], [phone], [date_of_birth], [created_at], [status], [auth_provider], [provider_id], [avatar_url], [last_login], [is_enabled]) VALUES (N'8', N'aaa', N'dfheh@gmail.com', N'$2a$10$UtOU7zTU0g2ATGZGz/piz..1ylfsRSF5AyOeMeXoc7GJKFA4UpHoe', N'CUSTOMER', NULL, NULL, NULL, N'2025-07-31 15:49:03.1748990', N'ACTIVE', N'LOCAL', NULL, NULL, NULL, N'1')
+INSERT INTO [dbo].[users] ([id], [username], [email], [password_hash], [role], [full_name], [phone], [date_of_birth], [created_at], [status], [auth_provider], [provider_id], [avatar_url], [last_login], [is_enabled]) VALUES (N'8', N'aaa', N'dfheh@gmail.com', N'$2a$10$UtOU7zTU0g2ATGZGz/piz..1ylfsRSF5AyOeMeXoc7GJKFA4UpHoe', N'CUSTOMER', NULL, NULL, NULL, N'2025-07-31 15:49:03.1748990', N'ACTIVE', N'LOCAL', NULL, NULL, NULL, N'0')
 GO
 
 INSERT INTO [dbo].[users] ([id], [username], [email], [password_hash], [role], [full_name], [phone], [date_of_birth], [created_at], [status], [auth_provider], [provider_id], [avatar_url], [last_login], [is_enabled]) VALUES (N'9', N'testuser', N'3636@gmail.com', N'$2a$10$7ks2NtGAUy8RwmxI4SCFuOxiUcBwMcl/SgWfe53DEaDWOsFvbSnwK', N'CUSTOMER', NULL, NULL, NULL, N'2025-08-01 08:04:35.8597293', N'ACTIVE', N'LOCAL', NULL, NULL, NULL, N'1')
+GO
+
+INSERT INTO [dbo].[users] ([id], [username], [email], [password_hash], [role], [full_name], [phone], [date_of_birth], [created_at], [status], [auth_provider], [provider_id], [avatar_url], [last_login], [is_enabled]) VALUES (N'10', N'weareoscarmike1301', N'weareoscarmike1301@gmail.com', NULL, N'CUSTOMER', N'Michael Oscar', NULL, NULL, N'2025-08-01 08:22:42.5050809', N'ACTIVE', N'GOOGLE', N'115087535176634989947', N'https://lh3.googleusercontent.com/a/ACg8ocLGm5aLdMB3RHo9zCs3D6IgZX3Oiqg7gLW5rLdxapPvkMi92U5Q=s96-c', N'2025-08-05 15:11:36.0150232', N'1')
+GO
+
+INSERT INTO [dbo].[users] ([id], [username], [email], [password_hash], [role], [full_name], [phone], [date_of_birth], [created_at], [status], [auth_provider], [provider_id], [avatar_url], [last_login], [is_enabled]) VALUES (N'11', N'edwardkenway1301', N'edwardkenway1301@gmail.com', NULL, N'CUSTOMER', N'Edward Kenway', NULL, NULL, N'2025-08-01 08:25:31.2469706', N'ACTIVE', N'GOOGLE', N'117476013917899003381', N'https://lh3.googleusercontent.com/a/ACg8ocLDVLrsDXzhTUwZ4yF7__6hJshlu_Ps6HtqwXK_wIM_M6bidw=s96-c', N'2025-08-01 08:27:21.9418626', N'1')
+GO
+
+INSERT INTO [dbo].[users] ([id], [username], [email], [password_hash], [role], [full_name], [phone], [date_of_birth], [created_at], [status], [auth_provider], [provider_id], [avatar_url], [last_login], [is_enabled]) VALUES (N'12', N'nguyenhoanganh291', N'nguyenhoanganh291@gmail.com', NULL, N'CUSTOMER', N'falconzdaworst', NULL, NULL, N'2025-08-01 08:28:36.3158277', N'ACTIVE', N'GOOGLE', N'107265308616433449172', N'https://lh3.googleusercontent.com/a/ACg8ocLhHJcslv18SE1LCcNZ0fKo6qrKkd3OXYwslHrEVm2HucDWKhDc=s96-c', N'2025-08-01 08:28:37.0578847', N'1')
+GO
+
+INSERT INTO [dbo].[users] ([id], [username], [email], [password_hash], [role], [full_name], [phone], [date_of_birth], [created_at], [status], [auth_provider], [provider_id], [avatar_url], [last_login], [is_enabled]) VALUES (N'13', N'kenwayedward579', N'kenwayedward579@gmail.com', NULL, N'CUSTOMER', N'edward Kenway', NULL, NULL, N'2025-08-01 08:28:56.4802313', N'ACTIVE', N'GOOGLE', N'103539428708250377644', N'https://lh3.googleusercontent.com/a/ACg8ocJfOhmYq5Y33wuaeBsWPjsGh3-eyPp-aIf2f5-QZxItVKRL8A=s96-c', N'2025-08-01 08:28:57.2639889', N'1')
+GO
+
+INSERT INTO [dbo].[users] ([id], [username], [email], [password_hash], [role], [full_name], [phone], [date_of_birth], [created_at], [status], [auth_provider], [provider_id], [avatar_url], [last_login], [is_enabled]) VALUES (N'14', N'phungducanh2k5', N'phungducanh2k5@gmail.com', NULL, N'CUSTOMER', N'Đức Anh Phùng', NULL, NULL, N'2025-08-05 15:43:56.7834412', N'ACTIVE', N'GOOGLE', N'116241324821797637063', N'https://lh3.googleusercontent.com/a/ACg8ocLN2ZEsZJmqbISvDl2bL-VKQ6-8hRz24xgZoWMa3yKufRYMsSbS=s96-c', N'2025-08-05 15:47:24.3489393', N'1')
 GO
 
 SET IDENTITY_INSERT [dbo].[users] OFF
@@ -1371,7 +1540,7 @@ GO
 -- ----------------------------
 -- Auto increment value for booked_seats
 -- ----------------------------
-DBCC CHECKIDENT ('[dbo].[booked_seats]', RESEED, 63)
+DBCC CHECKIDENT ('[dbo].[booked_seats]', RESEED, 83)
 GO
 
 
@@ -1406,7 +1575,7 @@ GO
 -- ----------------------------
 -- Auto increment value for bookings
 -- ----------------------------
-DBCC CHECKIDENT ('[dbo].[bookings]', RESEED, 21)
+DBCC CHECKIDENT ('[dbo].[bookings]', RESEED, 30)
 GO
 
 
@@ -1438,7 +1607,7 @@ GO
 -- ----------------------------
 -- Auto increment value for movies
 -- ----------------------------
-DBCC CHECKIDENT ('[dbo].[movies]', RESEED, 25)
+DBCC CHECKIDENT ('[dbo].[movies]', RESEED, 32)
 GO
 
 
@@ -1463,9 +1632,51 @@ GO
 
 
 -- ----------------------------
+-- Auto increment value for oauth2_user_profiles
+-- ----------------------------
+DBCC CHECKIDENT ('[dbo].[oauth2_user_profiles]', RESEED, 5)
+GO
+
+
+-- ----------------------------
+-- Indexes structure for table oauth2_user_profiles
+-- ----------------------------
+CREATE NONCLUSTERED INDEX [IX_oauth2_user_profiles_user_id]
+ON [dbo].[oauth2_user_profiles] (
+  [user_id] ASC
+)
+GO
+
+CREATE NONCLUSTERED INDEX [IX_oauth2_user_profiles_provider]
+ON [dbo].[oauth2_user_profiles] (
+  [provider] ASC,
+  [provider_id] ASC
+)
+GO
+
+
+-- ----------------------------
+-- Uniques structure for table oauth2_user_profiles
+-- ----------------------------
+ALTER TABLE [dbo].[oauth2_user_profiles] ADD CONSTRAINT [UQ_oauth2_provider_id] UNIQUE NONCLUSTERED ([provider] ASC, [provider_id] ASC)
+WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON)  
+ON [PRIMARY]
+GO
+
+
+-- ----------------------------
+-- Primary Key structure for table oauth2_user_profiles
+-- ----------------------------
+ALTER TABLE [dbo].[oauth2_user_profiles] ADD CONSTRAINT [PK__oauth2_u__3213E83F8C75F814] PRIMARY KEY CLUSTERED ([id])
+WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON)  
+ON [PRIMARY]
+GO
+
+
+-- ----------------------------
 -- Auto increment value for payments
 -- ----------------------------
-DBCC CHECKIDENT ('[dbo].[payments]', RESEED, 16)
+DBCC CHECKIDENT ('[dbo].[payments]', RESEED, 23)
 GO
 
 
@@ -1507,7 +1718,7 @@ GO
 -- ----------------------------
 -- Auto increment value for screenings
 -- ----------------------------
-DBCC CHECKIDENT ('[dbo].[screenings]', RESEED, 2136)
+DBCC CHECKIDENT ('[dbo].[screenings]', RESEED, 2139)
 GO
 
 
@@ -1554,7 +1765,7 @@ GO
 -- ----------------------------
 -- Auto increment value for seat_holds
 -- ----------------------------
-DBCC CHECKIDENT ('[dbo].[seat_holds]', RESEED, 206)
+DBCC CHECKIDENT ('[dbo].[seat_holds]', RESEED, 250)
 GO
 
 
@@ -1637,7 +1848,7 @@ GO
 -- ----------------------------
 -- Auto increment value for users
 -- ----------------------------
-DBCC CHECKIDENT ('[dbo].[users]', RESEED, 9)
+DBCC CHECKIDENT ('[dbo].[users]', RESEED, 14)
 GO
 
 
@@ -1699,6 +1910,13 @@ ALTER TABLE [dbo].[bookings] ADD CONSTRAINT [FK_bookings_users] FOREIGN KEY ([us
 GO
 
 ALTER TABLE [dbo].[bookings] ADD CONSTRAINT [FK_bookings_screenings] FOREIGN KEY ([screening_id]) REFERENCES [dbo].[screenings] ([id]) ON DELETE NO ACTION ON UPDATE NO ACTION
+GO
+
+
+-- ----------------------------
+-- Foreign Keys structure for table oauth2_user_profiles
+-- ----------------------------
+ALTER TABLE [dbo].[oauth2_user_profiles] ADD CONSTRAINT [FK_oauth2_user_profiles_users] FOREIGN KEY ([user_id]) REFERENCES [dbo].[users] ([id]) ON DELETE CASCADE ON UPDATE NO ACTION
 GO
 
 

@@ -26,11 +26,11 @@ public class PaymentController {
             System.out.println("🔥 Loading payment page for booking ID: " + bookingId);
             
             Booking booking = bookingService.getBookingById(bookingId)
-                .orElseThrow(() -> new RuntimeException("Không tìm thấy booking"));
+                .orElseThrow(() -> new RuntimeException("Booking not found"));
             
             System.out.println("✅ Found booking: " + booking.getId());
             
-            // Kiểm tra xem booking đã được thanh toán chưa
+            // Check if booking is already confirmed
             if (booking.getBookingStatus() == Booking.BookingStatus.CONFIRMED) {
                 System.out.println("⚠️ Booking already confirmed, redirecting...");
                 return "redirect:/booking/confirmation/" + bookingId;
@@ -54,29 +54,37 @@ public class PaymentController {
                                 @RequestParam String paymentMethod,
                                 RedirectAttributes redirectAttributes) {
         try {
-            // Tạo payment
+            System.out.println("🔥 Processing payment for booking ID: " + bookingId + " with method: " + paymentMethod);
+            
+            // Create payment
             Payment.PaymentMethod method = Payment.PaymentMethod.valueOf(paymentMethod);
             Payment payment = paymentService.createPayment(bookingId, method);
+            System.out.println("✅ Payment created with ID: " + payment.getId());
             
-            // Giả lập xử lý thanh toán (trong thực tế sẽ tích hợp với gateway thanh toán)
+            // Simulate payment processing (in real implementation, would integrate with payment gateway)
             boolean paymentSuccess = simulatePaymentProcessing(payment);
             
-            // Cập nhật trạng thái payment
+            // Update payment status
             payment = paymentService.processPayment(payment.getId(), paymentSuccess);
+            System.out.println("✅ Payment processed, final status: " + payment.getStatus());
             
             if (paymentSuccess) {
+                System.out.println("🎉 Payment successful, redirecting to success page");
                 redirectAttributes.addFlashAttribute("success", 
-                    "Thanh toán thành công! Mã giao dịch: " + payment.getTransactionId());
+                    "Payment successful! Transaction ID: " + payment.getTransactionId());
                 return "redirect:/payment/success/" + payment.getId();
             } else {
+                System.out.println("❌ Payment failed, redirecting to failed page");
                 redirectAttributes.addFlashAttribute("error", 
-                    "Thanh toán thất bại! Vui lòng thử lại.");
-                return "redirect:/payment/booking/" + bookingId;
+                    "Payment failed! Please try again.");
+                return "redirect:/payment/failed/" + payment.getId();
             }
             
         } catch (Exception e) {
+            System.err.println("❌ Payment processing error: " + e.getMessage());
+            e.printStackTrace();
             redirectAttributes.addFlashAttribute("error", 
-                "Lỗi xử lý thanh toán: " + e.getMessage());
+                "Payment processing error: " + e.getMessage());
             return "redirect:/payment/booking/" + bookingId;
         }
     }
@@ -85,7 +93,7 @@ public class PaymentController {
     public String paymentSuccess(@PathVariable Long paymentId, Model model) {
         try {
             Payment payment = paymentService.getPaymentById(paymentId)
-                .orElseThrow(() -> new RuntimeException("Không tìm thấy payment"));
+                .orElseThrow(() -> new RuntimeException("Payment not found"));
             
             model.addAttribute("payment", payment);
             model.addAttribute("booking", payment.getBooking());
@@ -100,7 +108,7 @@ public class PaymentController {
     public String paymentFailed(@PathVariable Long paymentId, Model model) {
         try {
             Payment payment = paymentService.getPaymentById(paymentId)
-                .orElseThrow(() -> new RuntimeException("Không tìm thấy payment"));
+                .orElseThrow(() -> new RuntimeException("Payment not found"));
             
             model.addAttribute("payment", payment);
             model.addAttribute("booking", payment.getBooking());
@@ -112,17 +120,28 @@ public class PaymentController {
     }
     
     /**
-     * Giả lập quá trình xử lý thanh toán
-     * Trong thực tế sẽ tích hợp với các gateway thanh toán như VNPay, MoMo, etc.
+     * Simulate payment processing
+     * In real implementation, this would integrate with payment gateways like VNPay, MoMo, etc.
      */
     private boolean simulatePaymentProcessing(Payment payment) {
         try {
-            // Giả lập delay xử lý
+            System.out.println("🔄 Processing payment with method: " + payment.getPaymentMethod());
+            
+            // Simulate processing delay
             Thread.sleep(1000);
             
-            // Giả lập tỷ lệ thành công 95%
-            return Math.random() < 0.95;
+            // If payment method is E_WALLET, always fail for testing
+            if (payment.getPaymentMethod() == Payment.PaymentMethod.E_WALLET) {
+                System.out.println("💳 E-Wallet payment - simulating failure for testing");
+                return false;
+            }
+            
+            // For other payment methods, simulate 95% success rate
+            boolean success = Math.random() < 0.95;
+            System.out.println("💳 Payment result: " + (success ? "SUCCESS" : "FAILED"));
+            return success;
         } catch (InterruptedException e) {
+            System.err.println("❌ Payment processing interrupted");
             return false;
         }
     }

@@ -349,4 +349,25 @@ public class BookingService {
             return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
         };
     }
+    
+    @Transactional
+    public void cancelBooking(Long bookingId) {
+        Optional<Booking> bookingOpt = getBookingById(bookingId);
+        if (bookingOpt.isPresent()) {
+            Booking booking = bookingOpt.get();
+            
+            // Update booking status to CANCELLED
+            booking.setBookingStatus(Booking.BookingStatus.CANCELLED);
+            bookingRepository.save(booking);
+            
+            // Delete booked seats to release them
+            if (booking.getBookedSeats() != null) {
+                for (BookedSeat bookedSeat : booking.getBookedSeats()) {
+                    bookedSeatRepository.delete(bookedSeat);
+                }
+            }
+            
+            System.out.println("✅ Booking " + bookingId + " cancelled and seats released");
+        }
+    }
 }

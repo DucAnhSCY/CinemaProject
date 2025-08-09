@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kết Quả Tìm Kiếm - CinemaBooking</title>
+    <title>Search Results - CinemaBooking</title>
     
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -21,14 +21,14 @@
         <div class="container">
             <div class="row">
                 <div class="col-12">
-                    <h1 class="text-center mb-4">Kết Quả Tìm Kiếm</h1>
+                    <h1 class="text-center mb-4">Search Results</h1>
                     <div class="text-center">
                         <p class="text-muted" th:if="${searchTitle || searchGenre}">
-                            <span th:if="${searchTitle}">Tìm kiếm: "<span th:text="${searchTitle}"></span>"</span>
+                            <span th:if="${searchTitle}">Search: "<span th:text="${searchTitle}"></span>"</span>
                             <span th:if="${searchTitle && searchGenre}"> - </span>
-                            <span th:if="${searchGenre}">Thể loại: "<span th:text="${searchGenre}"></span>"</span>
+                            <span th:if="${searchGenre}">Genre: "<span th:text="${searchGenre}"></span>"</span>
                         </p>
-                        <p class="text-muted" th:unless="${searchTitle || searchGenre}">Tất cả phim</p>
+                        <p class="text-muted" th:unless="${searchTitle || searchGenre}">All Movies</p>
                     </div>
                 </div>
             </div>
@@ -41,9 +41,9 @@
             <div class="row">
                 <div class="col-12">
                     <div class="d-flex justify-content-between align-items-center mb-4">
-                        <h3 th:text="${#lists.size(movies) + ' kết quả tìm thấy'}">0 kết quả tìm thấy</h3>
+                        <h3 th:text="${#lists.size(movies) + ' results found'}">0 results found</h3>
                         <a th:href="@{/movies}" class="btn btn-outline-primary">
-                            <i class="fas fa-arrow-left me-2"></i>Quay lại danh sách phim
+                            <i class="fas fa-arrow-left me-2"></i>Back to Movies
                         </a>
                     </div>
                 </div>
@@ -53,8 +53,8 @@
                 <div th:each="movie : ${movies}" class="movie-card">
                     <img th:src="${movie.posterUrl}" th:alt="${movie.title}" th:title="${movie.title}" class="movie-poster" alt="Movie poster" title="Movie poster">
                     <div class="movie-info">
-                        <h5 class="movie-title" th:text="${movie.title}">Tên phim</h5>
-                        <p class="movie-genre" th:text="${movie.genre}">Thể loại</p>
+                        <h5 class="movie-title" th:text="${movie.title}">Movie Title</h5>
+                        <p class="movie-genre" th:text="${movie.genre}">Genre</p>
                         <div class="movie-rating">
                             <div class="rating-stars">
                                 <i class="fas fa-star"></i>
@@ -67,10 +67,10 @@
                         </div>
                         <div class="d-grid gap-2">
                             <a th:href="@{/movies/{id}(id=${movie.id})}" class="btn btn-primary btn-sm">
-                                <i class="fas fa-info-circle me-1"></i>Chi tiết
+                                <i class="fas fa-info-circle me-1"></i>Details
                             </a>
                             <button class="btn btn-outline-primary btn-sm" th:onclick="'showBookingModal(' + ${movie.id} + ')'">
-                                <i class="fas fa-ticket-alt me-1"></i>Đặt vé
+                                <i class="fas fa-ticket-alt me-1"></i>Book Tickets
                             </button>
                         </div>
                     </div>
@@ -79,10 +79,10 @@
             
             <div class="text-center mt-5" th:if="${#lists.isEmpty(movies)}">
                 <i class="fas fa-search fa-3x text-muted mb-3"></i>
-                <h4 class="text-muted">Không tìm thấy phim nào phù hợp</h4>
-                <p class="text-muted">Hãy thử tìm kiếm với từ khóa khác hoặc xem tất cả phim</p>
+                <h4 class="text-muted">No movies found</h4>
+                <p class="text-muted">Try searching with different keywords or browse all movies</p>
                 <a th:href="@{/movies}" class="btn btn-primary">
-                    <i class="fas fa-film me-2"></i>Xem tất cả phim
+                    <i class="fas fa-film me-2"></i>View All Movies
                 </a>
             </div>
         </div>
@@ -96,4 +96,4 @@
     <!-- Cinema App JS -->
     <script th:src="@{/js/cinema-app-api.js}"></script>
 </body>
-</html> 
+</html>

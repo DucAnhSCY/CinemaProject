@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Đăng Nhập - CinemaBooking</title>
+    <title>Login - CinemaBooking</title>
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -23,7 +23,7 @@
                             <i class="fas fa-film"></i>
                         </div>
                         <h2>CinemaBooking</h2>
-                        <p>Đăng nhập để tiếp tục</p>
+                        <p>Login to continue</p>
                     </div>
 
                     <!-- Error/Success Messages -->
@@ -34,34 +34,34 @@
                             <!-- Account Status Errors -->
                             <div th:case="'account_disabled'">
                                 <i class="fas fa-user-lock me-2"></i>
-                                <strong>Tài khoản bị vô hiệu hóa</strong><br>
+                                <strong>Account Disabled</strong><br>
                                 <span th:text="${error}"></span>
                             </div>
                             <div th:case="'account_locked'">
                                 <i class="fas fa-lock me-2"></i>
-                                <strong>Tài khoản bị khóa</strong><br>
+                                <strong>Account Locked</strong><br>
                                 <span th:text="${error}"></span>
                             </div>
                             <div th:case="'account_status_error'">
                                 <i class="fas fa-exclamation-triangle me-2"></i>
-                                <strong>Lỗi tài khoản</strong><br>
+                                <strong>Account Error</strong><br>
                                 <span th:text="${error}"></span>
                             </div>
                             
                             <!-- Authentication Errors -->
                             <div th:case="'user_not_found'">
                                 <i class="fas fa-user-times me-2"></i>
-                                <strong>Không tìm thấy tài khoản</strong><br>
+                                <strong>User Not Found</strong><br>
                                 <span th:text="${error}"></span>
                             </div>
                             <div th:case="'wrong_password'">
                                 <i class="fas fa-key me-2"></i>
-                                <strong>Mật khẩu sai</strong><br>
+                                <strong>Wrong Password</strong><br>
                                 <span th:text="${error}"></span>
                             </div>
                             <div th:case="'invalid_credentials'">
                                 <i class="fas fa-times-circle me-2"></i>
-                                <strong>Thông tin đăng nhập không hợp lệ</strong><br>
+                                <strong>Invalid Credentials</strong><br>
                                 <span th:text="${error}"></span>
                             </div>
                             
@@ -75,31 +75,31 @@
                     </div>
                     
                     <div th:if="${logout}" class="alert alert-success alert-dismissible fade show" role="alert">
-                        <i class="fas fa-check-circle me-2"></i>Bạn đã đăng xuất thành công!
+                        <i class="fas fa-check-circle me-2"></i>You have successfully logged out!
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
 
                     <!-- Login Form -->
                     <form class="auth-form" th:action="@{/auth/login}" method="post">
                         <div class="form-floating">
-                            <input type="text" class="form-control" id="username" name="username" placeholder="Tên đăng nhập" required>
-                            <label for="username">Tên đăng nhập</label>
+                            <input type="text" class="form-control" id="username" name="username" placeholder="Username" required>
+                            <label for="username">Username</label>
                         </div>
 
                         <div class="form-floating">
-                            <input type="password" class="form-control" id="password" name="password" placeholder="Mật khẩu" required>
-                            <label for="password">Mật khẩu</label>
+                            <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
+                            <label for="password">Password</label>
                         </div>
 
                         <button type="submit" class="auth-submit-btn">
-                            <i class="fas fa-sign-in-alt me-2"></i>Đăng Nhập
+                            <i class="fas fa-sign-in-alt me-2"></i>Login
                         </button>
                     </form>
 
                     <!-- OAuth Section -->
                     <div class="oauth-section">
                         <div class="oauth-divider">
-                            <span>Hoặc đăng nhập với</span>
+                            <span>Or login with</span>
                         </div>
                         
                         <a href="/oauth2/authorization/google" class="oauth-btn oauth-google">
@@ -110,9 +110,9 @@
 
                     <!-- Auth Links -->
                     <div class="auth-links">
-                        <p class="text-muted">Chưa có tài khoản? <a th:href="@{/auth/register}">Đăng ký ngay</a></p>
+                        <p class="text-muted">Don't have an account? <a th:href="@{/auth/register}">Sign up now</a></p>
                         <div class="forgot-password">
-                            <a href="#">Quên mật khẩu?</a>
+                            <a href="#">Forgot password?</a>
                         </div>
                     </div>
                 </div>
@@ -120,8 +120,8 @@
                 <!-- Visual Section -->
                 <div class="auth-visual-section">
                     <div class="auth-visual-content">
-                        <h3>Chào mừng trở lại!</h3>
-                        <p>Đăng nhập để khám phá những bộ phim hay nhất và đặt vé xem phim một cách dễ dàng.</p>
+                        <h3>Welcome Back!</h3>
+                        <p>Login to discover the best movies and book tickets easily.</p>
                     </div>
                 </div>
             </div>

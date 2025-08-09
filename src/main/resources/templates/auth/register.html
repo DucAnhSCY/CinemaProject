@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Đăng Ký - CinemaBooking</title>
+    <title>Register - CinemaBooking</title>
     
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -23,7 +23,7 @@
                             <i class="fas fa-film"></i>
                         </div>
                         <h2>CinemaBooking</h2>
-                        <p>Tạo tài khoản mới</p>
+                        <p>Create new account</p>
                     </div>
 
                     <!-- Error/Success Messages -->
@@ -33,8 +33,8 @@
                     <!-- Register Form -->
                     <form class="auth-form" th:action="@{/auth/register}" method="post">
                         <div class="form-floating">
-                            <input type="text" class="form-control" id="username" name="username" placeholder="Tên đăng nhập" required>
-                            <label for="username">Tên đăng nhập</label>
+                            <input type="text" class="form-control" id="username" name="username" placeholder="Username" required>
+                            <label for="username">Username</label>
                         </div>
 
                         <div class="form-floating">
@@ -43,29 +43,29 @@
                         </div>
 
                         <div class="form-floating">
-                            <input type="text" class="form-control" id="fullName" name="fullName" placeholder="Họ và tên">
-                            <label for="fullName">Họ và tên (tùy chọn)</label>
+                            <input type="text" class="form-control" id="fullName" name="fullName" placeholder="Full Name">
+                            <label for="fullName">Full Name (optional)</label>
                         </div>
 
                         <div class="form-floating">
-                            <input type="password" class="form-control" id="password" name="password" placeholder="Mật khẩu" required>
-                            <label for="password">Mật khẩu</label>
+                            <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
+                            <label for="password">Password</label>
                         </div>
 
                         <div class="form-floating">
-                            <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="Xác nhận mật khẩu" required>
-                            <label for="confirmPassword">Xác nhận mật khẩu</label>
+                            <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password" required>
+                            <label for="confirmPassword">Confirm Password</label>
                         </div>
 
                         <button type="submit" class="auth-submit-btn">
-                            <i class="fas fa-user-plus me-2"></i>Đăng Ký
+                            <i class="fas fa-user-plus me-2"></i>Register
                         </button>
                     </form>
 
                     <!-- OAuth Section -->
                     <div class="oauth-section">
                         <div class="oauth-divider">
-                            <span>Hoặc đăng ký với</span>
+                            <span>Or register with</span>
                         </div>
                         
                         <a href="/oauth2/authorization/google" class="oauth-btn oauth-google">
@@ -77,15 +77,15 @@
 
                     <!-- Auth Links -->
                     <div class="auth-links">
-                        <p class="text-muted">Đã có tài khoản? <a th:href="@{/auth/login}">Đăng nhập</a></p>
+                        <p class="text-muted">Already have an account? <a th:href="@{/auth/login}">Login</a></p>
                     </div>
                 </div>
 
                 <!-- Visual Section -->
                 <div class="auth-visual-section">
                     <div class="auth-visual-content">
-                        <h3>Tham gia cùng chúng tôi!</h3>
-                        <p>Đăng ký để trải nghiệm những bộ phim hay nhất và nhận nhiều ưu đãi đặc biệt.</p>
+                        <h3>Join Us!</h3>
+                        <p>Register to experience the best movies and receive special offers.</p>
                     </div>
                 </div>
             </div>

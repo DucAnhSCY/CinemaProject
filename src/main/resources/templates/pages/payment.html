@@ -1,4 +1,11 @@
-<!DOCTY    <!-- Bootstrap CSS -->
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment - Cinema Paradise</title>
+    
+    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
@@ -128,19 +135,7 @@
             width: 100% !important;
             height: 100% !important;
         }
-    </style>l>
-<html lang="vi" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thanh Toán - Cinema Paradise</title>
-    
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <!-- Cinema Theme CSS -->
-    <link th:href="@{/css/cinema-theme.css}" href="/css/cinema-theme.css" rel="stylesheet">
+    </style>
 </head>
 <body>
     <!-- Navigation -->
@@ -154,8 +149,8 @@
                 <div class="payment-header-icon mb-3">
                     <i class="fas fa-credit-card text-primary" style="font-size: 3.5rem; filter: drop-shadow(0 0 20px rgba(13, 110, 253, 0.5));"></i>
                 </div>
-                <h2 class="text-white mb-2">Thanh Toán An Toàn</h2>
-                <p class="text-muted">Hoàn tất đặt vé của bạn với các phương thức thanh toán đa dạng</p>
+                <h2 class="text-white mb-2">Secure Payment</h2>
+                <p class="text-muted">Complete your booking with various payment methods</p>
             </div>
 
             <div class="row justify-content-center">
@@ -165,10 +160,10 @@
                             <!-- Booking Summary -->
                             <div class="col-lg-5">
                                 <div class="booking-summary-card">
-                                    <div class="card border-0 shadow-lg h-100" style="background: rgba(42, 42, 42, 0.95); backdrop-filter: blur(10px); border-radius: 16px;">
+                                    <div class="card border-0 shadow-lg h-100" style="background: rgba(42, 42, 42, 0.95); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-radius: 16px;">
                                         <div class="card-header border-0 text-center py-4" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 16px 16px 0 0;">
                                             <h5 class="text-white mb-0 fw-bold">
-                                                <i class="fas fa-ticket-alt me-2"></i>Chi Tiết Đặt Vé
+                                                <i class="fas fa-ticket-alt me-2"></i>Booking Details
                                             </h5>
                                         </div>
                                         <div class="card-body p-4">
@@ -176,10 +171,10 @@
                                             <div class="booking-item mb-4">
                                                 <div class="movie-info">
                                                     <h6 class="text-primary mb-2">
-                                                        <i class="fas fa-film me-2"></i>Thông Tin Phim
+                                                        <i class="fas fa-film me-2"></i>Movie Information
                                                     </h6>
                                                     <div class="movie-title mb-2">
-                                                        <h5 class="text-white fw-bold mb-1" th:text="${booking.screening.movie.title}">Tên phim</h5>
+                                                        <h5 class="text-white fw-bold mb-1" th:text="${booking.screening.movie.title}">Movie Title</h5>
                                                     </div>
                                                 </div>
                                             </div>
@@ -187,20 +182,20 @@
                                             <!-- Cinema & Time Info -->
                                             <div class="booking-item mb-4">
                                                 <h6 class="text-primary mb-3">
-                                                    <i class="fas fa-map-marker-alt me-2"></i>Địa Điểm & Thời Gian
+                                                    <i class="fas fa-map-marker-alt me-2"></i>Location & Time
                                                 </h6>
                                                 <div class="cinema-details">
                                                     <div class="info-row mb-2">
-                                                        <span class="text-muted">Rạp:</span>
-                                                        <span class="text-white fw-semibold ms-2" th:text="${booking.screening.auditorium.theater.name}">Tên rạp</span>
+                                                        <span class="text-muted">Cinema:</span>
+                                                        <span class="text-white fw-semibold ms-2" th:text="${booking.screening.auditorium.theater.name}">Cinema Name</span>
                                                     </div>
                                                     <div class="info-row mb-2">
-                                                        <span class="text-muted">Phòng:</span>
-                                                        <span class="text-white ms-2" th:text="${booking.screening.auditorium.name}">Phòng</span>
+                                                        <span class="text-muted">Theater:</span>
+                                                        <span class="text-white ms-2" th:text="${booking.screening.auditorium.name}">Theater</span>
                                                     </div>
                                                     <div class="info-row">
-                                                        <span class="text-muted">Suất chiếu:</span>
-                                                        <span class="text-white ms-2" th:text="${#temporals.format(booking.screening.startTime, 'HH:mm - dd/MM/yyyy')}">Thời gian</span>
+                                                        <span class="text-muted">Showtime:</span>
+                                                        <span class="text-white ms-2" th:text="${#temporals.format(booking.screening.startTime, 'HH:mm - dd/MM/yyyy')}">Time</span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -208,7 +203,7 @@
                                             <!-- Seats Info -->
                                             <div class="booking-item mb-4">
                                                 <h6 class="text-primary mb-3">
-                                                    <i class="fas fa-chair me-2"></i>Ghế Đã Chọn
+                                                    <i class="fas fa-chair me-2"></i>Selected Seats
                                                 </h6>
                                                 <div class="selected-seats mb-2">
                                                     <span th:each="bookedSeat : ${booking.bookedSeats}" 
@@ -217,29 +212,29 @@
                                                 </div>
                                                 <small class="text-muted">
                                                     <i class="fas fa-users me-1"></i>
-                                                    Tổng: <span class="text-white fw-semibold" th:text="${#lists.size(booking.bookedSeats)}">2</span> ghế
+                                                    Total: <span class="text-white fw-semibold" th:text="${#lists.size(booking.bookedSeats)}">2</span> seats
                                                 </small>
                                             </div>
 
                                             <!-- Payment Breakdown -->
                                             <div class="payment-breakdown">
                                                 <h6 class="text-primary mb-3">
-                                                    <i class="fas fa-calculator me-2"></i>Chi Tiết Giá
+                                                    <i class="fas fa-calculator me-2"></i>Price Details
                                                 </h6>
                                                 <div class="breakdown-item">
                                                     <div class="d-flex justify-content-between mb-2">
-                                                        <span class="text-muted">Giá vé:</span>
-                                                        <span class="text-white" th:text="${#numbers.formatDecimal(booking.screening.ticketPrice / 1000, 0, 'COMMA', 3, 'POINT')} + ' VNĐ'">120 VNĐ</span>
+                                                        <span class="text-muted">Ticket Price:</span>
+                                                        <span class="text-white" th:text="${#numbers.formatDecimal(booking.screening.ticketPrice / 1000, 0, 'COMMA', 3, 'POINT')} + ' VND'">120 VND</span>
                                                     </div>
                                                     <div class="d-flex justify-content-between mb-3">
-                                                        <span class="text-muted">Số lượng:</span>
+                                                        <span class="text-muted">Quantity:</span>
                                                         <span class="text-white">x<span th:text="${#lists.size(booking.bookedSeats)}">2</span></span>
                                                     </div>
                                                     <hr style="border-color: rgba(255, 255, 255, 0.2);">
                                                     <div class="total-amount p-3 mt-3" style="background: rgba(255, 193, 7, 0.1); border-radius: 8px; border: 1px solid rgba(255, 193, 7, 0.3);">
                                                         <div class="d-flex justify-content-between align-items-center">
-                                                            <span class="text-warning fs-5 fw-bold">Tổng cộng:</span>
-                                                            <span class="text-warning fs-4 fw-bold" th:text="${#numbers.formatDecimal(booking.totalAmount / 1000, 0, 'COMMA', 3, 'POINT')} + ' VNĐ'">240 VNĐ</span>
+                                                            <span class="text-warning fs-5 fw-bold">Total:</span>
+                                                            <span class="text-warning fs-4 fw-bold" th:text="${#numbers.formatDecimal(booking.totalAmount / 1000, 0, 'COMMA', 3, 'POINT')} + ' VND'">240 VND</span>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -252,10 +247,10 @@
                             <!-- Payment Methods -->
                             <div class="col-lg-7">
                                 <div class="payment-methods-card">
-                                    <div class="card border-0 shadow-lg h-100" style="background: rgba(42, 42, 42, 0.95); backdrop-filter: blur(10px); border-radius: 16px;">
+                                    <div class="card border-0 shadow-lg h-100" style="background: rgba(42, 42, 42, 0.95); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-radius: 16px;">
                                         <div class="card-header border-0 text-center py-4" style="background: linear-gradient(135deg, #e50914 0%, #b81d24 100%); border-radius: 16px 16px 0 0;">
                                             <h5 class="text-white mb-0 fw-bold">
-                                                <i class="fas fa-wallet me-2"></i>Phương Thức Thanh Toán
+                                                <i class="fas fa-wallet me-2"></i>Payment Methods
                                             </h5>
                                         </div>
                                         <div class="card-body p-4">
@@ -279,7 +274,7 @@
                                                                         <div class="payment-icon mb-2">
                                                                             <i class="fas fa-credit-card" style="font-size: 2.2rem; color: #4285f4;"></i>
                                                                         </div>
-                                                                        <h6 class="payment-title">Thẻ Tín Dụng</h6>
+                                                                        <h6 class="payment-title">Credit Card</h6>
                                                                         <small class="payment-desc">
                                                                             Visa, Mastercard, JCB
                                                                         </small>
@@ -304,9 +299,9 @@
                                                                         <div class="payment-icon mb-2">
                                                                             <i class="fas fa-credit-card" style="font-size: 2.2rem; color: #34a853;"></i>
                                                                         </div>
-                                                                        <h6 class="payment-title">Thẻ Ghi Nợ</h6>
+                                                                        <h6 class="payment-title">Debit Card</h6>
                                                                         <small class="payment-desc">
-                                                                            Thẻ ATM nội địa
+                                                                            ATM Cards
                                                                         </small>
                                                                         <div class="payment-check">
                                                                             <i class="fas fa-check-circle"></i>
@@ -330,7 +325,7 @@
                                                                         <div class="payment-icon mb-2">
                                                                             <i class="fas fa-university" style="font-size: 2.2rem; color: #9c27b0;"></i>
                                                                         </div>
-                                                                        <h6 class="payment-title">Chuyển Khoản</h6>
+                                                                        <h6 class="payment-title">Bank Transfer</h6>
                                                                         <small class="payment-desc">
                                                                             Internet Banking
                                                                         </small>
@@ -355,7 +350,7 @@
                                                                         <div class="payment-icon mb-2">
                                                                             <i class="fas fa-wallet" style="font-size: 2.2rem; color: #ff9800;"></i>
                                                                         </div>
-                                                                        <h6 class="payment-title">Ví Điện Tử</h6>
+                                                                        <h6 class="payment-title">E-Wallet</h6>
                                                                         <small class="payment-desc">
                                                                             MoMo, ZaloPay, VNPay
                                                                         </small>
@@ -374,9 +369,9 @@
                                                     <div class="d-flex align-items-center">
                                                         <i class="fas fa-shield-alt text-success me-3" style="font-size: 1.5rem;"></i>
                                                         <div>
-                                                            <h6 class="text-success mb-1">Thanh Toán An Toàn</h6>
+                                                            <h6 class="text-success mb-1">Secure Payment</h6>
                                                             <small class="text-muted">
-                                                                Thông tin thanh toán được mã hóa SSL 256-bit và bảo mật tuyệt đối
+                                                                Payment information is encrypted with SSL 256-bit and completely secure
                                                             </small>
                                                         </div>
                                                     </div>
@@ -387,11 +382,11 @@
                                                     <div class="d-flex flex-column flex-md-row gap-3">
                                                         <button type="submit" class="btn btn-primary btn-lg flex-fill py-3" id="paymentBtn" style="border-radius: 12px; background: linear-gradient(135deg, #e50914 0%, #b81d24 100%); border: none; box-shadow: 0 4px 15px rgba(229, 9, 20, 0.3);">
                                                             <i class="fas fa-lock me-2"></i>
-                                                            <span class="btn-text">Thanh Toán Ngay</span>
+                                                            <span class="btn-text">Pay Now</span>
                                                         </button>
                                                         <a th:href="@{'/booking/screening/' + ${booking.screening.id}}" 
                                                            class="btn btn-outline-light btn-lg flex-fill py-3" style="border-radius: 12px; border: 2px solid rgba(255, 255, 255, 0.2);">
-                                                            <i class="fas fa-arrow-left me-2"></i>Quay Lại
+                                                            <i class="fas fa-arrow-left me-2"></i>Go Back
                                                         </a>
                                                     </div>
                                                 </div>
@@ -422,7 +417,7 @@
             
             // Change button state
             icon.className = 'fas fa-spinner fa-spin me-2';
-            btnText.textContent = 'Đang xử lý...';
+            btnText.textContent = 'Processing...';
             paymentBtn.disabled = true;
             paymentBtn.style.background = 'linear-gradient(135deg, #6c757d 0%, #5a6268 100%)';
         });
@@ -468,11 +463,6 @@
         
         // Initially disable payment button
         document.getElementById('paymentBtn').disabled = true;
-        
-        // Debug: Check if payment methods are rendered
-        console.log('Payment methods grid found:', document.querySelector('.payment-methods-grid'));
-        console.log('Payment method options count:', document.querySelectorAll('.payment-method-option').length);
-        console.log('Payment radio buttons:', document.querySelectorAll('.payment-radio').length);
     </script>
 </body>
 </html>

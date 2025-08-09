@@ -20,19 +20,22 @@ public class PaymentService {
     @Autowired
     private BookingRepository bookingRepository;
     
+    @Autowired
+    private BookingService bookingService;
+    
     @Transactional
     public Payment createPayment(Long bookingId, Payment.PaymentMethod paymentMethod) {
         Booking booking = bookingRepository.findById(bookingId)
-            .orElseThrow(() -> new RuntimeException("Không tìm thấy booking"));
+            .orElseThrow(() -> new RuntimeException("Booking not found"));
         
-        // Kiểm tra xem booking đã có payment chưa
+        // Check if booking already has payment
         if (booking.getPayment() != null) {
-            throw new RuntimeException("Booking này đã được thanh toán");
+            throw new RuntimeException("This booking has already been paid for");
         }
         
         Payment payment = new Payment();
         payment.setBooking(booking);
-        // Sử dụng chính xác số tiền từ booking để tránh làm tròn
+        // Use exact amount from booking to avoid rounding issues
         payment.setAmount(booking.getTotalAmount());
         payment.setPaymentMethod(paymentMethod);
         payment.setStatus(Payment.PaymentStatus.PENDING);
@@ -45,17 +48,18 @@ public class PaymentService {
     @Transactional
     public Payment processPayment(Long paymentId, boolean success) {
         Payment payment = paymentRepository.findById(paymentId)
-            .orElseThrow(() -> new RuntimeException("Không tìm thấy payment"));
+            .orElseThrow(() -> new RuntimeException("Payment not found"));
         
         if (success) {
             payment.setStatus(Payment.PaymentStatus.COMPLETED);
-            // Cập nhật trạng thái booking thành CONFIRMED
+            // Update booking status to CONFIRMED
             Booking booking = payment.getBooking();
             booking.setBookingStatus(Booking.BookingStatus.CONFIRMED);
             bookingRepository.save(booking);
         } else {
             payment.setStatus(Payment.PaymentStatus.FAILED);
-            // Có thể huỷ booking hoặc để lại để retry
+            // Cancel booking and release seats when payment fails
+            bookingService.cancelBooking(payment.getBooking().getId());
         }
         
         return paymentRepository.save(payment);
@@ -76,15 +80,15 @@ public class PaymentService {
     @Transactional
     public Payment refundPayment(Long paymentId) {
         Payment payment = paymentRepository.findById(paymentId)
-            .orElseThrow(() -> new RuntimeException("Không tìm thấy payment"));
+            .orElseThrow(() -> new RuntimeException("Payment not found"));
         
         if (payment.getStatus() != Payment.PaymentStatus.COMPLETED) {
-            throw new RuntimeException("Chỉ có thể hoàn tiền cho thanh toán đã hoàn thành");
+            throw new RuntimeException("Can only refund completed payments");
         }
         
         payment.setStatus(Payment.PaymentStatus.REFUNDED);
         
-        // Cập nhật trạng thái booking
+        // Update booking status
         Booking booking = payment.getBooking();
         booking.setBookingStatus(Booking.BookingStatus.CANCELLED);
         bookingRepository.save(booking);

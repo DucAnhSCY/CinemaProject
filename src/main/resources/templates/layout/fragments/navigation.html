@@ -31,25 +31,25 @@
                     <li class="nav-item">
                         <a class="nav-link" th:href="@{/}" 
                            th:classappend="${currentPath != null and currentPath == '/' ? 'active' : ''}">
-                            <i class="fas fa-home me-1"></i>Trang Chủ
+                            <i class="fas fa-home me-1"></i>Home
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" th:href="@{/movies}"
                            th:classappend="${currentPath != null and #strings.startsWith(currentPath, '/movies') ? 'active' : ''}">
-                            <i class="fas fa-film me-1"></i><span data-translate="movies">Phim</span>
+                            <i class="fas fa-film me-1"></i><span data-translate="movies">Movies</span>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" th:href="@{/theaters}"
                            th:classappend="${currentPath != null and #strings.startsWith(currentPath, '/theaters') ? 'active' : ''}">
-                            <i class="fas fa-building me-1"></i><span data-translate="theaters">Rạp Chiếu</span>
+                            <i class="fas fa-building me-1"></i><span data-translate="theaters">Theaters</span>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" th:href="@{/promotions}"
                            th:classappend="${currentPath != null and #strings.startsWith(currentPath, '/promotions') ? 'active' : ''}">
-                            <i class="fas fa-gift me-1"></i><span data-translate="promotions">Khuyến Mãi</span>
+                            <i class="fas fa-gift me-1"></i><span data-translate="promotions">Promotions</span>
                         </a>
                     </li>
                 </ul>
@@ -79,12 +79,12 @@
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                             <li>
                                 <a class="dropdown-item" th:href="@{/profile}">
-                                    <i class="fas fa-user-circle me-2"></i><span data-translate="profile">Hồ Sơ Cá Nhân</span>
+                                    <i class="fas fa-user-circle me-2"></i><span data-translate="profile">Profile</span>
                                 </a>
                             </li>
                             <li>
                                 <a class="dropdown-item" th:href="@{/my-bookings}">
-                                    <i class="fas fa-ticket-alt me-2"></i><span data-translate="myBookings">Vé Đã Đặt</span>
+                                    <i class="fas fa-ticket-alt me-2"></i><span data-translate="myBookings">My Bookings</span>
                                 </a>
                             </li>
                             <li sec:authorize="hasRole('ADMIN') or hasRole('THEATER_MANAGER')">
@@ -92,34 +92,34 @@
                             </li>
                             <li sec:authorize="hasRole('ADMIN') or hasRole('THEATER_MANAGER')">
                                 <a class="dropdown-item" th:href="@{/admin}">
-                                    <i class="fas fa-tachometer-alt me-2"></i><span data-translate="admin">Quản Trị</span>
+                                    <i class="fas fa-tachometer-alt me-2"></i><span data-translate="admin">Administration</span>
                                 </a>
                             </li>
                             <!-- Admin Only Options -->
                             <li sec:authorize="hasRole('ADMIN')">
                                 <a class="dropdown-item" th:href="@{/admin/users}">
-                                    <i class="fas fa-users me-2"></i><span data-translate="userManagement">Quản Lý Người Dùng</span>
+                                    <i class="fas fa-users me-2"></i><span data-translate="userManagement">User Management</span>
                                 </a>
                             </li>
                             <!-- Shared Admin & Theater Manager Options -->
                             <li sec:authorize="hasRole('ADMIN') or hasRole('THEATER_MANAGER')">
                                 <a class="dropdown-item" th:href="@{/admin/movies}">
-                                    <i class="fas fa-film me-2"></i>Quản Lý Phim
+                                    <i class="fas fa-film me-2"></i>Movie Management
                                 </a>
                             </li>
                             <li sec:authorize="hasRole('ADMIN') or hasRole('THEATER_MANAGER')">
                                 <a class="dropdown-item" th:href="@{/admin/theaters}">
-                                    <i class="fas fa-building me-2"></i>Quản Lý Rạp Chiếu
+                                    <i class="fas fa-building me-2"></i>Theater Management
                                 </a>
                             </li>
                             <li sec:authorize="hasRole('ADMIN') or hasRole('THEATER_MANAGER')">
                                 <a class="dropdown-item" th:href="@{/admin/screenings}">
-                                    <i class="fas fa-calendar me-2"></i>Quản Lý Lịch Chiếu
+                                    <i class="fas fa-calendar me-2"></i>Schedule Management
                                 </a>
                             </li>
                             <li sec:authorize="hasRole('ADMIN') or hasRole('THEATER_MANAGER')">
                                 <a class="dropdown-item" th:href="@{/admin/bookings}">
-                                    <i class="fas fa-ticket-alt me-2"></i>Quản Lý Đặt Vé
+                                    <i class="fas fa-ticket-alt me-2"></i>Booking Management
                                 </a>
                             </li>
                             <li>
@@ -128,7 +128,7 @@
                             <li>
                                 <form th:action="@{/auth/logout}" method="post" class="d-inline">
                                     <button type="submit" class="dropdown-item text-danger">
-                                        <i class="fas fa-sign-out-alt me-2"></i><span data-translate="logout">Đăng Xuất</span>
+                                        <i class="fas fa-sign-out-alt me-2"></i><span data-translate="logout">Logout</span>
                                     </button>
                                 </form>
                             </li>
@@ -138,12 +138,12 @@
                     <!-- Guest User Menu -->
                     <li class="nav-item" sec:authorize="!isAuthenticated()">
                         <a class="nav-link" th:href="@{/auth/login}">
-                            <i class="fas fa-sign-in-alt me-1"></i><span data-translate="login">Đăng Nhập</span>
+                            <i class="fas fa-sign-in-alt me-1"></i><span data-translate="login">Login</span>
                         </a>
                     </li>
                     <li class="nav-item" sec:authorize="!isAuthenticated()">
                         <a class="nav-link btn btn-primary text-white ms-2" th:href="@{/auth/register}">
-                            <i class="fas fa-user-plus me-1"></i><span data-translate="register">Đăng Ký</span>
+                            <i class="fas fa-user-plus me-1"></i><span data-translate="register">Register</span>
                         </a>
                     </li>
                 </ul>

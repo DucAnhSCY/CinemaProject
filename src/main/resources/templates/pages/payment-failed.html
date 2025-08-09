@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thanh Toán Thất Bại - Cinema Paradise</title>
+    <title>Payment Failed - Cinema Paradise</title>
     
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -26,41 +26,41 @@
                     <div class="card bg-dark border-danger">
                         <div class="card-header bg-danger text-white text-center">
                             <i class="fas fa-times-circle fa-3x mb-3"></i>
-                            <h3 class="mb-0">Thanh Toán Thất Bại!</h3>
+                            <h3 class="mb-0">Payment Failed!</h3>
                         </div>
                         <div class="card-body">
                             <div class="text-center mb-4">
-                                <h5 class="text-danger">Rất tiếc! Thanh toán của bạn không thành công.</h5>
-                                <p class="text-muted">Mã giao dịch: <strong th:text="${payment.transactionId}">TXN123456</strong></p>
+                                <h5 class="text-danger">Sorry! Your payment was not successful.</h5>
+                                <p class="text-muted">Transaction ID: <strong th:text="${payment.transactionId}">TXN123456</strong></p>
                             </div>
                             
-                            <!-- Thông tin vé -->
+                            <!-- Booking Information -->
                             <div class="row">
                                 <div class="col-md-6">
-                                    <h6 class="text-primary mb-3">Thông Tin Đặt Vé</h6>
+                                    <h6 class="text-primary mb-3">Booking Information</h6>
                                     <div class="booking-info">
                                         <div class="mb-2">
-                                            <strong>Mã đặt vé:</strong>
+                                            <strong>Booking ID:</strong>
                                             <span class="badge bg-secondary" th:text="${booking.id}">123</span>
                                         </div>
                                         <div class="mb-2">
-                                            <strong>Phim:</strong>
-                                            <span th:text="${booking.screening.movie.title}">Tên phim</span>
+                                            <strong>Movie:</strong>
+                                            <span th:text="${booking.screening.movie.title}">Movie title</span>
                                         </div>
                                         <div class="mb-2">
-                                            <strong>Rạp:</strong>
-                                            <span th:text="${booking.screening.auditorium.theater.name}">Tên rạp</span>
+                                            <strong>Cinema:</strong>
+                                            <span th:text="${booking.screening.auditorium.theater.name}">Cinema name</span>
                                         </div>
                                         <div class="mb-2">
-                                            <strong>Phòng chiếu:</strong>
-                                            <span th:text="${booking.screening.auditorium.name}">Phòng</span>
+                                            <strong>Theater:</strong>
+                                            <span th:text="${booking.screening.auditorium.name}">Theater</span>
                                         </div>
                                         <div class="mb-2">
-                                            <strong>Suất chiếu:</strong>
-                                            <span th:text="${#temporals.format(booking.screening.startTime, 'HH:mm - dd/MM/yyyy')}">Thời gian</span>
+                                            <strong>Showtime:</strong>
+                                            <span th:text="${#temporals.format(booking.screening.startTime, 'HH:mm - dd/MM/yyyy')}">Time</span>
                                         </div>
                                         <div class="mb-2">
-                                            <strong>Ghế:</strong>
+                                            <strong>Seats:</strong>
                                             <div class="selected-seats">
                                                 <span th:each="bookedSeat : ${booking.bookedSeats}" 
                                                       class="badge bg-info me-1">
@@ -72,27 +72,27 @@
                                 </div>
                                 
                                 <div class="col-md-6">
-                                    <h6 class="text-primary mb-3">Thông Tin Thanh Toán</h6>
+                                    <h6 class="text-primary mb-3">Payment Information</h6>
                                     <div class="payment-info">
                                         <div class="mb-2">
-                                            <strong>Phương thức:</strong>
-                                            <span th:text="${payment.paymentMethod.name() == 'CREDIT_CARD' ? 'Thẻ Tín Dụng' : 
-                                                            payment.paymentMethod.name() == 'DEBIT_CARD' ? 'Thẻ Ghi Nợ' :
-                                                            payment.paymentMethod.name() == 'BANK_TRANSFER' ? 'Chuyển Khoản' :
-                                                            payment.paymentMethod.name() == 'E_WALLET' ? 'Ví Điện Tử' : 'Tiền Mặt'}">
-                                                Phương thức
+                                            <strong>Method:</strong>
+                                            <span th:text="${payment.paymentMethod.name() == 'CREDIT_CARD' ? 'Credit Card' : 
+                                                            payment.paymentMethod.name() == 'DEBIT_CARD' ? 'Debit Card' :
+                                                            payment.paymentMethod.name() == 'BANK_TRANSFER' ? 'Bank Transfer' :
+                                                            payment.paymentMethod.name() == 'E_WALLET' ? 'E-Wallet' : 'Cash'}">
+                                                Method
                                             </span>
                                         </div>
                                         <div class="mb-2">
-                                            <strong>Thời gian:</strong>
-                                            <span th:text="${#temporals.format(payment.paymentTime, 'HH:mm - dd/MM/yyyy')}">Thời gian</span>
+                                            <strong>Time:</strong>
+                                            <span th:text="${#temporals.format(payment.paymentTime, 'HH:mm - dd/MM/yyyy')}">Time</span>
                                         </div>
                                         <div class="mb-2">
-                                            <strong>Trạng thái:</strong>
-                                            <span class="badge bg-danger">Thất bại</span>
+                                            <strong>Status:</strong>
+                                            <span class="badge bg-danger">Failed</span>
                                         </div>
                                         <div class="mb-2">
-                                            <strong>Số tiền:</strong>
+                                            <strong>Amount:</strong>
                                             <span class="fs-5 fw-bold text-warning" th:text="${#numbers.formatCurrency(payment.amount)}">240,000 VND</span>
                                         </div>
                                     </div>
@@ -101,27 +101,27 @@
                             
                             <hr class="border-secondary my-4">
                             
-                            <!-- Thông báo -->
+                            <!-- Notice -->
                             <div class="alert alert-warning">
-                                <h6><i class="fas fa-exclamation-triangle me-2"></i>Lưu ý:</h6>
+                                <h6><i class="fas fa-exclamation-triangle me-2"></i>Important:</h6>
                                 <ul class="mb-0">
-                                    <li>Thanh toán của bạn đã thất bại</li>
-                                    <li>Ghế vẫn được giữ chỗ trong thời gian ngắn</li>
-                                    <li>Bạn có thể thử lại thanh toán hoặc chọn phương thức khác</li>
-                                    <li>Nếu gặp khó khăn, vui lòng liên hệ hotline hỗ trợ</li>
+                                    <li>Your payment has failed</li>
+                                    <li>Your seats are temporarily held for a short time</li>
+                                    <li>You can retry the payment or choose another payment method</li>
+                                    <li>If you need assistance, please contact our support hotline</li>
                                 </ul>
                             </div>
                             
                             <!-- Actions -->
                             <div class="text-center">
                                 <a th:href="@{'/payment/booking/' + ${booking.id}}" class="btn btn-primary btn-lg px-4 me-3">
-                                    <i class="fas fa-credit-card me-2"></i>Thử Lại Thanh Toán
+                                    <i class="fas fa-credit-card me-2"></i>Retry Payment
                                 </a>
                                 <a th:href="@{'/booking/screening/' + ${booking.screening.id}}" class="btn btn-outline-warning btn-lg px-4 me-3">
-                                    <i class="fas fa-arrow-left me-2"></i>Chọn Lại Ghế
+                                    <i class="fas fa-arrow-left me-2"></i>Choose Seats Again
                                 </a>
                                 <a href="/movies" class="btn btn-outline-secondary btn-lg px-4">
-                                    <i class="fas fa-home me-2"></i>Về Trang Chủ
+                                    <i class="fas fa-home me-2"></i>Back to Home
                                 </a>
                             </div>
                         </div>

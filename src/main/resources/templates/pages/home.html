@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html lang="vi" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cinema Paradise - Hệ Thống Đặt Vé Phim Hiện Đại</title>
+    <title>Cinema Paradise - Modern Movie Booking System</title>
     
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" th:href="@{/favicon.svg}">
     <link rel="icon" type="image/x-icon" th:href="@{/favicon.ico}">
-    <link rel="apple-touch-icon" th:href="@{/favicon.svg}">
+    <link rel="apple-touch-icon" href="/favicon.svg" th:href="@{/favicon.svg}">
     
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -40,20 +40,20 @@
                                 </span>
                             </div>
                             <h1 class="hero-title text-white mb-4" style="font-size: 3.5rem; font-weight: 700; line-height: 1.2;">
-                                Trải Nghiệm 
-                                <span class="text-primary">Điện Ảnh</span>
-                                Tuyệt Vời
+                                Experience 
+                                <span class="text-primary">Cinema</span>
+                                Excellence
                             </h1>
                             <p class="hero-subtitle text-light mb-5" style="font-size: 1.3rem; opacity: 0.9;">
-                                Đặt vé phim nhanh chóng, tiện lợi với hệ thống hiện đại nhất. 
-                                Thưởng thức những bộ phim đỉnh cao với chất lượng hình ảnh và âm thanh hoàn hảo.
+                                Book movie tickets quickly and conveniently with our modern system. 
+                                Enjoy top-tier movies with perfect picture and sound quality.
                             </p>
                             <div class="hero-actions d-flex flex-column flex-sm-row gap-3">
                                 <a href="#movies" class="btn btn-primary btn-lg px-5 py-3" style="border-radius: 50px; background: linear-gradient(135deg, #e50914 0%, #b81d24 100%); border: none; box-shadow: 0 8px 25px rgba(229, 9, 20, 0.4); font-weight: 600;">
-                                    <i class="fas fa-play me-2"></i>Xem Phim Ngay
+                                    <i class="fas fa-play me-2"></i>Watch Movies Now
                                 </a>
                                 <a href="#search" class="btn btn-outline-light btn-lg px-5 py-3" style="border-radius: 50px; border: 2px solid rgba(255, 255, 255, 0.3); backdrop-filter: blur(10px); font-weight: 600;">
-                                    <i class="fas fa-search me-2"></i>Tìm Kiếm Phim
+                                    <i class="fas fa-search me-2"></i>Search Movies
                                 </a>
                             </div>
                             
@@ -61,15 +61,15 @@
                             <div class="hero-stats mt-5 d-flex flex-wrap gap-4">
                                 <div class="stat-item">
                                     <h3 class="text-primary mb-1">1000+</h3>
-                                    <small class="text-light opacity-75">Phim Hot</small>
+                                    <small class="text-light opacity-75">Hot Movies</small>
                                 </div>
                                 <div class="stat-item">
                                     <h3 class="text-primary mb-1">50+</h3>
-                                    <small class="text-light opacity-75">Rạp Chiếu</small>
+                                    <small class="text-light opacity-75">Cinemas</small>
                                 </div>
                                 <div class="stat-item">
                                     <h3 class="text-primary mb-1">10M+</h3>
-                                    <small class="text-light opacity-75">Khách Hàng</small>
+                                    <small class="text-light opacity-75">Customers</small>
                                 </div>
                             </div>
                         </div>
@@ -90,7 +90,8 @@
                                                             <div class="movie-poster-mini me-3" style="width: 60px; height: 90px; border-radius: 8px; overflow: hidden; position: relative;">
                                                                 <img th:if="${screening.movie.posterUrl}" 
                                                                      th:src="${screening.movie.posterUrl}" 
-                                                                     th:alt="${screening.movie.title}"
+                                                                     th:alt="${screening.movie.title + ' Poster'}"
+                                                                     th:title="${screening.movie.title}"
                                                                      style="width: 100%; height: 100%; object-fit: cover;">
                                                                 <div th:unless="${screening.movie.posterUrl}" 
                                                                      style="width: 100%; height: 100%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center;">
@@ -117,20 +118,20 @@
                                                         <div class="d-flex justify-content-between align-items-center">
                                                             <div class="screening-info">
                                                                 <div class="mb-1">
-                                                                    <small class="text-muted">Phòng:</small>
+                                                                    <small class="text-muted">Hall:</small>
                                                                     <span class="badge bg-secondary ms-1" th:text="${screening.auditorium.name}">Hall 1</span>
                                                                 </div>
                                                                 <div>
-                                                                    <small class="text-muted">Thể loại:</small>
+                                                                    <small class="text-muted">Genre:</small>
                                                                     <span class="badge bg-info ms-1" th:text="${screening.movie.genre}">Action</span>
                                                                 </div>
                                                             </div>
                                                             <div class="price-booking text-end">
-                                                                <div class="price text-warning fw-bold mb-1" th:text="${#numbers.formatDecimal(screening.ticketPrice / 1000, 0, 'COMMA', 3, 'POINT')} + ' VNĐ'">240 VNĐ</div>
+                                                                <div class="price text-warning fw-bold mb-1" th:text="${#numbers.formatDecimal(screening.ticketPrice / 1000, 0, 'COMMA', 3, 'POINT')} + ' VND'">240 VND</div>
                                                                 <a th:href="@{'/booking/screening/' + ${screening.id}}" 
                                                                    class="btn btn-primary btn-sm px-3" 
                                                                    style="border-radius: 20px; font-size: 0.75rem;">
-                                                                    <i class="fas fa-ticket-alt me-1"></i>Đặt Vé
+                                                                    <i class="fas fa-ticket-alt me-1"></i>Book Ticket
                                                                 </a>
                                                             </div>
                                                         </div>
@@ -141,13 +142,13 @@
                                     </div>
                                     
                                     <!-- Carousel Controls -->
-                                    <button class="carousel-control-prev" type="button" data-bs-target="#featuredScreeningsCarousel" data-bs-slide="prev" style="left: -50px;">
+                                    <button class="carousel-control-prev" type="button" data-bs-target="#featuredScreeningsCarousel" data-bs-slide="prev" style="left: -50px;" title="Previous">
                                         <div class="carousel-control-icon" style="background: rgba(229, 9, 20, 0.8); border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
                                             <i class="fas fa-chevron-left text-white"></i>
                                         </div>
                                         <span class="visually-hidden">Previous</span>
                                     </button>
-                                    <button class="carousel-control-next" type="button" data-bs-target="#featuredScreeningsCarousel" data-bs-slide="next" style="right: -50px;">
+                                    <button class="carousel-control-next" type="button" data-bs-target="#featuredScreeningsCarousel" data-bs-slide="next" style="right: -50px;" title="Next">
                                         <div class="carousel-control-icon" style="background: rgba(229, 9, 20, 0.8); border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
                                             <i class="fas fa-chevron-right text-white"></i>
                                         </div>
@@ -162,7 +163,8 @@
                                                 th:data-bs-slide-to="${iterStat.index}"
                                                 th:class="${iterStat.index == 0 ? 'active' : ''}"
                                                 style="width: 12px; height: 12px; border-radius: 50%; background: rgba(229, 9, 20, 0.5); border: 2px solid rgba(255, 255, 255, 0.3);"
-                                                th:aria-label="'Slide ' + ${iterStat.index + 1}"></button>
+                                                th:aria-label="'Slide ' + ${iterStat.index + 1}"
+                                                th:title="'Show screening ' + ${iterStat.index + 1}"></button>
                                     </div>
                                 </div>
                                 
@@ -173,11 +175,11 @@
                                             <div class="mb-3">
                                                 <i class="fas fa-film text-muted" style="font-size: 3rem;"></i>
                                             </div>
-                                            <h6 class="text-white mb-2">Chưa có suất chiếu</h6>
-                                            <small class="text-muted">Hiện tại chưa có suất chiếu nào được lên lịch</small>
+                                            <h6 class="text-white mb-2">No Screenings Available</h6>
+                                            <small class="text-muted">Currently no screenings are scheduled</small>
                                             <div class="mt-3">
                                                 <a href="/movies" class="btn btn-primary btn-sm px-3" style="border-radius: 20px;">
-                                                    <i class="fas fa-search me-1"></i>Xem Phim
+                                                    <i class="fas fa-search me-1"></i>View Movies
                                                 </a>
                                             </div>
                                         </div>
@@ -204,9 +206,9 @@
                     <div class="col-lg-10">
                         <div class="search-section-header text-center mb-5">
                             <h2 class="text-white mb-3">
-                                <i class="fas fa-search me-3 text-primary"></i>Tìm Kiếm Phim Yêu Thích
+                                <i class="fas fa-search me-3 text-primary"></i>Find Your Favorite Movies
                             </h2>
-                            <p class="text-muted fs-5">Khám phá hàng ngàn bộ phim đặc sắc từ khắp nơi trên thế giới</p>
+                            <p class="text-muted fs-5">Discover thousands of excellent movies from around the world</p>
                         </div>
                         
                         <div class="search-card">
@@ -216,9 +218,9 @@
                                         <div class="row g-4">
                                             <div class="col-lg-5">
                                                 <div class="form-floating">
-                                                    <input type="text" class="form-control search-input" id="searchTitle" name="title" placeholder="Nhập tên phim..." style="background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); color: #fff; border-radius: 12px;">
+                                                    <input type="text" class="form-control search-input" id="searchTitle" name="title" placeholder="Enter movie title..." style="background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); color: #fff; border-radius: 12px;">
                                                     <label for="searchTitle" class="text-muted">
-                                                        <i class="fas fa-film me-2"></i>Tên phim
+                                                        <i class="fas fa-film me-2"></i>Movie Title
                                                     </label>
                                                 </div>
                                             </div>
@@ -226,43 +228,43 @@
                                             <div class="col-lg-4">
                                                 <div class="form-floating">
                                                     <select class="form-select search-select" id="searchGenre" name="genre" style="background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); color: #fff; border-radius: 12px;">
-                                                        <option value="">Tất cả thể loại</option>
-                                                        <option value="Action">Hành động</option>
-                                                        <option value="Comedy">Hài kịch</option>
-                                                        <option value="Drama">Chính kịch</option>
-                                                        <option value="Horror">Kinh dị</option>
-                                                        <option value="Romance">Lãng mạn</option>
-                                                        <option value="Sci-Fi">Khoa học viễn tưởng</option>
-                                                        <option value="Thriller">Giật gân</option>
+                                                        <option value="">All Genres</option>
+                                                        <option value="Action">Action</option>
+                                                        <option value="Comedy">Comedy</option>
+                                                        <option value="Drama">Drama</option>
+                                                        <option value="Horror">Horror</option>
+                                                        <option value="Romance">Romance</option>
+                                                        <option value="Sci-Fi">Sci-Fi</option>
+                                                        <option value="Thriller">Thriller</option>
                                                     </select>
                                                     <label for="searchGenre" class="text-muted">
-                                                        <i class="fas fa-tags me-2"></i>Thể loại
+                                                        <i class="fas fa-tags me-2"></i>Genre
                                                     </label>
                                                 </div>
                                             </div>
                                             
                                             <div class="col-lg-3">
                                                 <button type="submit" class="btn btn-primary w-100 h-100 search-btn" style="border-radius: 12px; background: linear-gradient(135deg, #e50914 0%, #b81d24 100%); border: none; box-shadow: 0 4px 15px rgba(229, 9, 20, 0.3); font-weight: 600;">
-                                                    <i class="fas fa-search me-2"></i>Tìm Kiếm
+                                                    <i class="fas fa-search me-2"></i>Search
                                                 </button>
                                             </div>
                                         </div>
                                         
                                         <!-- Quick Search Tags -->
                                         <div class="quick-search mt-4">
-                                            <small class="text-muted me-3">Tìm kiếm nhanh:</small>
+                                            <small class="text-muted me-3">Quick Search:</small>
                                             <div class="d-inline-flex flex-wrap gap-2">
                                                 <span class="badge bg-secondary search-tag" data-genre="Action" style="cursor: pointer; padding: 8px 12px; border-radius: 20px;">
-                                                    Hành động
+                                                    Action
                                                 </span>
                                                 <span class="badge bg-secondary search-tag" data-genre="Comedy" style="cursor: pointer; padding: 8px 12px; border-radius: 20px;">
-                                                    Hài kịch
+                                                    Comedy
                                                 </span>
                                                 <span class="badge bg-secondary search-tag" data-genre="Horror" style="cursor: pointer; padding: 8px 12px; border-radius: 20px;">
-                                                    Kinh dị
+                                                    Horror
                                                 </span>
                                                 <span class="badge bg-secondary search-tag" data-genre="Romance" style="cursor: pointer; padding: 8px 12px; border-radius: 20px;">
-                                                    Lãng mạn
+                                                    Romance
                                                 </span>
                                             </div>
                                         </div>
@@ -281,7 +283,7 @@
                 <div class="row">
                     <div class="col-12">
                         <h2 class="text-center mb-5">
-                            <i class="fas fa-film me-3"></i>Phim Đang Chiếu
+                            <i class="fas fa-film me-3"></i>Now Showing
                         </h2>
                     </div>
                 </div>
@@ -291,11 +293,11 @@
                     <div th:each="movie : ${featuredMovies}" class="col-lg-3 col-md-4 col-sm-6">
                         <div class="movie-card">
                             <div class="movie-image">
-                                <img th:src="${movie.posterUrl}" th:alt="${movie.title != null ? movie.title : 'Movie poster'}" th:title="${movie.title != null ? movie.title : 'Movie poster'}" title="Movie poster" class="card-img-top" loading="lazy">
+                                <img th:src="${movie.posterUrl}" th:alt="${movie.title != null ? movie.title + ' Poster' : 'Movie poster'}" th:title="${movie.title != null ? movie.title : 'Movie poster'}" class="card-img-top" loading="lazy">
                                 <div class="movie-overlay">
                                     <div class="movie-actions">
                                         <a th:href="@{/movies/{id}(id=${movie.id})}" class="btn btn-primary btn-sm">
-                                            <i class="fas fa-eye me-1"></i>Chi Tiết
+                                            <i class="fas fa-eye me-1"></i>Details
                                         </a>
                                     </div>
                                 </div>
@@ -305,7 +307,7 @@
                                 <div class="movie-meta">
                                     <span class="movie-duration" th:if="${movie.durationMin}">
                                         <i class="fas fa-clock me-1"></i>
-                                        <span th:text="${movie.durationMin}">120</span> phút
+                                        <span th:text="${movie.durationMin}">120</span> min
                                     </span>
                                     <span class="movie-rating" th:if="${movie.rating}">
                                         <i class="fas fa-star me-1"></i>
@@ -329,10 +331,10 @@
                 <!-- No Movies Message -->
                 <div class="text-center py-5" th:if="${#lists.isEmpty(featuredMovies)}">
                     <i class="fas fa-film text-muted mb-3 display-1"></i>
-                    <h4 class="text-muted">Chưa có phim nào</h4>
-                    <p class="text-muted">Hiện tại chưa có phim nào trong hệ thống.</p>
+                    <h4 class="text-muted">No movies available</h4>
+                    <p class="text-muted">Currently no movies in the system.</p>
                     <a th:href="@{/admin/tmdb}" sec:authorize="hasRole('ADMIN')" class="btn btn-primary">
-                        <i class="fas fa-plus me-2"></i>Thêm Phim Từ TMDB
+                        <i class="fas fa-plus me-2"></i>Add Movies From TMDB
                     </a>
                 </div>
             </div>
@@ -343,7 +345,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-12">
-                        <h2 class="text-center mb-5">Tại Sao Chọn CinemaBooking?</h2>
+                        <h2 class="text-center mb-5">Why Choose CinemaBooking?</h2>
                     </div>
                 </div>
                 <div class="row g-4">
@@ -352,8 +354,8 @@
                             <div class="feature-icon">
                                 <i class="fas fa-clock"></i>
                             </div>
-                            <h4>Đặt Vé Nhanh Chóng</h4>
-                            <p>Chỉ trong vài phút, bạn có thể hoàn thành việc đặt vé xem phim yêu thích.</p>
+                            <h4>Quick Ticket Booking</h4>
+                            <p>In just a few minutes, you can complete booking tickets for your favorite movies.</p>
                         </div>
                     </div>
                     <div class="col-lg-4 col-md-6">
@@ -361,8 +363,8 @@
                             <div class="feature-icon">
                                 <i class="fas fa-mobile-alt"></i>
                             </div>
-                            <h4>Tương Thích Mọi Thiết Bị</h4>
-                            <p>Sử dụng trên máy tính, điện thoại, tablet một cách dễ dàng và tiện lợi.</p>
+                            <h4>Multi-Device Compatible</h4>
+                            <p>Use easily and conveniently on computers, phones, and tablets.</p>
                         </div>
                     </div>
                     <div class="col-lg-4 col-md-6">
@@ -370,8 +372,8 @@
                             <div class="feature-icon">
                                 <i class="fas fa-shield-alt"></i>
                             </div>
-                            <h4>Bảo Mật Cao</h4>
-                            <p>Thông tin cá nhân và thanh toán được bảo vệ với công nghệ bảo mật hiện đại.</p>
+                            <h4>High Security</h4>
+                            <p>Personal and payment information is protected with modern security technology.</p>
                         </div>
                     </div>
                 </div>
@@ -387,7 +389,7 @@
                     <h5 class="text-primary mb-3">
                         <i class="fas fa-film me-2"></i>CinemaBooking
                     </h5>
-                    <p class="text-muted">Hệ thống đặt vé phim trực tuyến hàng đầu Việt Nam. Mang đến trải nghiệm điện ảnh tuyệt vời cho mọi người.</p>
+                    <p class="text-muted">Leading online movie ticket booking system in Vietnam. Bringing excellent cinema experience to everyone.</p>
                     <div class="social-links">
                         <a href="#" class="text-primary me-3" title="Facebook"><i class="fab fa-facebook-f"></i></a>
                         <a href="#" class="text-primary me-3" title="Twitter"><i class="fab fa-twitter"></i></a>
@@ -396,27 +398,27 @@
                     </div>
                 </div>
                 <div class="col-lg-2 col-md-6 mb-4">
-                    <h6 class="text-white mb-3">Dịch Vụ</h6>
+                    <h6 class="text-white mb-3">Services</h6>
                     <ul class="list-unstyled">
-                        <li><a href="#" class="text-muted text-decoration-none">Đặt Vé Online</a></li>
-                        <li><a href="#" class="text-muted text-decoration-none">Khuyến Mãi</a></li>
-                        <li><a href="#" class="text-muted text-decoration-none">Thành Viên</a></li>
+                        <li><a href="#" class="text-muted text-decoration-none">Online Booking</a></li>
+                        <li><a href="#" class="text-muted text-decoration-none">Promotions</a></li>
+                        <li><a href="#" class="text-muted text-decoration-none">Membership</a></li>
                         <li><a href="#" class="text-muted text-decoration-none">Gift Card</a></li>
                     </ul>
                 </div>
                 <div class="col-lg-2 col-md-6 mb-4">
-                    <h6 class="text-white mb-3">Hỗ Trợ</h6>
+                    <h6 class="text-white mb-3">Support</h6>
                     <ul class="list-unstyled">
-                        <li><a href="#" class="text-muted text-decoration-none">Liên Hệ</a></li>
+                        <li><a href="#" class="text-muted text-decoration-none">Contact</a></li>
                         <li><a href="#" class="text-muted text-decoration-none">FAQ</a></li>
-                        <li><a href="#" class="text-muted text-decoration-none">Chính Sách</a></li>
-                        <li><a href="#" class="text-muted text-decoration-none">Điều Khoản</a></li>
+                        <li><a href="#" class="text-muted text-decoration-none">Policies</a></li>
+                        <li><a href="#" class="text-muted text-decoration-none">Terms</a></li>
                     </ul>
                 </div>
                 <div class="col-lg-4 col-md-6 mb-4">
-                    <h6 class="text-white mb-3">Liên Hệ</h6>
+                    <h6 class="text-white mb-3">Contact</h6>
                     <ul class="list-unstyled text-muted">
-                        <li><i class="fas fa-map-marker-alt me-2"></i>123 Đường ABC, Quận 1, TP.HCM</li>
+                        <li><i class="fas fa-map-marker-alt me-2"></i>123 ABC Street, District 1, HCMC</li>
                         <li><i class="fas fa-phone me-2"></i>+84 123 456 789</li>
                         <li><i class="fas fa-envelope me-2"></i>info@cinemabooking.vn</li>
                     </ul>
@@ -425,10 +427,10 @@
             <hr class="my-4">
             <div class="row align-items-center">
                 <div class="col-md-6">
-                    <p class="text-muted mb-0">&copy; 2025 CinemaBooking. Tất cả quyền được bảo lưu.</p>
+                    <p class="text-muted mb-0">&copy; 2025 CinemaBooking. All rights reserved.</p>
                 </div>
                 <div class="col-md-6 text-md-end">
-                    <p class="text-muted mb-0">Phát triển bởi <a href="#" class="text-primary text-decoration-none">Team N07</a></p>
+                    <p class="text-muted mb-0">Developed by <a href="#" class="text-primary text-decoration-none">Team N07</a></p>
                 </div>
             </div>
         </div>
@@ -448,7 +450,7 @@
                     e.preventDefault();
                     const targetId = this.getAttribute('href');
                     
-                    // Kiểm tra nếu targetId hợp lệ
+                    // Check if targetId is valid
                     if (targetId && targetId.length > 1 && targetId.startsWith('#')) {
                         const target = document.querySelector(targetId);
                         if (target) {
